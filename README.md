@@ -1,14 +1,14 @@
-# Kframe
+# Larite
 
 > **Lightweight. Laravel-Inspired. 100% Custom.**
 
-Kframe is a **lightweight PHP MVC framework** inspired by Laravel, but built entirely from scratch. It's designed for developers who love Laravel's syntax and structure but want full control, performance, and simplicity.
+Larite is a **lightweight PHP MVC framework** inspired by Laravel, but built entirely from scratch. It's designed for developers who love Laravel's syntax and structure but want full control, performance, and simplicity.
 
-Kframe is **not a Laravel clone**. It's a fresh micro-framework for small to medium web apps, dashboards, admin panels, and educational projects — without Composer bloat or hidden magic.
+Larite is **not a Laravel clone**. It's a fresh micro-framework for small to medium web apps, dashboards, admin panels, and educational projects — without Composer bloat or hidden magic.
 
 ---
 
-## 🚀 Why Kframe?
+## 🚀 Why Larite?
 
 * ✅ Laravel-style routing, middleware, and validation
 * ✅ Custom-built DI container and lifecycle
@@ -57,7 +57,7 @@ Rename `.env.example` to `.env` and set the following:
 ```env
 APP_ENV=development
 DB_HOST=localhost
-DB_DATABASE=kframe
+DB_DATABASE=Larite
 DB_USERNAME=root
 DB_PASSWORD=secret
 AUTH_TABLE=users
@@ -98,7 +98,7 @@ public static function register(): array
 }
 ```
 
-Kframe will autoload them all.
+Larite will autoload them all.
 
 
 ---
@@ -163,7 +163,7 @@ if ($validation->fails()) {
 ### Create a new migration file
 
 ```bash
-php kframe make:migration create_users_table
+php Larite make:migration create_users_table
 ```
 
 This will generate a file in the `database/migrations/` directory.
@@ -195,32 +195,32 @@ Migrate::dropIfExists('users');
 ## 📦 CLI Commands
 
 ```bash
-php kframe make:auth auth
-php kframe make:model User
-php kframe make:controller PostController
-php kframe make:migration create_posts_table
-php kframe migration:migrate
-php kframe migration:rollback
-php kframe route:list
-php kframe route:list --method=GET        // to filter route with method
-php kframe route:list --method=POST      // to filter route with method
-php kframe route:list --method=PUT      // to filter route with method
-php kframe route:list --method=PATCH   // to filter route with method
-php kframe route:list --method=DELETE // to filter route with method
+php Larite make:auth auth
+php Larite make:model User
+php Larite make:controller PostController
+php Larite make:migration create_posts_table
+php Larite migration:migrate
+php Larite migration:rollback
+php Larite route:list
+php Larite route:list --method=GET        // to filter route with method
+php Larite route:list --method=POST      // to filter route with method
+php Larite route:list --method=PUT      // to filter route with method
+php Larite route:list --method=PATCH   // to filter route with method
+php Larite route:list --method=DELETE // to filter route with method
 ```
 
 ---
 
 ## 🌱 Database Seeding
 
-Kframe supports Laravel-style seeders for populating your database with initial or dummy data.
+Larite supports Laravel-style seeders for populating your database with initial or dummy data.
 
 ### 📦 Create a Seeder
 
 Use the CLI to generate a new seeder class:
 
 ```bash
-php kframe make:seeder AdminSeeder
+php Larite make:seeder AdminSeeder
 ```
 
 This creates a new file in the `database/seeders/` directory:
@@ -246,7 +246,7 @@ class AdminSeeder extends Seeder
 Run all seeders through the `DatabaseSeeder` entry point:
 
 ```bash
-php kframe db:seed
+php Larite db:seed
 ```
 
 Seeders should be registered inside `DatabaseSeeder.php` like this:
@@ -289,7 +289,7 @@ This makes it easy to pre-fill admin accounts, demo users, settings, and more �
 
 ## 🧮 Queries & ORM
 
-Kframe offers a Laravel-inspired ORM for interacting with your database using expressive and chainable syntax.
+Larite offers a Laravel-inspired ORM for interacting with your database using expressive and chainable syntax.
 
 ### 🔍 Fetching Data
 
@@ -357,7 +357,7 @@ public function user()
 
 ## 🔥 Advanced Relationship Queries
 
-Kframe supports expressive, Laravel-style relationship queries:
+Larite supports expressive, Laravel-style relationship queries:
 
 ### Eager Loading (with)
 ```php
@@ -451,7 +451,7 @@ Want to improve this Laravel-style lightweight framework? Submit a PR or open an
 
 ## 📄 License
 
-Kframe is open-source and licensed under the MIT license.
+Larite is open-source and licensed under the MIT license.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)

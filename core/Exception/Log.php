@@ -3,15 +3,15 @@
 namespace Core\Exception;
 
 /**
- * Centralized logger for Kframe exceptions and errors.
+ * Centralized logger for Larite exceptions and errors.
  *
  * Usage:
  *   Log::error($exception); // For uncaught or caught exceptions
  *   Log::error($exception, 'CAUGHT'); // For caught exceptions with context
  *
  * Log file is determined by config('app.log_channel'):
- *   - 'single': logs/kframe.log
- *   - 'daily':  logs/kframe-YYYY-MM-DD.log
+ *   - 'single': logs/Larite.log
+ *   - 'daily':  logs/Larite-YYYY-MM-DD.log
  */
 class Log
 {
@@ -51,9 +51,9 @@ class Log
         $logDir = root_path . '/storage/logs/';
         if ($logChannel === 'daily') {
             $date = date('Y-m-d');
-            return $logDir . "kframe-{$date}.log";
+            return $logDir . "Larite-{$date}.log";
         }
         // Default to single file
-        return $logDir . "kframe.log";
+        return $logDir . "Larite.log";
     }
 } 

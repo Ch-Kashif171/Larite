@@ -3,7 +3,7 @@
 <!-- Hero Section -->
 <div class="hero-section">
     <div class="hero-content text-center">
-        <h1 class="welcome-title">Welcome to <span class="brand-highlight">Kframe</span></h1>
+        <h1 class="welcome-title">Welcome to <span class="brand-highlight">Larite</span></h1>
         <p class="subtitle">A modern, lightweight PHP MVC framework for rapid development.</p>
     </div>
 </div>

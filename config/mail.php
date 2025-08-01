@@ -10,7 +10,7 @@ return [
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS','example@gmail.com'),
-        'name' => env('MAIL_FROM_NAME','Kframe'),
+        'name' => env('MAIL_FROM_NAME','Larite'),
     ],
 
     'encryption' => env('MAIL_ENCRYPTION','tls'),

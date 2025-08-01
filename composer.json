@@ -1,7 +1,7 @@
 {
-    "name": "kframe/mvc",
-    "description": "kframe framework",
-    "keywords": ["framework", "kframe"],
+    "name": "Larite/mvc",
+    "description": "Larite framework",
+    "keywords": ["framework", "Larite"],
     "license" : "MIT",
     "type": "project",
     "authors" : [

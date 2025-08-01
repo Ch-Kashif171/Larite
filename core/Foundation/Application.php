@@ -18,7 +18,7 @@ class Application
 {
     const VERSION = '4.x';
 
-    const FRAMEWORK = 'kframe';
+    const FRAMEWORK = 'Larite';
 
     protected array $bindings = [];
 

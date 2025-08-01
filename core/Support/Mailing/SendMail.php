@@ -64,7 +64,7 @@ class SendMail
 
             //Recipients
             $mail->setFrom(config('mail.from.address'), config('mail.from.name'));
-            $mail->addAddress($this->to, 'Kframe');
+            $mail->addAddress($this->to, 'Larite');
 
             if (! is_null($this->attachment)){
                 $mail->addAttachment($this->attachment,$this->attachment_name);

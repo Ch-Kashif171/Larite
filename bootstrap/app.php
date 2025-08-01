@@ -15,8 +15,8 @@ use Core\Foundation\Application;
 | Create The Application
 |--------------------------------------------------------------------------
 |
-| The first thing we will do is create a new kframe application instance
-| which serves as the "glue" for all the components of kframe, and is
+| The first thing we will do is create a new Larite application instance
+| which serves as the "glue" for all the components of Larite, and is
 | binding the system's all the various parts.
 |
 */

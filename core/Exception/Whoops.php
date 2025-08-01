@@ -14,14 +14,14 @@ class Whoops
         $handler = new PrettyPageHandler;
         $handler->setEditor('vscode');
         $handler->setApplicationRootPath(root_path);
-        $handler->setPageTitle("Kframe Exception - Something went wrong!");
+        $handler->setPageTitle("Larite Exception - Something went wrong!");
         $handler->addDataTable('Environment', $_ENV);
         $handler->addDataTable('Server', $_SERVER);
         $handler->addDataTable('Request', $_REQUEST);
         $handler->addDataTable('Session', isset($_SESSION) ? $_SESSION : []);
         $handler->addDataTable('Cookies', $_COOKIE);
 
-        $logFile = root_path . '/storage/logs/kframe.log';
+        $logFile = root_path . '/storage/logs/Larite.log';
         if (file_exists($logFile)) {
             $lines = @file($logFile);
             $recent = $lines ? array_slice($lines, -20) : [];

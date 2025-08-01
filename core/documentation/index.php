@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Kframe – Lightweight PHP MVC Framework</title>
+    <title>Larite – Lightweight PHP MVC Framework</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -70,20 +70,20 @@
 </head>
 <body>
 <div class="container">
-    <h1>Kframe</h1>
+    <h1>Larite</h1>
     <p class="note">Lightweight. Laravel-Inspired. 100% Custom.</p>
     <p>
-        Kframe is a <strong>lightweight PHP MVC framework</strong> inspired by Laravel, but built entirely from scratch.
+        Larite is a <strong>lightweight PHP MVC framework</strong> inspired by Laravel, but built entirely from scratch.
         It's designed for developers who love Laravel's syntax and structure but want full control, performance, and simplicity.
     </p>
     <p>
-        Kframe is <strong>not a Laravel clone</strong>. It's a fresh micro-framework for small to medium web apps, dashboards,
+        Larite is <strong>not a Laravel clone</strong>. It's a fresh micro-framework for small to medium web apps, dashboards,
         admin panels, and educational projects — without Composer bloat or hidden magic.
     </p>
 
     <hr>
 
-    <h2>🚀 Why Kframe?</h2>
+    <h2>🚀 Why Larite?</h2>
     <ul>
         <li>✅ Laravel-style routing, middleware, and validation</li>
         <li>✅ Custom-built DI container and lifecycle</li>
@@ -127,7 +127,7 @@
     <p>Rename <code>.env.example</code> to <code>.env</code> and set the following:</p>
     <pre>APP_ENV=development
 DB_HOST=localhost
-DB_DATABASE=kframe
+DB_DATABASE=Larite
 DB_USERNAME=root
 DB_PASSWORD=secret
 AUTH_TABLE=users</pre>
@@ -156,7 +156,7 @@ public static function register(): array
     ];
 }
 </pre>
-    <p>Kframe will autoload them all.</p>
+    <p>Larite will autoload them all.</p>
 
     <hr>
 
@@ -202,7 +202,7 @@ if ($validation->fails()) {
 
     <h2>🧱 Migrations</h2>
     <h3>Create a new migration file</h3>
-    <pre>php kframe make:migration create_users_table</pre>
+    <pre>php Larite make:migration create_users_table</pre>
 
     <span>This will generate a file in the <code>database/migrations/</code> directory.</span>
 
@@ -222,29 +222,29 @@ if ($validation->fails()) {
     <hr>
 
     <h2>📦 CLI Commands</h2>
-    <pre>php kframe make:auth auth
-php kframe make:model User
-php kframe make:controller PostController
-php kframe make:migration create_posts_table
-php kframe migration:migrate
-php kframe migration:rollback
-php kframe route:list
-php kframe route:list --method=GET        // to filter route with method
-php kframe route:list --method=POST      // to filter route with method
-php kframe route:list --method=PUT      // to filter route with method
-php kframe route:list --method=PATCH   // to filter route with method
-php kframe route:list --method=DELETE // to filter route with method
+    <pre>php Larite make:auth auth
+php Larite make:model User
+php Larite make:controller PostController
+php Larite make:migration create_posts_table
+php Larite migration:migrate
+php Larite migration:rollback
+php Larite route:list
+php Larite route:list --method=GET        // to filter route with method
+php Larite route:list --method=POST      // to filter route with method
+php Larite route:list --method=PUT      // to filter route with method
+php Larite route:list --method=PATCH   // to filter route with method
+php Larite route:list --method=DELETE // to filter route with method
     </pre>
 
     <hr>
 
     <section id="database-seeding">
         <h2>🌱 Database Seeding</h2>
-        <p>Kframe supports Laravel-style seeders for populating your database with initial or dummy data.</p>
+        <p>Larite supports Laravel-style seeders for populating your database with initial or dummy data.</p>
 
         <h3>📦 Create a Seeder</h3>
         <p>Use the CLI to generate a new seeder class:</p>
-        <pre>php kframe make:seeder AdminSeeder</pre>
+        <pre>php Larite make:seeder AdminSeeder</pre>
         <p>This creates a new file in the <code>database/seeders/</code> directory:</p>
         <pre>&lt;?php
 
@@ -263,7 +263,7 @@ class AdminSeeder extends Seeder
 
         <h3>🌾 Run Seeders</h3>
         <p>Run all seeders through the <code>DatabaseSeeder</code> entry point:</p>
-        <pre>php kframe db:seed</pre>
+        <pre>php Larite db:seed</pre>
         <p>Seeders should be registered inside <code>DatabaseSeeder.php</code> like this:</p>
         <pre>public function run(): void
 {
@@ -297,7 +297,7 @@ class AdminSeeder extends Seeder
 
 
     <h2>🧮 Queries & ORM</h2>
-    <p>Kframe offers a Laravel-inspired ORM for interacting with your database using expressive and chainable syntax.</p>
+    <p>Larite offers a Laravel-inspired ORM for interacting with your database using expressive and chainable syntax.</p>
 
     <h3>🔍 Fetching Data</h3>
     <pre>
@@ -357,7 +357,7 @@ public function user()
 </blockquote>
 
     <h2>🔥 Advanced Relationship Queries</h2>
-    <p>Kframe supports expressive, Laravel-style relationship queries:</p>
+    <p>Larite supports expressive, Laravel-style relationship queries:</p>
 
     <h3>Eager Loading (<code>with</code>)</h3>
     <p>Eager load a relation (prevents N+1 queries, supported for <code>hasMany</code> for now):</p>
@@ -437,7 +437,7 @@ public function handle(Throwable $e)
     <hr>
 
     <h2>📄 License</h2>
-    <p>Kframe is open-source and licensed under the MIT license.</p>
+    <p>Larite is open-source and licensed under the MIT license.</p>
 </div>
 </body>
 </html>
