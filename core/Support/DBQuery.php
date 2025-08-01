@@ -7,9 +7,9 @@ use Core\Exception\Handlers\DBException;
 use Whoops\Exception\ErrorException;
 
 /**
- * Class DB
+ * Class DBQuery
  */
-class DB
+class DBQuery
 {
     /**
      * @param $table

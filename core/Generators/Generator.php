@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Core\Generators;
 
 use Core\Support\Constants;
-use Core\Support\DB;
+use Core\Support\Facades\DB;
 
 define('ROOT_PATH', defined('root_path') ? root_path : dirname(__DIR__, 2));
 

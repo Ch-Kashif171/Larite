@@ -9,7 +9,7 @@ namespace Core\Support\Validation;
 
 use Core\Exception\Handlers\DBException;
 use Core\Exception\Handlers\ValidationException;
-use Core\Support\DB;
+use Core\Support\Facades\DB;
 use Core\Support\Session;
 
 class Validator

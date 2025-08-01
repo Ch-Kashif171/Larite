@@ -1,11 +1,9 @@
 <?php
 namespace Core\Migrations;
 
-use Core\Database\Doctrine;
 use Core\Queries\MigrationQueries;
 use Core\Support\Constants;
-use Core\Support\DB;
-
+use Core\Support\Facades\DB;
 /**
  * Class MigrationRunner
  * Handles migration file discovery, execution, and rollback logic for the migration system.

@@ -1,9 +1,8 @@
 <?php
 
 namespace Core\Migrations;
-use Core\Database\Doctrine;
 use Core\Queries\MigrationQueries;
-use Core\Support\DB;
+use Core\Support\Facades\DB;
 
 trait RecordMigration
 {

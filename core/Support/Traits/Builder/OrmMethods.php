@@ -2,7 +2,7 @@
 namespace Core\Support\Traits\Builder;
 
 use Core\Database\QueryBuilder;
-use Core\Support\DB;
+use Core\Support\Facades\DB;
 
 /**
  * Trait OrmMethods
@@ -90,8 +90,7 @@ trait OrmMethods
     public function belongsToMany($related, $pivot, $foreignPivotKey, $relatedPivotKey, $localKey = 'id', $relatedKey = 'id')
     {
         $instance = new $related();
-        $db = new DB();
-        $pivotRows = $db::table($pivot)->where($foreignPivotKey, '=', $this->$localKey)->get();
+        $pivotRows = DB::table($pivot)->where($foreignPivotKey, '=', $this->$localKey)->get();
         $relatedIds = array_map(function($row) use ($relatedPivotKey) { return $row->$relatedPivotKey; }, $pivotRows);
         if (empty($relatedIds)) return [];
         return (new QueryBuilder($instance->table, $instance->hidden, $related))

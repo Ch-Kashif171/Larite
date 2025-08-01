@@ -287,11 +287,15 @@ This makes it easy to pre-fill admin accounts, demo users, settings, and more �
 
 ---
 
-## 🧮 Queries & ORM
+## 🤮 Queries & ORM
 
-Larite offers a Laravel-inspired ORM for interacting with your database using expressive and chainable syntax.
+Larite offers a Laravel-inspired ORM as well as a simple query builder for interacting with your database using expressive and chainable syntax.
+
+---
 
 ### 🔍 Fetching Data
+
+#### Using ORM (Eloquent-like)
 
 ```php
 // Get all users
@@ -305,7 +309,32 @@ $activeUsers = User::where('status', '=', 'active')->get();
 
 // First matching result
 $user = User::where('email', '=', 'john@example.com')->first();
+
+// Pagination
+$users = User::paginate(10);
 ```
+
+#### Using Query Builder (DB facade)
+
+```php
+use Core\Support\Facades\DB;
+
+// Get all users
+$users = DB::table('users')->get();
+
+// Find user by ID
+$user = DB::table('users')->where('id', '=', 1)->first();
+
+// Conditional query
+$activeUsers = DB::table('users')->where('status', '=',  'active')->get();
+
+// Pagination
+$users = DB::table('users')->paginate(10);
+```
+
+Both ORM and query builder provide a clean and fluent interface to interact with your database. Use whichever suits your use-case.
+
+----
 
 ### 🔒 Hidden Fields
 

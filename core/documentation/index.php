@@ -295,11 +295,11 @@ class AdminSeeder extends Seeder
         <p>This makes it easy to pre-fill admin accounts, demo users, settings, and more — ideal for dev and staging environments.</p>
     </section>
 
-
+    <hr>
     <h2>🧮 Queries & ORM</h2>
-    <p>Larite offers a Laravel-inspired ORM for interacting with your database using expressive and chainable syntax.</p>
+    <p>Larite offers a Laravel-inspired ORM for interacting with your database using expressive and chainable syntax. It also supports raw queries using the query builder.</p>
 
-    <h3>🔍 Fetching Data</h3>
+    <h4>🔍 Fetching Data (ORM)</h4>
     <pre>
 // Get all users
 $users = User::get();
@@ -313,6 +313,25 @@ $activeUsers = User::where('status', '=', 'active')->get();
 // First matching result
 $user = User::where('email', '=', 'john@example.com')->first();
     </pre>
+
+    <h4>🛠️ Query Builder (DB Facade)</h4>
+    <pre>
+
+use Core\Support\DB;
+
+// Get all users
+$users = DB::table('users')->get();
+
+// Paginate results
+$users = DB::table('users')->paginate(10);
+
+// Get users with conditions
+$activeUsers = DB::table('users')->where('status', 'active')->get();
+
+// First matching result
+$user = DB::table('users')->where('email', 'john@example.com')->first();
+    </pre>
+    <hr>
 
     <h3>🔒 Hidden Fields</h3>
     <p>To hide sensitive fields like passwords when converting models to arrays or JSON, use the <code>$hidden</code> property in your model:</p>

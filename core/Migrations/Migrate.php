@@ -2,7 +2,7 @@
 
 namespace Core\Migrations;
 
-use Core\Support\DB;
+use Core\Support\Facades\DB;
 
 class Migrate
 {
@@ -77,7 +77,7 @@ class Migrate
     {
         $db_name = config('database.db_database');
         $tableExistQuery = "SELECT * FROM information_schema.tables WHERE table_schema = '".$db_name."' AND table_name = '".$table."' ";
-        $tableExist = \Core\Support\DB::rawQuery($tableExistQuery);
+        $tableExist = DB::rawQuery($tableExistQuery);
         if ($tableExist && count($tableExist) > 0) {
             self::drop($table);
         }

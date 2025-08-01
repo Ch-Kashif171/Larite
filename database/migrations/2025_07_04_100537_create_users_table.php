@@ -2,7 +2,6 @@
 
 use Core\Migrations\Blueprint;
 use Core\Migrations\Migrate;
-use Core\Support\DB;
 
 class CreateUsersTable extends Migrate
 {

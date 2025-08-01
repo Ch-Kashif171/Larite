@@ -18,6 +18,7 @@ class Doctrine
     protected $orderBy = '';
     protected $limit = '';
     protected $offset = '';
+    protected $take = '';
 
     /**
      * @return mixed
@@ -32,7 +33,7 @@ class Doctrine
         }
         $limitClause = $this->limit ?: '';
         $offsetClause = $this->offset ?: '';
-        $sql = "SELECT {$columns} FROM {$this->table}"
+        $sql = $this->selectStatement($columns)
             . $this->joins
             . $this->wheres
             . $this->groupBy
@@ -52,13 +53,20 @@ class Doctrine
      */
     public function find($id)
     {
-        // Support joins and custom select logic, like first()
         if (empty($this->fields)) {
             $columns = '*';
         } else {
             $columns = $this->fields;
         }
-        $sql = "SELECT {$columns} FROM " . $this->table . $this->joins . " WHERE " . $this->table . ".id = " . $id;
+        $sql = $this->selectStatement($columns)
+            . $this->joins
+            . $this->wheres
+            . $this->groupBy
+            . $this->having
+            . $this->orderBy
+            . $this->offset
+            . " WHERE "
+            . $this->table . ".id = " . $id;
         $query = $this->con->query($sql);
         $this->result = $query->fetch(\PDO::FETCH_OBJ);
         return $this->result;
@@ -77,9 +85,10 @@ class Doctrine
         }
         $limitClause = $this->limit ?: '';
         $offsetClause = $this->offset ?: '';
-        $sql = "SELECT {$columns} FROM {$this->table}"
+        $sql = $this->selectStatement($columns)
             . $this->joins
             . $this->wheres
+            . $this->take
             . $this->groupBy
             . $this->having
             . $this->orderBy
@@ -98,7 +107,7 @@ class Doctrine
      */
     public function increment($column, int $value = 1): bool
     {
-        $sql = "SELECT {$column} FROM " . $this->table . $this->wheres;
+        $sql = $this->selectStatement($column) . $this->wheres;
 
         try {
 
@@ -124,7 +133,7 @@ class Doctrine
      */
     public function decrement($column, int $value = 1): bool
     {
-        $sql = "SELECT {$column} FROM " . $this->table . $this->wheres;
+        $sql = $this->selectStatement($column) . $this->wheres;
         try {
             $query = $this->con->query($sql);
             $column_value = $query->fetch(\PDO::FETCH_OBJ);
@@ -389,7 +398,7 @@ class Doctrine
     public function take($take): self
     {
         $query = " LIMIT {$take} ";
-        $this->statement .= $query;
+        $this->take .= $query;
         return $this;
     }
 
@@ -676,7 +685,7 @@ class Doctrine
             return $v === null ? 'NULL' : "'".addslashes($v)."'"; 
         }, $values));
         $query = " WHERE {$column} IN ({$in})";
-        $this->statement .= $query;
+        $this->wheres .= $query;
         return $this;
     }
 
@@ -688,7 +697,7 @@ class Doctrine
     public function whereNull($column): self
     {
         $query = " WHERE {$column} IS NULL";
-        $this->statement .= $query;
+        $this->wheres .= $query;
         return $this;
     }
 
@@ -700,8 +709,17 @@ class Doctrine
     public function whereNotNull($column): self
     {
         $query = " WHERE {$column} IS NOT NULL";
-        $this->statement .= $query;
+        $this->wheres .= $query;
         return $this;
+    }
+
+    /**
+     * @param $columns
+     * @return string
+     */
+    private function selectStatement($columns): string
+    {
+        return "SELECT {$columns} FROM {$this->table} ";
     }
 
 }

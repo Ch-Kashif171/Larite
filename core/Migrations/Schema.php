@@ -2,7 +2,7 @@
 
 namespace Core\Migrations;
 
-use Core\Support\DB;
+use Core\Support\Facades\DB;
 
 
 class Schema
