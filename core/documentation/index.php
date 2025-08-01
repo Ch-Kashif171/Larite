@@ -317,7 +317,7 @@ $user = User::where('email', '=', 'john@example.com')->first();
     <h4>🛠️ Query Builder (DB Facade)</h4>
     <pre>
 
-use Core\Support\DB;
+use Core\Support\Facades\DB;
 
 // Get all users
 $users = DB::table('users')->get();
