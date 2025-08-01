@@ -7,6 +7,17 @@ use Symfony\Component\Console\Application;
 
 const root_path = __DIR__;
 
+/*
+|--------------------------------------------------------------------------
+| Register The Auto Loader
+|--------------------------------------------------------------------------
+|
+| Composer provides a convenient, automatically generated class loader
+| for our application. We just need to utilize it! We'll require it
+| into the script here so that we do not have to worry about the
+| loading of any of our classes manually. It's great to relax.
+|
+*/
 require_once 'vendor/autoload.php';
 
 require_once 'core/Utils/helpers.php';
@@ -15,10 +26,36 @@ require_once 'core/Migrations/Blueprint.php';
 
 /***********************************************************/
 
+/*
+|--------------------------------------------------------------------------
+| Start The Larite Console Application
+|--------------------------------------------------------------------------
+|
+| When we run the console application, the current CLI command will be
+| executed in this console and the response sent back to a terminal
+| or another output device for the developers. Here goes nothing!
+|
+*/
 $application = new Application("Welcome to ".App::framework()." Developed By Kashif Sohail, Version: ", App::version());
 
+/*
+|--------------------------------------------------------------------------
+| Register Components
+|--------------------------------------------------------------------------
+| To register all require components and classes to prepare for
+| execution to run the all Larite commands in terminal
+*/
 $commander = new Commander($application);
 
 $app = $commander->register();
 
+/*
+|--------------------------------------------------------------------------
+| Run The Application
+|--------------------------------------------------------------------------
+|
+| Once Larite has register all require components and classes, we will
+| Execute the commander
+|
+*/
 $app->run();
