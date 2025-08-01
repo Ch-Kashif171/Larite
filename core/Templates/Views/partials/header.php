@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Larite</title>
+    <link href="<?php echo asset('favicon.ico'); ?>" type="img/x-icon" rel="shortcut icon">
+    <title> <?php echo config('app.name', 'Laravel'); ?></title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">

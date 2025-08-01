@@ -2,8 +2,8 @@
 
 namespace Core\Support\Routing;
 
-use App\Controllers\Auth\LoginController;
-use App\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use Core\Support\Facades\Route;
 
 class RouteAuth

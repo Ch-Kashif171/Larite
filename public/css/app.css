@@ -15,8 +15,8 @@ h1.welcome-title {
     font-weight: 800;
     text-align: center;
     color: #5e2d2dd6;
-    margin-top: 150px;
     letter-spacing: 10px;
+    margin: -25px 0px -10px 0px;
 }
 
 p.subtitle {
@@ -116,7 +116,7 @@ footer a:hover {
     justify-content: center;
 }
 .hero-content {
-    max-width: 600px;
+    max-width: 755px;
     margin: 0 auto;
 }
 .hero-content .welcome-title {
@@ -167,7 +167,7 @@ footer a:hover {
     content: none;
 }
 .hero-content {
-    max-width: 650px;
+    max-width: 755px;
     margin: 0 auto;
     position: relative;
     z-index: 1;
@@ -196,6 +196,7 @@ footer a:hover {
     margin-bottom: 0;
     font-weight: 400;
     text-shadow: none;
+    margin-top: 15px;
 }
 
 /* Navbar and Footer Enhancements */
@@ -491,7 +492,7 @@ body {
     flex: 1 0 auto;
 }
 .hero-content {
-    max-width: 650px;
+    max-width: 755px;
 }
 footer {
     flex-shrink: 0;
@@ -572,4 +573,13 @@ footer {
 .navbar-nav .nav-link,
 .navbar-brand {
     font-size: 14px;
+}
+
+.welcome-title {
+    margin: -25px 0px -10px 0px !important;
+}
+.hero-content img {
+    max-width: 300px;
+    height: auto;
+    margin: 20px 0;
 }

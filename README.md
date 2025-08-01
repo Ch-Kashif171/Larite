@@ -163,7 +163,7 @@ if ($validation->fails()) {
 ### Create a new migration file
 
 ```bash
-php Larite make:migration create_users_table
+php larite make:migration create_users_table
 ```
 
 This will generate a file in the `database/migrations/` directory.
@@ -195,18 +195,18 @@ Migrate::dropIfExists('users');
 ## 📦 CLI Commands
 
 ```bash
-php Larite make:auth auth
-php Larite make:model User
-php Larite make:controller PostController
-php Larite make:migration create_posts_table
-php Larite migration:migrate
-php Larite migration:rollback
-php Larite route:list
-php Larite route:list --method=GET        // to filter route with method
-php Larite route:list --method=POST      // to filter route with method
-php Larite route:list --method=PUT      // to filter route with method
-php Larite route:list --method=PATCH   // to filter route with method
-php Larite route:list --method=DELETE // to filter route with method
+php larite make:auth auth
+php larite make:model User
+php larite make:controller PostController
+php larite make:migration create_posts_table
+php larite migration:migrate
+php larite migration:rollback
+php larite route:list
+php larite route:list --method=GET        // to filter route with method
+php larite route:list --method=POST      // to filter route with method
+php larite route:list --method=PUT      // to filter route with method
+php larite route:list --method=PATCH   // to filter route with method
+php larite route:list --method=DELETE // to filter route with method
 ```
 
 ---
@@ -220,7 +220,7 @@ Larite supports Laravel-style seeders for populating your database with initial 
 Use the CLI to generate a new seeder class:
 
 ```bash
-php Larite make:seeder AdminSeeder
+php larite make:seeder AdminSeeder
 ```
 
 This creates a new file in the `database/seeders/` directory:
@@ -246,7 +246,7 @@ class AdminSeeder extends Seeder
 Run all seeders through the `DatabaseSeeder` entry point:
 
 ```bash
-php Larite db:seed
+php larite db:seed
 ```
 
 Seeders should be registered inside `DatabaseSeeder.php` like this:
