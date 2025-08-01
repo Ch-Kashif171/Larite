@@ -432,7 +432,7 @@ public function handle(Throwable $e)
     <hr>
 
     <h2>ChatGPT Comparison.</h2>
-    <li>Here is the ChatGPT comparison after review the complte Larite's code review.</li>
+    <li>Here is the ChatGPT comparison after review the complete Larite's code review.</li>
 
     <img style="width: 100%;" src="https://raw.githubusercontent.com/Ch-Kashif171/Larite/4.x/core/images/Larite-Review-ChatGpt.png">
 
