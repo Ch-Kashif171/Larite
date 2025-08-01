@@ -26,15 +26,8 @@ class Application
     protected array $includes = [
         '/core/Utils/helpers.php',
         '/config/app.php',
-        // Add other files to include before singletons here
-    ];
-
-    /**
-     * @var array|string[]
-     */
-    protected array $postIncludes = [
         '/config/mail.php',
-        // Add other files to include after singletons here
+        // Add other files to include before singletons here
     ];
 
     /**
@@ -124,9 +117,6 @@ class Application
             $this->registerExceptionHandler();
         }
 
-        foreach ($this->postIncludes as $file) {
-            $this->includeFile($file);
-        }
     }
 
     /**
@@ -171,7 +161,7 @@ class Application
             throw new MiddlewareException($e->getMessage());
         }
 
-        // If no route matched, handle 404 or method not allowed
+        // If no route matched, handle 404
         if (!$routeMatched) {
             require_once root_path . $this->notFound['routeExist'];
         }
