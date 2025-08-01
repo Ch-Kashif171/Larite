@@ -443,6 +443,14 @@ protected bool $exception = true; // true, false
 
 ---
 
+## ChatGPT Comparison.
+
+Here is the ChatGPT comparison after review the complte Larite's code review.
+
+![Larite Logo](https://raw.githubusercontent.com/Ch-Kashif171/Larite/4.x/core/images/Larite-Review-ChatGpt.png)
+
+---
+
 ## 🙌 Contribute
 
 Want to improve this Laravel-style lightweight framework? Submit a PR or open an issue. All contributions are welcome!
