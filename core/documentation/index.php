@@ -452,6 +452,71 @@ public function handle(Throwable $e)
 
     <hr>
 
+    <h2>✅ Custom Commands</h2>
+    <p>You can create your own custom console commands by running the following command.</p>
+    <pre>php larite make:command SyncUser</pre>
+
+    <h3>📄 Example Command</h3>
+    <pre>namespace App\Console\Commands;
+
+use Core\Console\BaseCommand;
+
+class SyncUser extends BaseCommand
+{
+    protected string $signature = 'sync:user';
+    protected string $description = 'Command description here';
+
+    public function handle()
+    {
+        $this->info('Command executed from handle()!');
+    }
+}
+</pre>
+
+    <p>Then, register your command in <pre>App\Console\Kernel.php</pre>:</p>
+    <pre>protected array $commands = [
+    \App\Console\Commands\SyncUser::class,
+];</pre>
+
+    <h3>➕ Generate Command Using CLI</h3>
+    <pre>php larite make:command SyncUser</pre>
+
+    <hr>
+
+    <h2>⏰ Task Scheduler</h2>
+    <p>Larite supports a simple scheduler inspired by Laravel.</p>
+
+    <p>To schedule tasks, override the <code>schedule()</code> method inside <code>App\Console\Kernel</code>:</p>
+    <pre>public function schedule(Schedule $schedule): void
+{
+    $schedule->command(SyncUser::class)->everyMinute();
+}
+</pre>
+
+    <h3>🕒 Supported Schedule Methods</h3>
+    <table>
+        <tr><th>Method</th><th>Cron Expression</th><th>Description</th></tr>
+        <tr><td>everyMinute()</td><td>* * * * *</td><td>Every minute</td></tr>
+        <tr><td>everyFiveMinutes()</td><td>*/5 * * * *</td><td>Every 5 minutes</td></tr>
+        <tr><td>everyTenMinutes()</td><td>*/10 * * * *</td><td>Every 10 minutes</td></tr>
+        <tr><td>everyThirtyMinutes()</td><td>*/30 * * * *</td><td>Every 30 minutes</td></tr>
+        <tr><td>hourly()</td><td>0 * * * *</td><td>Once per hour</td></tr>
+        <tr><td>daily()</td><td>0 0 * * *</td><td>Once a day at midnight</td></tr>
+        <tr><td>weekly()</td><td>0 0 * * 0</td><td>Once a week (Sunday midnight)</td></tr>
+    </table>
+
+    <h3>🧪 Testing Locally</h3>
+    <p>To run scheduled tasks manually:</p>
+    <pre>php larite schedule:run</pre>
+
+    <p>To simulate a cron run every minute in dev/testing, use this loop:</p>
+    <pre>while true; do php larite schedule:run; sleep 60; done</pre>
+
+    <p>Or set up a system cron job (Linux/macOS):</p>
+    <pre>* * * * * php /path/to/laragon/www/Larite/larite schedule:run >> /dev/null 2>&1</pre>
+
+    <hr>
+
     <h2>ChatGPT Comparison.</h2>
     <li>Here is the ChatGPT comparison after review the complete Larite's code review.</li>
 

@@ -11,21 +11,20 @@ class CommandTemplate extends BaseCommand
      *
      * @var string
      */
-    protected static string $signature = 'command:name';
+    protected string $signature = 'command:name';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected static string $description = 'Command description here';
+    protected string $description = 'Command description here';
 
     /**
      * Execute the console command logic.
      */
-    public function handle(): int
+    public function handle()
     {
-        $this->output->writeln('Command executed from handle()!');
-        return 0;
+        $this->info('Command executed from handle()!');
     }
 }

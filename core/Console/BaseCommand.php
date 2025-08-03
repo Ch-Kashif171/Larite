@@ -12,7 +12,7 @@ abstract class BaseCommand extends Command
 
     protected ?OutputInterface $output = null;
 
-    protected string $name = '';
+    protected string $signature = '';
 
     protected string $description = '';
 
@@ -20,14 +20,24 @@ abstract class BaseCommand extends Command
     {
         parent::__construct();
 
-        if (!empty($this->name)) {
-            $this->setName($this->name);
+        if (!empty($this->signature)) {
+            $this->setName($this->signature);
         }
 
         if (!empty($this->description)) {
             $this->setDescription($this->description);
         }
     }
+
+    public function run(InputInterface $input, OutputInterface $output): int
+    {
+        $this->input = $input;
+        $this->output = $output;
+
+        $this->handle();
+        return 1;
+    }
+
 
     /**
      * @param InputInterface $input
