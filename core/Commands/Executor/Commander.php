@@ -2,17 +2,20 @@
 
 namespace Core\Commands\Executor;
 
+use App\Console\Kernel;
 use Core\Commands\CreateControllerCommand;
 use Core\Commands\CreateMigrationCommand;
 use Core\Commands\CreateModelCommand;
 use Core\Commands\DatabaseSeedCommand;
 use Core\Commands\MakeAuth;
+use Core\Commands\MakeCommandCommand;
 use Core\Commands\MakeMiddlewareCommand;
 use Core\Commands\MakeSeederCommand;
 use Core\Commands\MigrationCommand;
 use Core\Commands\RollbackMigrationCommand;
 use Core\Commands\RouteListCommand;
 use Core\Dotenv\Dotenv;
+
 use Symfony\Component\Console\Application;
 
 class Commander
@@ -30,20 +33,49 @@ class Commander
     }
 
     /**
+     * @return void
+     */
+    private function registerCoreCommands()
+    {
+        $coreCommands = [
+            CreateControllerCommand::class,
+            CreateModelCommand::class,
+            MakeAuth::class,
+            MigrationCommand::class,
+            CreateMigrationCommand::class,
+            RollbackMigrationCommand::class,
+            MakeSeederCommand::class,
+            DatabaseSeedCommand::class,
+            RouteListCommand::class,
+            MakeMiddlewareCommand::class,
+            MakeCommandCommand::class,
+        ];
+
+        foreach ($coreCommands as $command) {
+            $this->app->add(new $command);
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function registerCustomCommands()
+    {
+        $kernel = new Kernel();
+
+        foreach ($kernel->getCommands() as $command) {
+            $this->app->add(new $command);
+        }
+    }
+
+    /**
      * @return Application
      */
     public function register(): Application
     {
-        $this->app->add(new CreateControllerCommand());
-        $this->app->add(new CreateModelCommand());
-        $this->app->add(new MakeAuth());
-        $this->app->add(new MigrationCommand());
-        $this->app->add(new CreateMigrationCommand());
-        $this->app->add(new RollbackMigrationCommand());
-        $this->app->add(new MakeSeederCommand());
-        $this->app->add(new DatabaseSeedCommand());
-        $this->app->add(new RouteListCommand());
-        $this->app->add(new MakeMiddlewareCommand());
+        $this->registerCoreCommands();
+
+        $this->registerCustomCommands();
 
         return $this->app;
     }
