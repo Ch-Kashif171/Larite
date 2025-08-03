@@ -4,6 +4,7 @@ namespace Core\Support\Traits;
 
 use App\Http\Kernel;
 use Core\Exception\Handlers\MiddlewareException;
+use Core\Support\Request;
 
 trait Middleware
 {
@@ -12,46 +13,41 @@ trait Middleware
      * @return bool
      * @throws MiddlewareException
      */
-    public static function getMiddleware($middlewares) {
 
+    public static function getMiddleware($middlewares): bool
+    {
         $kernel = new Kernel();
+        $request = new Request();
 
-        if (is_array($middlewares)) {
+        $middlewares = is_array($middlewares) ? $middlewares : [$middlewares];
 
-            foreach ($middlewares as $middleware) {
+        $pipeline = array_reverse($middlewares); // reversed so next() works properly
 
-                if (isset($kernel->routeMiddleware[$middleware])) {
-                    $middleware_class = new $kernel->routeMiddleware[$middleware]();
-                    $result = $middleware_class->handle();
-                    if ($result === false || $result === null) {
-                        return false; // Stop execution if middleware returns false
-                    }
+        $next = function ($req) {
+            return true;
+        };
 
-                } else {
-                    throw new MiddlewareException("Your given middleware did not match");
-                }
+        foreach ($pipeline as $middlewareKey) {
+
+            if (!isset($kernel->routeMiddleware[$middlewareKey])) {
+                throw new MiddlewareException("Your given middleware did not match: $middlewareKey");
             }
 
-        } else {
+            $middlewareClass = new $kernel->routeMiddleware[$middlewareKey]();
 
-            if (! is_null($middlewares)) {
-
-                if (isset($kernel->routeMiddleware[$middlewares])) {
-
-                    $middleware_class = new $kernel->routeMiddleware[$middlewares]();
-                    $result = $middleware_class->handle();
-                    if ($result === false || $result === null) {
-                        return false; // Stop execution if middleware returns false
-                    }
-
-                } else {
-                    throw new MiddlewareException("Your given middleware did not match");
-                }
-
-            }
+            $currentNext = $next;
+            $next = function ($req) use ($middlewareClass, $currentNext) {
+                return $middlewareClass->handle($req, $currentNext);
+            };
         }
-        
-        return true; // All middleware passed
+
+        $result = $next($request);
+
+        if ($result === false || $result === null) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

@@ -7,6 +7,7 @@ use Core\Commands\CreateMigrationCommand;
 use Core\Commands\CreateModelCommand;
 use Core\Commands\DatabaseSeedCommand;
 use Core\Commands\MakeAuth;
+use Core\Commands\MakeMiddlewareCommand;
 use Core\Commands\MakeSeederCommand;
 use Core\Commands\MigrationCommand;
 use Core\Commands\RollbackMigrationCommand;
@@ -42,6 +43,7 @@ class Commander
         $this->app->add(new MakeSeederCommand());
         $this->app->add(new DatabaseSeedCommand());
         $this->app->add(new RouteListCommand());
+        $this->app->add(new MakeMiddlewareCommand());
 
         return $this->app;
     }

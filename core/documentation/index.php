@@ -159,6 +159,9 @@ public static function register(): array
     <hr>
 
     <h2>🧰 Middleware System</h2>
+    <p>You can create new middleware by running the below command</p>
+    <pre>php larite make:middleware Authenticate</pre>
+    <p>Then</p>
     <p>Register middleware in <code>App\Kernel.php</code>:</p>
     <pre>public $routeMiddleware = [
   'auth' => Authenticate::class,
@@ -226,6 +229,7 @@ php Larite make:controller PostController
 php Larite make:migration create_posts_table
 php Larite migration:migrate
 php Larite migration:rollback
+php larite make:middleware Authenticate
 php Larite route:list
 php Larite route:list --method=GET        // to filter route with method
 php Larite route:list --method=POST      // to filter route with method

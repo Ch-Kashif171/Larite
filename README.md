@@ -103,6 +103,12 @@ Larite will autoload them all.
 
 ## 🧰 Middleware System
 
+You can create new middleware by running below command.
+```php
+php larite make:middleware Authenticate
+````
+Then
+
 Register middleware in `App\Http\Kernel.php`:
 
 ```php
@@ -199,6 +205,7 @@ php larite make:controller PostController
 php larite make:migration create_posts_table
 php larite migration:migrate
 php larite migration:rollback
+php larite make:middleware Authenticate
 php larite route:list
 php larite route:list --method=GET        // to filter route with method
 php larite route:list --method=POST      // to filter route with method

@@ -2,16 +2,22 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Core\Support\Auth;
-use function redirect;
 
 class Authenticate
 {
-    public function handle()
+    /**
+     * @param $request
+     * @param Closure $next
+     * @return \Core\Support\Redirect|mixed
+     */
+    public function handle($request, Closure $next)
     {
         if (!Auth::check()) {
             return redirect('login');
         }
-        return true;
+
+        return $next($request);
     }
 }
