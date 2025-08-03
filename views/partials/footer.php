@@ -1,5 +1,3 @@
-<?php echo toastr(); ?>
-
 <!-- Footer -->
 <footer>
     <div>Created By <strong>M. Kashif Sohail</strong> © 2025 |

@@ -90,7 +90,7 @@
         <li>✅ CSRF protection and input sanitization</li>
         <li>✅ Auth scaffolding, flash messages, old inputs</li>
         <li>✅ CLI commands for models, controllers, and migrations</li>
-        <li>✅ Useful helpers: captcha, mail, toastr, pagination</li>
+        <li>✅ Useful helpers: mail, pagination</li>
         <li>✅ Simple, extendable, and easy to read/learn</li>
     </ul>
 
@@ -110,8 +110,6 @@
     <ul>
         <li>Auth Scaffolding (<code>Route::authenticate()</code>)</li>
         <li>Pagination: <code>paginate()</code> / <code>simplePaginate()</code></li>
-        <li>Flash messages (Toastr)</li>
-        <li>Captcha: <code>captcha()</code> / <code>verifyCaptcha()</code></li>
         <li>Old input repopulation: <code>old('field')</code></li>
     </ul>
 

@@ -15,7 +15,7 @@ Larite is **not a Laravel clone**. It's a fresh micro-framework for small to med
 * ✅ CSRF protection and input sanitization
 * ✅ Auth scaffolding, flash messages, old inputs
 * ✅ CLI commands for models, controllers, and migrations
-* ✅ Useful helpers: captcha, mail, toastr, pagination
+* ✅ Useful helpers: mail, pagination
 * ✅ Simple, extendable, and easy to read/learn
 
 ---
@@ -24,8 +24,6 @@ Larite is **not a Laravel clone**. It's a fresh micro-framework for small to med
 
 * Auth Scaffolding (`Route::authenticate()`)
 * Pagination: `paginate()` / `simplePaginate()`
-* Flash messages (Toastr)
-* Captcha: `captcha()` / `verifyCaptcha()`
 * Old input repopulation: `old('field')`
 * Eloquent-style Relationships: `hasOne()`, `hasMany()`, `belongsTo()` now supported in models
 

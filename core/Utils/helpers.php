@@ -6,7 +6,6 @@ if (!defined('root_path')) {
 }
 
 use App\Providers\RouteServiceProvider;
-use Core\Support\Alert\Toastr;
 use Core\Support\Auth;
 use Core\Support\Container\App;
 use Core\Support\Errors;
@@ -544,12 +543,6 @@ if(!function_exists('user')) {
 if(!function_exists('auth')) {
     function auth(){
         return new Auth();
-    }
-}
-
-if(!function_exists('toastr')) {
-    function toastr(){
-        return Toastr::render();
     }
 }
 
