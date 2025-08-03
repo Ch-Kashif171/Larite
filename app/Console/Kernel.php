@@ -2,16 +2,24 @@
 
 namespace App\Console;
 
-use App\Console\Commands\SyncUser;
 use Core\Console\BaseKernel;
+use Core\Scheduling\Schedule;
 
 class Kernel extends BaseKernel
 {
     /**
-     * Register all commands here
      * @var array|string[]
      */
-    public array $commands = [
-        SyncUser::class,
+    protected array $commands = [
+       // MyCommand::class,
     ];
+
+    /**
+     * @param Schedule $schedule
+     * @return void
+     */
+    public function schedule(Schedule $schedule): void
+    {
+       // $schedule->command(MyCommand::class)->everyMinute();
+    }
 }

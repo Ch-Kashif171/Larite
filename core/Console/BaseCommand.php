@@ -9,9 +9,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 abstract class BaseCommand extends Command
 {
     protected InputInterface $input;
-    protected OutputInterface $output;
+
+    protected ?OutputInterface $output = null;
 
     protected string $name = '';
+
     protected string $description = '';
 
     public function __construct()
@@ -27,6 +29,11 @@ abstract class BaseCommand extends Command
         }
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
@@ -39,19 +46,31 @@ abstract class BaseCommand extends Command
         return Command::SUCCESS;
     }
 
+    /**
+     * @param string $message
+     * @return void
+     */
     protected function info(string $message): void
     {
-        $this->output->writeln("<info>{$message}</info>");
+        $this->output?->writeln("<info>{$message}</info>");
     }
 
+    /**
+     * @param string $message
+     * @return void
+     */
     protected function error(string $message): void
     {
-        $this->output->writeln("<error>{$message}</error>");
+        $this->output?->writeln("<error>{$message}</error>");
     }
 
+    /**
+     * @param string $message
+     * @return void
+     */
     protected function comment(string $message): void
     {
-        $this->output->writeln("<comment>{$message}</comment>");
+        $this->output?->writeln("<comment>{$message}</comment>");
     }
 
 }

@@ -16,6 +16,7 @@ use Core\Commands\RollbackMigrationCommand;
 use Core\Commands\RouteListCommand;
 use Core\Dotenv\Dotenv;
 
+use Core\Scheduling\ScheduleRun;
 use Symfony\Component\Console\Application;
 
 class Commander
@@ -61,12 +62,15 @@ class Commander
      */
     private function registerCustomCommands()
     {
+        $this->app->add(new ScheduleRun());
+
         $kernel = new Kernel();
 
         foreach ($kernel->getCommands() as $command) {
             $this->app->add(new $command);
         }
     }
+
 
     /**
      * @return Application
