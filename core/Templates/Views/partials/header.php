@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="<?php echo asset('favicon.ico'); ?>" type="img/x-icon" rel="shortcut icon">
-    <title> <?php echo config('app.name', 'Laravel'); ?></title>
+    <title> <?php echo config('app.name', 'Larite'); ?></title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -26,7 +26,9 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-md navbar-dark navbar-custom">
     <div class="container-fluid">
-        <a class="navbar-brand" href="<?php echo url('/'); ?>">Larite</a>
+        <a class="navbar-brand" href="<?php echo url('/'); ?>">
+            <?php echo config('app.name', 'Larite'); ?>
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -50,10 +52,9 @@
                            role="button"
                            data-bs-toggle="dropdown"
                            aria-expanded="false"
-                           tabindex="0"
-                           onkeydown="handleUserDropdownKey(event);">
+                           tabindex="0">
                             <i class="fa fa-user-circle-o me-2" style="font-size: 1.3rem;"></i>
-                            <?php echo htmlspecialchars(auth()->user()->name ?? 'User'); ?>
+                            <?php echo e(auth()->user()->name ?? 'Admin'); ?>
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
