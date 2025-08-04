@@ -577,14 +577,14 @@ class SyncUser extends BaseCommand
 
     <hr>
 
-    <h2>Larite Welcome Page.</h2>
+    <h2>⚡ Larite Welcome Page.</h2>
     <p>Here is the Larite welcome page view.</p>
 
     <img style="width: 100%;" src="https://raw.githubusercontent.com/Ch-Kashif171/Larite/4.x/core/images/Larite.png">
 
     <hr>
 
-    <h2>ChatGPT Comparison.</h2>
+    <h2>🧠 ChatGPT Comparison.</h2>
     <p>Here is the ChatGPT comparison after review the complete Larite's code review.</p>
 
     <img style="width: 100%;" src="https://raw.githubusercontent.com/Ch-Kashif171/Larite/4.x/core/images/Larite-Review-ChatGpt.png">
