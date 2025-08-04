@@ -628,6 +628,14 @@ Or set up a system cron job (Linux/macOS):
 ```
 ---
 
+## Larite Welcome Page.
+
+Here is the Larite welcome page view.
+
+![Larite Logo](https://raw.githubusercontent.com/Ch-Kashif171/Larite/4.x/core/images/Larite.png)
+
+---
+
 ## ChatGPT Comparison.
 
 Here is the ChatGPT comparison after review the complete Larite's code review.
