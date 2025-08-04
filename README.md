@@ -203,9 +203,12 @@ php larite make:auth auth
 php larite make:model User
 php larite make:controller PostController
 php larite make:migration create_posts_table
+php larite make:seeder AdminSeeder
 php larite migration:migrate
 php larite migration:rollback
 php larite make:middleware Authenticate
+php larite make:command SyncUser // create custom command
+php larite schedule:run          // to run all commands with scheduler
 php larite route:list
 php larite route:list --method=GET        // to filter route with method
 php larite route:list --method=POST      // to filter route with method

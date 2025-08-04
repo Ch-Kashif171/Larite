@@ -227,9 +227,12 @@ if ($validation->fails()) {
 php Larite make:model User
 php Larite make:controller PostController
 php Larite make:migration create_posts_table
+php larite make:seeder AdminSeeder
 php Larite migration:migrate
 php Larite migration:rollback
 php larite make:middleware Authenticate
+php larite make:command SyncUser // create custom command
+php larite schedule:run          // to run all commands with scheduler
 php Larite route:list
 php Larite route:list --method=GET        // to filter route with method
 php Larite route:list --method=POST      // to filter route with method
