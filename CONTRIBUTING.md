@@ -7,13 +7,13 @@ Your help and effort are greatly appreciated and help move the project forward.
 
 ## 📋 Table of Contents
 
-- [Code of Conduct](#code-of-conduct)
-- [How to Contribute](#how-to-contribute)
-- [Reporting Bugs](#reporting-bugs)
-- [Suggesting Enhancements](#suggesting-enhancements)
-- [Development Setup](#development-setup)
-- [Coding Standards](#coding-standards)
-- [Pull Requests](#pull-requests)
+- [Code of Conduct](#-code-of-conduct)
+- [How to Contribute](#-how-to-contribute)
+- [Reporting Bugs](#-reporting-bugs)
+- [Suggesting Enhancements](#-suggesting-enhancements)
+- [Development Setup](#-development-setup)
+- [Coding Standards](#-coding-standards)
+- [Pull Requests](#-pull-requests)
 
 ---
 
