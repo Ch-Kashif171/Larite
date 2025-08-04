@@ -314,6 +314,39 @@ $activeUsers = User::where('status', '=', 'active')->get();
 
 // First matching result
 $user = User::where('email', '=', 'john@example.com')->first();
+
+//create new user
+$user = Users::create([
+    'name' => 'Kashif',
+    'email' => 'kashif@gmail.com',
+    'password' => bcrypt('12345678'),
+]);
+
+// update or create user
+$user = Users::updateOrCreate([
+        'email' => 'kashif@gmail.com'
+        ], [
+            'name' => 'Kashif',
+            'email' => 'kashif@gmail.com',
+            'password' => bcrypt('12345678'),
+        ]);
+
+// save user
+$user = new Users();
+$user->name = 'Kashif';
+$user->email = 'kashif@gmail.com';
+$user->password = bcrypt('12345678');
+
+// Save the user to the database
+$user->save();
+
+// or update like
+$user = Users::find(1);
+$user->name = 'Kashif Sohail';
+$user->password = bcrypt('11111111');
+
+// Save the user to the database
+$user->save();
     </pre>
 
     <h4>🛠️ Query Builder (DB Facade)</h4>
@@ -332,6 +365,13 @@ $activeUsers = DB::table('users')->where('status', 'active')->get();
 
 // First matching result
 $user = DB::table('users')->where('email', 'john@example.com')->first();
+
+// create user
+$user = DB::table('users')->create([
+    'name' => 'Kashif',
+    'email' => 'kashif@gmail.com',
+    'password' => bcrypt('12345678'),
+]);
     </pre>
     <hr>
 

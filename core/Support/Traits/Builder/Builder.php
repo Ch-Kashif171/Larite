@@ -3,6 +3,8 @@
 namespace Core\Support\Traits\Builder;
 
 use Core\Database\Doctrine;
+use Core\Exception\Handlers\DBException;
+use Whoops\Exception\ErrorException;
 use function getTable;
 
 trait Builder
@@ -44,5 +46,48 @@ trait Builder
     public function take($take)
     {
         return $this->doctrine->take($take);
+    }
+
+    /**
+     * @return bool
+     * @throws DBException
+     * @throws ErrorException
+     */
+    public function save(): bool
+    {
+        $data = $this->attributes;
+
+        if (empty($data)) {
+            throw new \Exception('No data to save');
+        }
+
+        if (isset($data['id'])) {
+            $id = $data['id'];
+            unset($data['id']);
+
+            if (empty($data)) {
+                // Nothing to update
+                return true;
+            }
+
+            $updated = static::where('id', '=', $id)->update($data);
+
+            // Restore id in attributes
+            $this->attributes['id'] = $id;
+
+            return $updated;
+        }
+
+        return static::insert($data);
+    }
+
+
+    /**
+     * Get the model's attributes
+     * @return array
+     */
+    public function getAttributes(): array
+    {
+        return $this->attributes;
     }
 }

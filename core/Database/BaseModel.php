@@ -1,6 +1,7 @@
 <?php
 namespace Core\Database;
 
+use Core\Exception\Handlers\DBException;
 use Core\Support\Traits\Builder\Arrayable;
 use Core\Support\Traits\Builder\Builder;
 use Core\Support\Traits\Builder\OrmMethods;

@@ -304,19 +304,53 @@ Larite offers a Laravel-inspired ORM as well as a simple query builder for inter
 
 ```php
 // Get all users
-$users = User::get();
+$users = Users::get();
 
 // Find a specific user by ID
-$user = User::find(1);
+$user = Users::find(1);
 
 // Get users with conditions
-$activeUsers = User::where('status', '=', 'active')->get();
+$activeUsers = Users::where('status', '=', 'active')->get();
 
 // First matching result
-$user = User::where('email', '=', 'john@example.com')->first();
+$user = Users::where('email', '=', 'john@example.com')->first();
 
 // Pagination
-$users = User::paginate(10);
+$users = Users::paginate(10);
+
+//create new user
+$user = Users::create([
+    'name' => 'Kashif',
+    'email' => 'kashif@gmail.com',
+    'password' => bcrypt('12345678'),
+]);
+
+// update or create user
+$user = Users::updateOrCreate([
+        'email' => 'kashif@gmail.com'
+        ], [
+            'name' => 'Kashif',
+            'email' => 'kashif@gmail.com',
+            'password' => bcrypt('12345678'),
+        ]);
+
+// save user
+$user = new Users();
+$user->name = 'Kashif';
+$user->email = 'kashif@gmail.com';
+$user->password = bcrypt('12345678');
+
+// Save the user to the database
+$user->save();
+
+// or update like
+$user = Users::find(1);
+$user->name = 'Kashif Sohail';
+$user->password = bcrypt('11111111');
+
+// Save the user to the database
+$user->save();
+
 ```
 
 #### Using Query Builder (DB facade)
@@ -335,6 +369,13 @@ $activeUsers = DB::table('users')->where('status', '=',  'active')->get();
 
 // Pagination
 $users = DB::table('users')->paginate(10);
+
+// create user
+$user = DB::table('users')->create([
+    'name' => 'Kashif',
+    'email' => 'kashif@gmail.com',
+    'password' => bcrypt('12345678'),
+]);
 ```
 
 Both ORM and query builder provide a clean and fluent interface to interact with your database. Use whichever suits your use-case.
