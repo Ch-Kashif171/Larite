@@ -24,8 +24,7 @@
         "php": ">=8.3",
         "symfony/console": "^7.2",
         "composer/installers": "^2.3",
-        "filp/whoops": "^2.18",
-        "dragonmantank/cron-expression": "^3.4"
+        "filp/whoops": "^2.18"
 
     },
 

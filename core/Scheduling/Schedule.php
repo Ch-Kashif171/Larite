@@ -8,11 +8,11 @@ class Schedule
 
     /**
      * @param string $commandClass
-     * @return ScheduledCommand
+     * @return Event
      */
-    public function command(string $commandClass): ScheduledCommand
+    public function command(string $commandClass): Event
     {
-        $event = new ScheduledCommand($commandClass);
+        $event = new Event($commandClass);
         $this->events[] = $event;
         return $event;
     }
