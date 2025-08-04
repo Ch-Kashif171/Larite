@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Users;
 use Core\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -19,8 +20,6 @@ class HomeController extends Controller
 
     public function home()
     {
-        $recodrd = DB::table('contact_us')->limit(10)->offset(20)->get();
-        dd($recodrd);
         return view('home');
     }
 
