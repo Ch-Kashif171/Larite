@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Larite – Lightweight PHP MVC Framework</title>
     <style>
+
+        .dark {
+            background-color: #151515;
+            color: white;
+        }
+        .dark h1, .dark h2, .dark p {
+            color: white;
+        }
+        .dark pre, .dark code {
+            background-color: #2c3e50;
+            color: white;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #ffffff;
@@ -71,9 +83,11 @@
         }
     </style>
 </head>
-<body>
+<body id="doc" class="<?php echo $dark ?? ''; ?>">
 <div class="container">
-    <h1>Larite</h1>
+    <button style="float: right" class="theme-toggle" id="themeToggle" title="Toggle Theme">🌙</button>
+    <img style="width: 125px;margin-left: 40%;" src="https://raw.githubusercontent.com/Ch-Kashif171/Larite/4.x/public/images/logo/larite.jpg">
+    <hr>
     <p class="note">Lightweight. Laravel-Inspired. 100% Custom.</p>
     <p>
         Larite is a <strong>lightweight PHP MVC framework</strong> inspired by Laravel, but built entirely from scratch.
@@ -473,8 +487,6 @@ $users = User::withWhereHas('posts', function($q) {
 
     <hr>
 
-    <hr>
-
     <h2>🧩 Customize Exception Handling</h2>
     <p>Your global exception handling logic is located at:</p>
     <pre>app/Exceptions/Handler.php</pre>
@@ -599,5 +611,32 @@ class SyncUser extends BaseCommand
     <h2>📄 License</h2>
     <p>Larite is open-source and licensed under the MIT license.</p>
 </div>
+
+<script>
+    const toggleBtn = document.getElementById('themeToggle');
+    const toggleDoc = document.getElementById('doc');
+    const html = document.documentElement;
+
+    function setTheme(theme) {
+        html.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        toggleBtn.textContent = theme === 'dark' ? '🌞' : '🌙';
+        if (theme == 'dark') {
+            toggleDoc.classList.add('dark'); // or any class you want
+        } else {
+            toggleDoc.classList.remove('dark'); // or any class you want
+        }
+    }
+
+    // Check saved theme
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    setTheme(savedTheme);
+
+    toggleBtn.addEventListener('click', () => {
+        const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+    });
+</script>
+
 </body>
 </html>
