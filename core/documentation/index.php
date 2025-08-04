@@ -192,7 +192,7 @@ public static function register(): array
 
     <h2>🧪 Validation</h2>
     <pre>$rules = [
-  'email' => 'required|mail|unique:users,email',
+  'email' => 'required|email|unique:users,email',
   'password' => 'required|min:6|max:20'
 ];
 

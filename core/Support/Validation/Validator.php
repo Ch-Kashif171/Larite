@@ -121,7 +121,7 @@ class Validator
             match (true) {
                 $rule === 'required' && $value === '' => self::addMessage($name, 'field is required.'),
 
-                $rule === 'mail' && $value !== '' && !filter_var($value, FILTER_VALIDATE_EMAIL) =>
+                $rule === 'email' && $value !== '' && !filter_var($value, FILTER_VALIDATE_EMAIL) =>
                 self::addMessage($name, 'field is not a valid email.'),
 
                 str_starts_with($rule, 'unique:') && $value !== '' => self::checkUniqueness($name, $value, $rule),

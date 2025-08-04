@@ -149,7 +149,7 @@ Mail::send('mail', [], function($mail) {
 
 ```php
 $rules = [
-  'email' => 'required|mail|unique:users,email',
+  'email' => 'required|email|unique:users,email',
   'password' => 'required|min:6|max:20'
 ];
 
