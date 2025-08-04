@@ -556,7 +556,7 @@ class SyncUser extends BaseCommand
     <pre>while true; do php larite schedule:run; sleep 60; done</pre>
 
     <p>Or set up a system cron job (Linux/macOS):</p>
-    <pre>* * * * * php /path/to/laragon/www/Larite/larite schedule:run >> /dev/null 2>&1</pre>
+    <pre>* * * * * php /path/to/var/www/Larite/larite schedule:run >> /dev/null 2>&1</pre>
 
     <hr>
 

@@ -624,7 +624,7 @@ while true; do php larite schedule:run; sleep 60; done
 Or set up a system cron job (Linux/macOS):
 
 ```bash
-* * * * * php /path/to/laragon/www/Larite/larite schedule:run >> /dev/null 2>&1
+* * * * * php /path/to/var/www/Larite/larite schedule:run >> /dev/null 2>&1
 ```
 ---
 
