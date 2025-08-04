@@ -81,7 +81,7 @@ class RouteListCommand extends Command
     private function getAllRoutes(): array
     {
         $routes = [];
-        
+
         // Get static routes
         $staticRoutes = Router::$routes;
         $routeHandlers = $this->getRouteHandlers();
@@ -92,7 +92,7 @@ class RouteListCommand extends Command
             foreach ($methodRoutes as $route) {
                 $routeKey = $method . ':' . $route;
                 $handler = $routeHandlers[$routeKey] ?? null;
-                
+
                 $routes[] = [
                     'method' => $method,
                     'uri' => $route,
@@ -106,6 +106,7 @@ class RouteListCommand extends Command
 
         // Process dynamic routes
         foreach ($dynamicRoutes as $method => $methodRoutes) {
+
             foreach ($methodRoutes as $route) {
                 $routes[] = [
                     'method' => $method,
@@ -239,7 +240,28 @@ class RouteListCommand extends Command
      */
     private function getRouteName(string $routeKey): string
     {
-        // This could be extended to support named routes
+        // Get named routes using reflection
+        $reflection = new \ReflectionClass(Router::class);
+        $property = $reflection->getProperty('namedRoutes');
+        $property->setAccessible(true);
+        $namedRoutes = $property->getValue() ?? [];
+
+        // Extract method and URI from routeKey (format: "METHOD:/uri")
+        $parts = explode(':', $routeKey, 2);
+        if (count($parts) !== 2) {
+            return '';
+        }
+
+        $method = $parts[0];
+        $uri = $parts[1];
+
+        // Find the route name by matching method and URI
+        foreach ($namedRoutes as $name => $route) {
+            if ($route['method'] === $method && $route['uri'] === $uri) {
+                return $name;
+            }
+        }
+
         return '';
     }
 

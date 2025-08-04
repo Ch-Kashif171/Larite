@@ -91,7 +91,7 @@
             font-weight: bold;
         }
         .cron-table tr th {
-            min-width: 200px;
+            min-width: 100px;
         }
     </style>
 </head>
@@ -170,6 +170,117 @@ AUTH_TABLE=users</pre>
     <pre>Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
   Route::get('dashboard', [DashboardController::class, 'index']);
 });</pre>
+
+    <h2>Named Routes</h2>
+    <p>Named routes allow you to generate URLs for specific routes using a name instead of hardcoding the URL. This makes your application more maintainable and flexible.</p>
+
+    <h3>Defining Named Routes</h3>
+    <pre>// In routes/web.php
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');</pre>
+
+    <h3>Using Named Routes</h3>
+    <pre>// Generate URL for a named route
+echo route('home.index'); // Outputs: /
+
+// Generate URL with parameters
+echo route('users.show', ['id' => 5]); // Outputs: /users/5
+
+// Use in views
+&lt;a href="&lt;?= route('home.index') ?&gt;"&gt;Home&lt;/a&gt;
+&lt;a href="&lt;?= route('users.show', ['id' => 1]) ?&gt;"&gt;View User&lt;/a&gt;
+
+// Use in redirects
+redirect(route('users.index'));
+redirect(route('users.show', ['id' => 5]));
+
+// Use in forms
+&lt;form action="&lt;?= route('users.store') ?&gt;" method="POST"&gt;
+    &lt;?= csrf_field() ?&gt;
+    &lt;input type="text" name="name"&gt;
+    &lt;button type="submit"&gt;Create User&lt;/button&gt;
+&lt;/form&gt;</pre>
+
+    <h2>Resource Routes</h2>
+    <p>Resource routes provide a quick way to create all the necessary routes for a resource controller. A resource controller typically handles CRUD operations for a model.</p>
+
+    <h3>Defining Resource Routes</h3>
+    <pre>// In routes/web.php
+Route::resource('users', 'UserController::class');</pre>
+
+    <p>This single line creates the following routes:</p>
+    <table class="cron-table">
+        <thead>
+        <tr style="text-align: left;">
+            <th>Method</th><th>URI</th><th>Name</th><th>Action</th><th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr><td><code>GET</code></td><td><code>/users</code></td><td><code>users.index</code></td><td><code>index()</code></td><td><code>Display a listing of the resource</code></td></tr>
+        <tr><td><code>GET</code></td><td><code>/users/create</code></td><td><code>users.create</code></td><td><code>create()</code></td><td><code>Show the form for creating a new resource</code></td></tr>
+        <tr><td><code>POST</code></td><td><code>/users</code></td><td><code>users.store</code></td><td><code>store()</code></td><td><code>Store a newly created resource</code></td></tr>
+        <tr><td><code>GET</code></td><td><code>/users/{user}</code></td><td><code>users.show</code></td><td><code>show()</code></td><td><code>Display the specified resource</code></td></tr>
+        <tr><td><code>GET</code></td><td><code>/users/{user}/edit</code></td><td><code>users.edit</code></td><td><code>edit()</code></td><td><code>Show the form for editing the specified resource</code></td></tr>
+        <tr><td><code>PUT/PATCH</code></td><td><code>/users/{user}</code></td><td><code>users.update</code></td><td><code>update()</code></td><td><code>Update the specified resource</code></td></tr>
+        <tr><td><code>DELETE</code></td><td><code>/users/{user}</code></td><td><code>users.destroy</code></td><td><code>destroy()</code></td><td><code>Remove the specified resource</code></td></tr>
+        </tbody>
+    </table>
+
+    <h3>Using Resource Routes</h3>
+    <pre>// Generate URLs for resource routes
+echo route('users.index'); // Outputs: /users
+echo route('users.create'); // Outputs: /users/create
+echo route('users.show', ['user' => 1]); // Outputs: /users/1
+echo route('users.edit', ['user' => 1]); // Outputs: /users/1/edit
+
+// Use in forms
+<form action="<?= route('users.store') ?>" method="POST">
+    <?= csrf_field() ?>
+    <input type="text" name="name" placeholder="User Name">
+    <button type="submit">Create User</button>
+</form>
+
+
+<form action="<?= route('users.update', ['user' => 1]) ?>" method="POST">
+    <?= csrf_field() ?>
+    <?= method('PUT') ?>
+    <input type="text" name="name" placeholder="User Name">
+    <button type="submit">Update User</button>
+</form>
+
+
+<form action="<?= route('users.destroy', ['user' => 1]) ?>" method="POST">
+    <?= csrf_field() ?>
+    <?= method('DELETE') ?>
+    <button type="submit">Delete User</button>
+</form>
+</pre>
+
+    <h2>Route Parameters</h2>
+    <p>Named routes support parameters that can be passed to generate dynamic URLs:</p>
+    <pre>// Route definition
+Route::get('/users/{id}/posts/{post_id}', [UserController::class, 'showPost'])->name('users.posts.show');
+
+// Usage
+echo route('users.posts.show', ['id' => 5, 'post_id' => 10]); // Outputs: /users/5/posts/10></pre>
+
+    <h2>Multiple Resource Routes</h2>
+    <pre>Route::resource('users', UserController::class);
+Route::resource('posts', PostController::class);
+Route::resource('comments', CommentController::class);</pre>
+
+    <h2>Route Groups with Named Routes</h2>
+    <pre>Route::group(['middleware' => 'auth'], function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+    Route::get('/home', [HomeController::class, 'show'])->name('home.index');
+});
+
+// Usage
+echo route('dashboard'); // Outputs: /dashboard
+echo route('profile'); // Outputs: /profile
+echo route('home.index'); // Outputs: /home</pre>
 
     <h2>🧩 Extending Routes</h2>
     <p>Register route files in <code>app/Providers/RouteServiceProvider.php</code>:</p>

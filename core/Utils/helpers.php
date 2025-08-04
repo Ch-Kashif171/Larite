@@ -9,6 +9,7 @@ use App\Providers\RouteServiceProvider;
 use Core\Support\Auth;
 use Core\Support\Container\App;
 use Core\Support\Errors;
+use Core\Support\Facades\Route;
 use Core\Support\LoadView;
 use Core\Support\ModelFactory;
 use Core\Support\Response;
@@ -911,5 +912,18 @@ if (!function_exists('home')) {
     function home(): string
     {
         return RouteServiceProvider::HOME;
+    }
+}
+
+if (!function_exists('route')) {
+    /**
+     * Generate a URL for a named route
+     * @param string $name
+     * @param array $parameters
+     * @return string
+     */
+    function route(string $name, array $parameters = []): string
+    {
+        return Route::getNamedRoute($name, $parameters);
     }
 }

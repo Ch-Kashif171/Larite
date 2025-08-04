@@ -26,6 +26,12 @@ class Log
         $logChannel = config('app.log_channel');
         $logFile = self::getLogFile($logChannel);
 
+        // Ensure the log directory exists
+        $logDir = dirname($logFile);
+        if (!is_dir($logDir)) {
+            mkdir($logDir, 0755, true); // recursively create directory
+        }
+
         $logEntry = "====================\n";
         $logEntry .= "[" . date('Y-m-d H:i:s') . "] [{$context}]\n";
         if ($exception instanceof \Throwable) {
@@ -37,8 +43,10 @@ class Log
             $logEntry .= "Message: " . print_r($exception, true) . "\n";
         }
         $logEntry .= "====================\n\n";
+
         file_put_contents($logFile, $logEntry, FILE_APPEND);
     }
+
 
     /**
      * Get the log file path based on the log channel.

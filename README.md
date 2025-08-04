@@ -81,6 +81,139 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 });
 ```
 
+---
+
+## Named Routes
+
+Named routes allow you to generate URLs for specific routes using a name instead of hardcoding the URL. This makes your application more maintainable and flexible.
+
+### Defining Named Routes
+
+```php
+// In routes/web.php
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+```
+
+### Using Named Routes
+
+Use the `route()` helper function to generate URLs for named routes:
+
+```php
+// Generate URL for a named route
+echo route('home.index'); // Outputs: /
+
+// Generate URL with parameters
+echo route('users.show', ['id' => 5]); // Outputs: /users/5
+
+// Use in views
+<a href="<?= route('home.index') ?>">Home</a>
+<a href="<?= route('users.show', ['id' => 1]) ?>">View User</a>
+
+// Use in redirects
+redirect(route('users.index'));
+redirect(route('users.show', ['id' => 5]));
+
+// Use in forms
+<form action="<?= route('users.store') ?>" method="POST">
+    <?= csrf_field() ?>
+    <input type="text" name="name">
+    <button type="submit">Create User</button>
+</form>
+```
+
+## Resource Routes
+
+Resource routes provide a quick way to create all the necessary routes for a resource controller. A resource controller typically handles CRUD operations for a model.
+
+### Defining Resource Routes
+
+```php
+// In routes/web.php
+Route::resource('users', 'UserController::class);
+```
+
+This single line creates the following routes:
+
+| Method | URI | Name | Action | Description |
+|--------|-----|------|--------|-------------|
+| GET | `/users` | `users.index` | `index()` | Display a listing of the resource |
+| GET | `/users/create` | `users.create` | `create()` | Show the form for creating a new resource |
+| POST | `/users` | `users.store` | `store()` | Store a newly created resource |
+| GET | `/users/{user}` | `users.show` | `show()` | Display the specified resource |
+| GET | `/users/{user}/edit` | `users.edit` | `edit()` | Show the form for editing the specified resource |
+| PUT/PATCH | `/users/{user}` | `users.update` | `update()` | Update the specified resource |
+| DELETE | `/users/{user}` | `users.destroy` | `destroy()` | Remove the specified resource |
+
+### Using Resource Routes
+
+```php
+// Generate URLs for resource routes
+echo route('users.index'); // Outputs: /users
+echo route('users.create'); // Outputs: /users/create
+echo route('users.show', ['user' => 1]); // Outputs: /users/1
+echo route('users.edit', ['user' => 1]); // Outputs: /users/1/edit
+
+// Use in forms
+<form action="<?= route('users.store') ?>" method="POST">
+    <?= csrf_field() ?>
+    <input type="text" name="name" placeholder="User Name">
+    <button type="submit">Create User</button>
+</form>
+
+<form action="<?= route('users.update', ['user' => 1]) ?>" method="POST">
+    <?= csrf_field() ?>
+    <?= method('PUT') ?>
+    <input type="text" name="name" placeholder="User Name">
+    <button type="submit">Update User</button>
+</form>
+
+<form action="<?= route('users.destroy', ['user' => 1]) ?>" method="POST">
+    <?= csrf_field() ?>
+    <?= method('DELETE') ?>
+    <button type="submit">Delete User</button>
+</form>
+```
+
+## Route Parameters
+
+Named routes support parameters that can be passed to generate dynamic URLs:
+
+```php
+// Route definition
+Route::get('/users/{id}/posts/{post_id}', [UserController::class, 'showPost'])->name('users.posts.show');
+
+// Usage
+echo route('users.posts.show', ['id' => 5, 'post_id' => 10]); // Outputs: /users/5/posts/10
+```
+
+## Multiple Resource Routes
+
+You can define multiple resource routes for different controllers:
+
+```php
+Route::resource('users', UserController::class);
+Route::resource('posts', PostController::class);
+Route::resource('comments', CommentController::class);
+```
+
+## Route Groups with Named Routes
+
+Named routes work perfectly with route groups:
+
+```php
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+});
+
+// Usage
+echo route('dashboard'); // Outputs: /dashboard
+echo route('profile'); // Outputs: /profile
+```
+---
+
 ## 🧩 Extending Routes
 
 Register route files in `app/Providers/RouteServiceProvider.php`:

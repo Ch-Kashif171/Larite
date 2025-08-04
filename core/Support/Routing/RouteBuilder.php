@@ -28,4 +28,16 @@ class RouteBuilder
         Route::addRouteMiddleware($routeKey, is_array($middleware) ? $middleware : [$middleware]);
         return $this;
     }
+
+    /**
+     * Name the route
+     * @param string $name
+     * @return RouteBuilder
+     */
+    public function name(string $name)
+    {
+        $routeKey = $this->method . ':' . $this->action;
+        Route::registerNamedRoute($name, $this->action, $this->method, $this->controllerMethod);
+        return $this;
+    }
 } 

@@ -25,6 +25,7 @@ class Router
     ];
     public static array $routeMiddleware = [];
     private static array $routeHandlers = [];
+    private static array $namedRoutes = [];
     private static array $dynamicRoutes = [
         'GET' => [],
         'POST' => [],
@@ -222,5 +223,90 @@ class Router
     public static function getRouteMiddleware(): array
     {
         return self::$routeMiddleware;
+    }
+
+    /**
+     * Get a named route URL
+     * @param string $name
+     * @param array $parameters
+     * @return string
+     * @throws RouteNotFoundException
+     */
+    public static function getNamedRoute(string $name, array $parameters = []): string
+    {
+        if (!isset(self::$namedRoutes[$name])) {
+            throw new RouteNotFoundException("Route '{$name}' not found.");
+        }
+
+        $route = self::$namedRoutes[$name];
+        $uri = $route['uri'];
+
+        // Replace parameters in the URI
+        foreach ($parameters as $key => $value) {
+            $uri = str_replace('{' . $key . '}', $value, $uri);
+        }
+
+        return url($uri);
+    }
+
+    /**
+     * Get all named routes
+     * @return array
+     */
+    public static function getNamedRoutes(): array
+    {
+        return self::$namedRoutes;
+    }
+
+    /**
+     * Register a named route
+     * @param string $name
+     * @param string $uri
+     * @param string $method
+     * @param array $handler
+     * @return void
+     */
+    public static function registerNamedRoute(string $name, string $uri, string $method, array $handler): void
+    {
+        self::$namedRoutes[$name] = [
+            'uri' => $uri,
+            'method' => $method,
+            'handler' => $handler
+        ];
+    }
+
+    /**
+     * Create resource routes for a controller
+     * @param string $name
+     * @param string $controller
+     * @param array $options
+     * @return void
+     */
+    public static function resource(string $name, string $controller, array $options = []): void
+    {
+        $singular = $name;
+        $plural = $name;
+        
+        // Index - GET /{resource}
+        self::get("/{$plural}", [$controller, 'index'])->name("{$name}.index");
+        
+        // Create - GET /{resource}/create
+        self::get("/{$plural}/create", [$controller, 'create'])->name("{$name}.create");
+        
+        // Store - POST /{resource}
+        self::post("/{$plural}", [$controller, 'store'])->name("{$name}.store");
+        
+        // Show - GET /{resource}/{id}
+        self::get("/{$plural}/{{$singular}}", [$controller, 'show'])->name("{$name}.show");
+        
+        // Edit - GET /{resource}/{id}/edit
+        self::get("/{$plural}/{{$singular}}/edit", [$controller, 'edit'])->name("{$name}.edit");
+        
+        // Update - PUT/PATCH /{resource}/{id}
+        self::put("/{$plural}/{{$singular}}", [$controller, 'update'])->name("{$name}.update");
+        self::patch("/{$plural}/{{$singular}}", [$controller, 'update'])->name("{$name}.update");
+        
+        // Destroy - DELETE /{resource}/{id}
+        self::delete("/{$plural}/{{$singular}}", [$controller, 'destroy'])->name("{$name}.destroy");
     }
 }
