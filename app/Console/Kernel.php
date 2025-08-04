@@ -2,7 +2,6 @@
 
 namespace App\Console;
 
-use App\Console\Commands\SyncUsers;
 use Core\Console\BaseKernel;
 use Core\Scheduling\Schedule;
 
