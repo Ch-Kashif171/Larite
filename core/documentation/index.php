@@ -66,6 +66,9 @@
             color: #4b5563;
             font-weight: bold;
         }
+        .cron-table tr th {
+            min-width: 200px;
+        }
     </style>
 </head>
 <body>
@@ -308,23 +311,28 @@ class AdminSeeder extends Seeder
     <pre>
 // Get all users
 $users = User::get();
-
+    </pre>
+<pre>
 // Find a specific user by ID
 $user = User::find(1);
-
+</pre>
+    <pre>
 // Get users with conditions
 $activeUsers = User::where('status', '=', 'active')->get();
-
+    </pre>
+    <pre>
 // First matching result
 $user = User::where('email', '=', 'john@example.com')->first();
-
+    </pre>
+    <pre>
 //create new user
 $user = Users::create([
     'name' => 'Kashif',
     'email' => 'kashif@gmail.com',
     'password' => bcrypt('12345678'),
 ]);
-
+    </pre>
+<pre>
 // update or create user
 $user = Users::updateOrCreate([
         'email' => 'kashif@gmail.com'
@@ -334,6 +342,8 @@ $user = Users::updateOrCreate([
             'password' => bcrypt('12345678'),
         ]);
 
+</pre>
+    <pre>
 // save user
 $user = new Users();
 $user->name = 'Kashif';
@@ -343,6 +353,8 @@ $user->password = bcrypt('12345678');
 // Save the user to the database
 $user->save();
 
+    </pre>
+    <pre>
 // or update like
 $user = Users::find(1);
 $user->name = 'Kashif Sohail';
@@ -356,19 +368,24 @@ $user->save();
     <pre>
 
 use Core\Support\Facades\DB;
-
+    </pre>
+    <pre>
 // Get all users
 $users = DB::table('users')->get();
-
+    </pre>
+    <pre>
 // Paginate results
 $users = DB::table('users')->paginate(10);
-
+    </pre>
+    <pre>
 // Get users with conditions
 $activeUsers = DB::table('users')->where('status', 'active')->get();
-
+    </pre>
+    <pre>
 // First matching result
 $user = DB::table('users')->where('email', 'john@example.com')->first();
-
+    </pre>
+    <pre>
 // create user
 $user = DB::table('users')->create([
     'name' => 'Kashif',
@@ -537,15 +554,15 @@ class SyncUser extends BaseCommand
 </pre>
 
     <h3>🕒 Supported Schedule Methods</h3>
-    <table>
-        <tr><th>Method</th><th>Cron Expression</th><th>Description</th></tr>
-        <tr><td>everyMinute()</td><td>* * * * *</td><td>Every minute</td></tr>
-        <tr><td>everyFiveMinutes()</td><td>*/5 * * * *</td><td>Every 5 minutes</td></tr>
-        <tr><td>everyTenMinutes()</td><td>*/10 * * * *</td><td>Every 10 minutes</td></tr>
-        <tr><td>everyThirtyMinutes()</td><td>*/30 * * * *</td><td>Every 30 minutes</td></tr>
-        <tr><td>hourly()</td><td>0 * * * *</td><td>Once per hour</td></tr>
-        <tr><td>daily()</td><td>0 0 * * *</td><td>Once a day at midnight</td></tr>
-        <tr><td>weekly()</td><td>0 0 * * 0</td><td>Once a week (Sunday midnight)</td></tr>
+    <table class="cron-table">
+        <tr style="text-align: left;"><th>Method</th><th>Cron Expression</th><th>Description</th></tr>
+        <tr><td><code>everyMinute()</code></td><td><code>* * * * *</code></td><td><code>Every minute</code></td></tr>
+        <tr><td><code>everyFiveMinutes()</code></td><td><code>*/5 * * * *</code></td><td><code>Every 5 minutes</code></td></tr>
+        <tr><td><code>everyTenMinutes()</code></td><td><code>*/10 * * * *</code></td><td><code>Every 10 minutes</code></td></tr>
+        <tr><td><code>everyThirtyMinutes()</code></td><td><code>*/30 * * * *</code></td><td><code>Every 30 minutes</code></td></tr>
+        <tr><td><code>hourly()</code></td><td><code>0 * * * *</code></td><td><code>Once per hour</code></td></tr>
+        <tr><td><code>daily()</code></td><td><code>0 0 * * *</code></td><td><code>Once a day at midnight</code></td></tr>
+        <tr><td><code>weekly()</code></td><td><code>0 0 * * 0</code></td><td><code>Once a week (Sunday midnight)</code></td></tr>
     </table>
 
     <h3>🧪 Testing Locally</h3>
