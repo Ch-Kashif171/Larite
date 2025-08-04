@@ -6,6 +6,18 @@
     <title>Larite – Lightweight PHP MVC Framework</title>
     <style>
 
+        .fixed-button {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000; /* make sure it's above other elements */
+            padding: 8px 12px;
+            background: #2d496e;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
         .dark {
             background-color: #151515;
             color: white;
@@ -85,7 +97,7 @@
 </head>
 <body id="doc" class="<?php echo $dark ?? ''; ?>">
 <div class="container">
-    <button style="float: right" class="theme-toggle" id="themeToggle" title="Toggle Theme">🌙</button>
+    <button class="fixed-button theme-toggle" id="themeToggle" title="Toggle Theme">🌙</button>
     <img style="width: 125px;margin-left: 40%;" src="https://raw.githubusercontent.com/Ch-Kashif171/Larite/4.x/public/images/logo/larite.jpg">
     <hr>
     <p class="note">Lightweight. Laravel-Inspired. 100% Custom.</p>
