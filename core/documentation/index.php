@@ -185,7 +185,7 @@ Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');<
 echo route('home.index'); // Outputs: /
 
 // Generate URL with parameters
-echo route('users.show', ['id' => 5]); // Outputs: /users/5
+echo route('users.show', ['user' => 5]); // Outputs: /users/5
 
 // Use in views
 &lt;a href="&lt;?= route('home.index') ?&gt;"&gt;Home&lt;/a&gt;
@@ -193,7 +193,7 @@ echo route('users.show', ['id' => 5]); // Outputs: /users/5
 
 // Use in redirects
 redirect(route('users.index'));
-redirect(route('users.show', ['id' => 5]));
+redirect(route('users.show', ['user' => 5]));
 
 // Use in forms
     </pre>
@@ -270,7 +270,7 @@ echo route('users.edit', ['user' => 1]); // Outputs: /users/1/edit
 Route::get('/users/{id}/posts/{post_id}', [UserController::class, 'showPost'])->name('users.posts.show');
 
 // Usage
-echo route('users.posts.show', ['id' => 5, 'post_id' => 10]); // Outputs: /users/5/posts/10></pre>
+echo route('users.posts.show', ['user' => 5, 'post_id' => 10]); // Outputs: /users/5/posts/10></pre>
 
     <h2>Multiple Resource Routes</h2>
     <pre>Route::resource('users', UserController::class);

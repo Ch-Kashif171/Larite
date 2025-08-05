@@ -105,7 +105,7 @@ Use the `route()` helper function to generate URLs for named routes:
 echo route('home.index'); // Outputs: /
 
 // Generate URL with parameters
-echo route('users.show', ['id' => 5]); // Outputs: /users/5
+echo route('users.show', ['user' => 5]); // Outputs: /users/5
 
 // Use in views
 <a href="<?= route('home.index') ?>">Home</a>
@@ -113,7 +113,7 @@ echo route('users.show', ['id' => 5]); // Outputs: /users/5
 
 // Use in redirects
 redirect(route('users.index'));
-redirect(route('users.show', ['id' => 5]));
+redirect(route('users.show', ['user' => 5]));
 
 // Use in forms
 <form action="<?= route('users.store') ?>" method="POST">
@@ -185,7 +185,7 @@ Named routes support parameters that can be passed to generate dynamic URLs:
 Route::get('/users/{id}/posts/{post_id}', [UserController::class, 'showPost'])->name('users.posts.show');
 
 // Usage
-echo route('users.posts.show', ['id' => 5, 'post_id' => 10]); // Outputs: /users/5/posts/10
+echo route('users.posts.show', ['user' => 5, 'post_id' => 10]); // Outputs: /users/5/posts/10
 ```
 
 ## Multiple Resource Routes
