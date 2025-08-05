@@ -196,11 +196,14 @@ redirect(route('users.index'));
 redirect(route('users.show', ['id' => 5]));
 
 // Use in forms
+    </pre>
+<pre>
 &lt;form action="&lt;?= route('users.store') ?&gt;" method="POST"&gt;
     &lt;?= csrf_field() ?&gt;
-    &lt;input type="text" name="name"&gt;
+    &lt;input type="text" name="name" placeholder="User Name"&gt;
     &lt;button type="submit"&gt;Create User&lt;/button&gt;
-&lt;/form&gt;</pre>
+&lt;/form&gt;
+</pre>
 
     <h2>Resource Routes</h2>
     <p>Resource routes provide a quick way to create all the necessary routes for a resource controller. A resource controller typically handles CRUD operations for a model.</p>
@@ -233,29 +236,33 @@ echo route('users.index'); // Outputs: /users
 echo route('users.create'); // Outputs: /users/create
 echo route('users.show', ['user' => 1]); // Outputs: /users/1
 echo route('users.edit', ['user' => 1]); // Outputs: /users/1/edit
+    </pre>
 
-// Use in forms
-<form action="<?= route('users.store') ?>" method="POST">
-    <?= csrf_field() ?>
-    <input type="text" name="name" placeholder="User Name">
-    <button type="submit">Create User</button>
-</form>
-
-
-<form action="<?= route('users.update', ['user' => 1]) ?>" method="POST">
-    <?= csrf_field() ?>
-    <?= method('PUT') ?>
-    <input type="text" name="name" placeholder="User Name">
-    <button type="submit">Update User</button>
-</form>
-
-
-<form action="<?= route('users.destroy', ['user' => 1]) ?>" method="POST">
-    <?= csrf_field() ?>
-    <?= method('DELETE') ?>
-    <button type="submit">Delete User</button>
-</form>
+<pre>
+    // Use in forms
+&lt;form action="&lt;?= route('users.store') ?&gt;" method="POST"&gt;
+    &lt;?= csrf_field() ?&gt;
+    &lt;input type="text" name="name" placeholder="User Name"&gt;
+    &lt;button type="submit"&gt;Create User&lt;/button&gt;
+&lt;/form&gt;
 </pre>
+
+
+<pre>&lt;form action="&lt;?= route('users.update', ['user' =&gt; 1]) ?&gt;" method="POST"&gt;
+    &lt;?= csrf_field() ?&gt;
+    &lt;?= method('PUT') ?&gt;
+    &lt;input type="text" name="name" placeholder="User Name"&gt;
+    &lt;button type="submit"&gt;Update User&lt;/button&gt;
+&lt;/form&gt;
+</pre>
+
+<pre>&lt;form action="&lt;?= route('users.destroy', ['user' =&gt; 1]) ?&gt;" method="POST"&gt;
+    &lt;?= csrf_field() ?&gt;
+    &lt;?= method('DELETE') ?&gt;
+    &lt;button type="submit"&gt;Delete User&lt;/button&gt;
+&lt;/form&gt;
+</pre>
+
 
     <h2>Route Parameters</h2>
     <p>Named routes support parameters that can be passed to generate dynamic URLs:</p>
