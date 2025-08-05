@@ -21,7 +21,7 @@ class Log
      * @param \Throwable|string $exception Handler, error, or message to log
      * @param string $context   Context label (e.g., 'EXCEPTION', 'CAUGHT', 'WHOOPS')
      */
-    public static function error($exception, string $context = 'EXCEPTION')
+    public static function error(\Throwable|string $exception, string $context = 'EXCEPTION')
     {
         $logChannel = config('app.log_channel');
         $logFile = self::getLogFile($logChannel);
@@ -54,7 +54,7 @@ class Log
      * @param string $logChannel 'single' or 'daily'
      * @return string
      */
-    protected static function getLogFile($logChannel)
+    protected static function getLogFile($logChannel): string
     {
         $logDir = root_path . '/storage/logs/';
         if ($logChannel === 'daily') {

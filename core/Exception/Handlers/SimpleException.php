@@ -3,18 +3,27 @@
 namespace Core\Exception\Handlers;
 
 use Exception;
+use Throwable;
 
 class SimpleException extends Exception
 {
-    protected $shortMessage;
+    protected string $shortMessage;
+    protected string $file;
+    protected int $line;
+    protected string $trace;
 
     /**
-     * @param $shortMessage
+     * @param Throwable $e
      */
-    public function __construct($shortMessage)
+    public function __construct(Throwable $e)
     {
-        parent::__construct($shortMessage);
-        $this->shortMessage = $shortMessage;
+        $this->shortMessage = $e->getMessage();
+        $this->file = $e->getFile();
+        $this->line = $e->getLine();
+        $this->trace = $e->getTraceAsString();
+
+        // Call parent constructor with original message, code and previous exception
+        parent::__construct($this->shortMessage, $e->getCode(), $e);
     }
 
     /**
@@ -22,6 +31,13 @@ class SimpleException extends Exception
      */
     public function __toString(): string
     {
-        return "Exception: {$this->shortMessage}";
+        return sprintf(
+            "Exception: %s\nFile: %s\nLine: %d\n",
+            $this->getMessage(),
+            $this->getFile(),
+            $this->getLine()
+        );
     }
+
 }
+
