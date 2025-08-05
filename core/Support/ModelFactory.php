@@ -16,7 +16,7 @@ class ModelFactory
     /**
      * Load and instantiate a model, returning a Doctrine instance.
      *
-     * @param string $model The model name (e.g., 'Users')
+     * @param string $model The model name (e.g., 'User')
      * @return Doctrine
      */
     public static function make(string $model): Doctrine

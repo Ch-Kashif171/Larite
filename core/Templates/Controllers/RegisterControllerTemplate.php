@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Users;
+use App\Models\User;
 use Core\Support\Auth;
 use Core\Support\Request;
 use Core\Support\Validation\Validator;
@@ -28,7 +28,7 @@ class controllername extends Controller
             return redirect()->backwithErrors($validation->errors());
         }
 
-        Users::create([
+        User::create([
             'name' => $request->post('name'),
             'email'=> $request->post('email'),
             'password' => Auth::Hash($request->post('password')),

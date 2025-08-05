@@ -5,6 +5,7 @@ namespace Core\Support\Routing;
 use Closure;
 use Core\Exception\Handlers\RouteNotFoundException;
 use Core\Support\Constants;
+use Core\Support\Str;
 use Core\Support\Traits\Csrf\CsrfToken;
 use Core\Support\Traits\Middleware;
 use Core\Support\Traits\RouteParam;
@@ -292,7 +293,7 @@ class Router
     public static function resource(string $name, string $controller, array $options = []): void
     {
         $plural = $name;
-        $singular = singular($name); // crude singularization
+        $singular = Str::singular($name); // crude singularization
         
         // Index - GET /{resource}
         self::get("/{$plural}", [$controller, 'index'])->name("{$name}.index");

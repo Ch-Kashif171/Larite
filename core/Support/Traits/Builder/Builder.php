@@ -4,6 +4,7 @@ namespace Core\Support\Traits\Builder;
 
 use Core\Database\Doctrine;
 use Core\Exception\Handlers\DBException;
+use Core\Support\Str;
 use Whoops\Exception\ErrorException;
 use function getTable;
 
@@ -22,7 +23,7 @@ trait Builder
          * name should be then table name
          */
         if(empty($this->table)) {
-            $this->table = getTable(static::class);
+            $this->table = Str::plural(getTable(static::class));
         }
 
         $this->doctrine = new Doctrine($this->table, $this->hidden);
