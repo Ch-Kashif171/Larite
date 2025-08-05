@@ -100,6 +100,8 @@ interface QueryBuilderInterface
      */
     public function find($id);
 
+    public function findOrFail($id);
+
     /**
      * @param $column
      * @return QueryBuilderInterface

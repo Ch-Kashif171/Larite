@@ -22,6 +22,9 @@ class Router
     public static array $routes = [
         'GET' => [],
         'POST' => [],
+        'PUT' => [],
+        'PATCH' => [],
+        'DELETE' => [],
     ];
     public static array $routeMiddleware = [];
     private static array $routeHandlers = [];
@@ -29,6 +32,9 @@ class Router
     private static array $dynamicRoutes = [
         'GET' => [],
         'POST' => [],
+        'PUT' => [],
+        'PATCH' => [],
+        'DELETE' => [],
     ];
 
     /**

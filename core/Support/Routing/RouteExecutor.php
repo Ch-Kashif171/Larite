@@ -24,16 +24,36 @@ class RouteExecutor
      */
     public static function execute($incomingMethod, $currentAction, $routeHandlers, $dynamicRoutes, $routeMiddleware): bool
     {
-        $routeKey = $incomingMethod . ':' . $currentAction;
+        // Get the actual HTTP method (handles _method parameter for PUT, PATCH, DELETE)
+        $actualMethod = static::getActualMethod($incomingMethod);
+        $routeKey = $actualMethod . ':' . $currentAction;
 
         if (isset($routeHandlers[$routeKey])) {
-            return static::handleStaticRoute($routeHandlers[$routeKey], $routeKey, $incomingMethod, $routeMiddleware);
+            return static::handleStaticRoute($routeHandlers[$routeKey], $routeKey, $actualMethod, $routeMiddleware);
         }
 
         // To check if route method is not exists (wrong method)
-        MethodChecker::check($incomingMethod, $currentAction, $routeHandlers);
+        MethodChecker::check($actualMethod, $currentAction, $routeHandlers);
 
-        return static::handleDynamicRoutes($incomingMethod, $currentAction, $dynamicRoutes[$incomingMethod] ?? []);
+        return static::handleDynamicRoutes($actualMethod, $currentAction, $dynamicRoutes[$actualMethod] ?? []);
+    }
+
+    /**
+     * Get the actual HTTP method, handling _method parameter for PUT, PATCH, DELETE
+     * @param string $incomingMethod
+     * @return string
+     */
+    private static function getActualMethod(string $incomingMethod): string
+    {
+        // If it's a POST request, check for _method parameter
+        if ($incomingMethod === 'POST' && isset($_POST['_method'])) {
+            $method = strtoupper($_POST['_method']);
+            if (in_array($method, ['PUT', 'PATCH', 'DELETE'])) {
+                return $method;
+            }
+        }
+        
+        return $incomingMethod;
     }
 
     /**
@@ -52,7 +72,7 @@ class RouteExecutor
             return true;
         }
 
-        if ($incomingMethod === 'POST') {
+        if ($incomingMethod === 'POST' || $incomingMethod === 'PUT' || $incomingMethod === 'PATCH' || $incomingMethod === 'DELETE') {
             static::checkCsrf();
         }
 
@@ -85,7 +105,7 @@ class RouteExecutor
                     return true;
                 }
 
-                if ($incomingMethod === 'POST') {
+                if ($incomingMethod === 'POST' || $incomingMethod === 'PUT' || $incomingMethod === 'PATCH' || $incomingMethod === 'DELETE') {
                     static::checkCsrf();
                 }
 

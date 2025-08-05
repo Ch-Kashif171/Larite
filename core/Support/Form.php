@@ -14,9 +14,11 @@ class Form
      */
     public static function method($type): string
     {
-        return match ($type) {
-            $type == 'DELETE', $type == 'PATCH', $type == 'PUT' => $type,
-            default => 'PUT',
+        return match (strtoupper($type)) {
+            'DELETE' => 'DELETE',
+            'PATCH'  => 'PATCH',
+            'PUT'    => 'PUT',
+            default  => 'PUT',
         };
     }
 }

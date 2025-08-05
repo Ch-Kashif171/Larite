@@ -6,28 +6,25 @@ class Redirect
 {
     protected $url;
 
-    public function __construct()
+    public function __construct($url = null)
     {
-        //
+        $this->url = $url ?? $_SERVER['HTTP_REFERER'] ?? '/';
     }
 
     public function withInput()
     {
         General::setOldData();
-        return new Redirect();
+        return $this;
     }
 
     /**
      * @param null $with
      * @return Redirect|void
      */
-    public function back($with = null)
+    public function back()
     {
-        if(is_null($with)){
-            return header('Location: ' . $_SERVER['HTTP_REFERER']);
-        }else{
-            return new Redirect();
-        }
+        $this->url = $_SERVER['HTTP_REFERER'] ?? '/';
+        return $this;
     }
 
     /**
@@ -60,7 +57,7 @@ class Redirect
     }
 
     public function backWith($key,$message){
-        Session::put($key, $message);
+        Session::flash($key, $message);
         return header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
 
@@ -72,7 +69,7 @@ class Redirect
      */
     public function with($type, $message)
     {
-        Session::put($type, $message);
+        Session::flash($type, $message);
         $this->go();
     }
 

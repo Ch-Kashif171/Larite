@@ -714,7 +714,7 @@ if(!function_exists('method')) {
     function method($type): string
     {
         $method = Form::method($type);
-        echo '<input type="hidden" name="_method" value="'.$method.'">';
+        return '<input type="hidden" name="_method" value="'.$method.'">';
     }
 }
 
@@ -727,7 +727,7 @@ if(!function_exists('csrf_field')) {
     function csrf_field()
     {
         $token = Form::token();
-        echo '<input type="hidden" name="csrf_token" value="'.$token.'">';
+        return '<input type="hidden" name="csrf_token" value="'.$token.'">';
     }
 }
 

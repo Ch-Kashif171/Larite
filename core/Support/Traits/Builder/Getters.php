@@ -54,6 +54,11 @@ trait Getters
         return $this->wrapSingle(fn() => $this->doctrine->find($id));
     }
 
+    public function findOrFail($id)
+    {
+        return $this->wrapSingle(fn() => $this->doctrine->findOrFail($id));
+    }
+
     /**
      * @return mixed
      * @throws \Exception

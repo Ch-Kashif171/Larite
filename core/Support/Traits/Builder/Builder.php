@@ -90,4 +90,18 @@ trait Builder
     {
         return $this->attributes;
     }
+
+    /**
+     * Delete the model instance
+     * @return bool
+     * @throws \Exception
+     */
+    public function delete(): bool
+    {
+        if (!isset($this->attributes['id'])) {
+            throw new \Exception('Cannot delete model without ID');
+        }
+
+        return static::where('id', '=', $this->attributes['id'])->delete();
+    }
 }

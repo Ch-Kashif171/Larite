@@ -60,7 +60,6 @@ class Doctrine
         }
         $sql = $this->selectStatement($columns)
             . $this->joins
-            . $this->wheres
             . $this->groupBy
             . $this->having
             . $this->orderBy
@@ -71,6 +70,18 @@ class Doctrine
         $this->result = $query->fetch(\PDO::FETCH_OBJ);
         return $this->result;
     }
+
+    public function findOrFail($id)
+    {
+        $record = $this->find($id);
+
+        if (!$record) {
+            throw new \Exception("Record not found with ID: $id", 404);
+        }
+
+        return $record;
+    }
+
 
     /**
      * @return array|false
