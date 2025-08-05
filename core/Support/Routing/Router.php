@@ -247,6 +247,7 @@ class Router
         $route = self::$namedRoutes[$name];
         $uri = $route['uri'];
 
+
         // Replace parameters in the URI
         foreach ($parameters as $key => $value) {
             $uri = str_replace('{' . $key . '}', $value, $uri);
@@ -290,8 +291,8 @@ class Router
      */
     public static function resource(string $name, string $controller, array $options = []): void
     {
-        $singular = $name;
         $plural = $name;
+        $singular = singular($name); // crude singularization
         
         // Index - GET /{resource}
         self::get("/{$plural}", [$controller, 'index'])->name("{$name}.index");

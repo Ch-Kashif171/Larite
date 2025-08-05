@@ -27,7 +27,7 @@ trait ExceptionDispatcher
             return $closure($e);
         }
 
-        throw new SimpleException($e->getMessage());
+        throw new SimpleException($e);
     }
 
     /**
@@ -46,6 +46,10 @@ trait ExceptionDispatcher
         }
     }
 
+    /**
+     * @param Throwable $e
+     * @return mixed
+     */
     protected function dispatch(Throwable $e): mixed
     {
         foreach ($this->handlers as $class => $handler) {
@@ -57,6 +61,10 @@ trait ExceptionDispatcher
         return null;
     }
 
+    /**
+     * @param Throwable $e
+     * @return void
+     */
     protected function renderDefault(Throwable $e): void
     {
         http_response_code($e->getCode() >= 400 ? $e->getCode() : 500);
@@ -66,6 +74,11 @@ trait ExceptionDispatcher
         echo "<pre>" . $e->getTraceAsString() . "</pre>";
     }
 
+    /**
+     * @param $message
+     * @param int $code
+     * @return void
+     */
     protected function renderJson($message, int $code): void
     {
         header('Content-Type: application/json', true, $code);

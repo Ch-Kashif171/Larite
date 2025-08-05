@@ -927,3 +927,18 @@ if (!function_exists('route')) {
         return Route::getNamedRoute($name, $parameters);
     }
 }
+
+if (!function_exists('singular')) {
+    /**
+     * @param string $word
+     * @return string
+     */
+    function singular(string $word): string
+    {
+        return match (true) {
+            str_ends_with($word, 'ies') => substr($word, 0, -3) . 'y',
+            str_ends_with($word, 's') => substr($word, 0, -1),
+            default => $word,
+        };
+    }
+}
