@@ -4,11 +4,10 @@ use App\Http\Controllers\Controller;
 
 class controllername extends Controller
 {
-    public function __construct()
-    {
-        //
-    }
 
+    /**
+     * Display a listing of the resource.
+     */
   	public function index()
   	{
         //

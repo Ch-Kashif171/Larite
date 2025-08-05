@@ -10,10 +10,6 @@ use Core\Support\Validation\Validator;
 
 class controllername extends Controller
 {
-    public function __construct()
-    {
-        //
-    }
 
     public function register()
     {

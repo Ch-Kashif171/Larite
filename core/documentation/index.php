@@ -366,6 +366,7 @@ if ($validation->fails()) {
     <pre>php Larite make:auth auth
 php Larite make:model User
 php Larite make:controller PostController
+php larite make:controller PostController --resource // to create resource conteroller
 php Larite make:migration create_posts_table
 php larite make:seeder AdminSeeder
 php Larite migration:migrate

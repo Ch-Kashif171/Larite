@@ -22,7 +22,7 @@ class Generator
         return self::$instance ??= new self();
     }
 
-    public function generateController(string $controllerName): array
+    public function generateController(string $controllerName, $isResource = false): array
     {
         $pathParts = preg_split('/[\\\\\/]/', $controllerName);
         $className = ucfirst(array_pop($pathParts));
@@ -34,7 +34,11 @@ class Generator
             return ['status' => false, 'message' => "$className Controller Already Exists"];
         }
 
-        $templatePath = ROOT_PATH . '/core/Templates/Controllers/ControllerTemplate.php';
+        if ($isResource) {
+            $templatePath = ROOT_PATH . '/core/Templates/Controllers/ResourceControllerTemplate.php';
+        } else {
+            $templatePath = ROOT_PATH . '/core/Templates/Controllers/ControllerTemplate.php';
+        }
         if (!file_exists($templatePath)) {
             return ['status' => false, 'message' => 'Controller Template File Not Found'];
         }

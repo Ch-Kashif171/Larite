@@ -335,6 +335,7 @@ Migrate::dropIfExists('users');
 php larite make:auth auth
 php larite make:model User
 php larite make:controller PostController
+php larite make:controller PostController --resource // to create resource conteroller
 php larite make:migration create_posts_table
 php larite make:seeder AdminSeeder
 php larite migration:migrate
