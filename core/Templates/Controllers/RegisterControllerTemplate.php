@@ -20,7 +20,7 @@ class controllername extends Controller
     {
         $validation = Validator::validate($request->all(),[
             'name' => 'required',
-            'email' => 'required|mail|unique:users,email',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required',
         ]);
 

@@ -18,7 +18,7 @@ class controllername extends Controller
     public function login(Request $request)
     {
         $validation = Validator::validate($request->all(), [
-            'email' => 'required|mail',
+            'email' => 'required|email',
             'password' => 'required',
         ]);
 
