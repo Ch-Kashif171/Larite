@@ -17,6 +17,7 @@ use Core\Support\NotFound;
 use Core\Support\Redirect;
 use Core\Support\Session;
 use Core\Support\Form;
+use Core\Support\Str;
 use Core\Support\Validation\Validator;
 use Symfony\Component\VarDumper\VarDumper;
 
@@ -928,17 +929,3 @@ if (!function_exists('route')) {
     }
 }
 
-if (!function_exists('singular')) {
-    /**
-     * @param string $word
-     * @return string
-     */
-    function singular(string $word): string
-    {
-        return match (true) {
-            str_ends_with($word, 'ies') => substr($word, 0, -3) . 'y',
-            str_ends_with($word, 's') => substr($word, 0, -1),
-            default => $word,
-        };
-    }
-}
