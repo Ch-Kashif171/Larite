@@ -16,16 +16,33 @@ trait Builder
     protected $hidden = [];
     protected $doctrine;
 
+    /**
+     * @throws DBException
+     */
     public function __construct()
     {
-        /**
-         * if table not define in model, then by default, model
-         * name should be then table name
-         */
-        if(empty($this->table)) {
+        $this->initializeTableName();
+
+        $this->initializeDoctrine();
+    }
+
+    /**
+     * @return void
+     */
+    protected function initializeTableName(): void
+    {
+        // Automatically derive table name from model class if not explicitly defined
+        if (empty($this->table)) {
             $this->table = Str::plural(getTable(static::class));
         }
+    }
 
+    /**
+     * @return void
+     * @throws DBException
+     */
+    protected function initializeDoctrine(): void
+    {
         $this->doctrine = new Doctrine($this->table, $this->hidden);
     }
 
