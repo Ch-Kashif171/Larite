@@ -471,7 +471,7 @@ $user = User::where('email', '=', 'john@example.com')->first();
     </pre>
     <pre>
 //create new user
-$user = Users::create([
+$user = User::create([
     'name' => 'Kashif',
     'email' => 'kashif@gmail.com',
     'password' => bcrypt('12345678'),
@@ -479,7 +479,7 @@ $user = Users::create([
     </pre>
 <pre>
 // update or create user
-$user = Users::updateOrCreate([
+$user = User::updateOrCreate([
         'email' => 'kashif@gmail.com'
         ], [
             'name' => 'Kashif',
@@ -501,7 +501,7 @@ $user->save();
     </pre>
     <pre>
 // or update like
-$user = Users::find(1);
+$user = User::find(1);
 $user->name = 'Kashif Sohail';
 $user->password = bcrypt('11111111');
 
