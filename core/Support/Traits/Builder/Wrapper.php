@@ -28,6 +28,7 @@ trait Wrapper
             $result = $this->eagerLoadRelations($result, $this->with);
         }
 
+        // Modify ORM to Return Collection
         return new Collection($result);
     }
 
@@ -69,7 +70,8 @@ trait Wrapper
         // Replace the data with processed data
         $pagination['data'] = $processedData;
 
-        return $pagination;
+        // Modify ORM to Return Collection
+        return new Collection($pagination);
     }
 
     /**

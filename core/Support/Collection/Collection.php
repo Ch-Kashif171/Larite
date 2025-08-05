@@ -4,13 +4,17 @@ namespace Core\Support\Collection;
 
 class Collection implements \ArrayAccess, \IteratorAggregate, \Countable
 {
-    protected array $items;
+    protected  $items;
 
-    public function __construct(array $items = [])
+    public function __construct($items = [])
     {
-        $this->items = $items;
+        $this->mapItems($items);
     }
 
+
+    /**
+     * @return array
+     */
     public function toArray(): array
     {
         return array_map(function ($item) {
@@ -23,19 +27,57 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable
         }, $this->items);
     }
 
-    private function recursiveToArray($value)
+    /**
+     * @param callable $callback
+     * @return $this
+     */
+    public function map(callable $callback): static
     {
-        if (is_object($value) && method_exists($value, 'toArray')) {
-            return $value->toArray();
-        } elseif (is_array($value)) {
-            $result = [];
-            foreach ($value as $k => $v) {
-                $result[$k] = $this->recursiveToArray($v);
-            }
-            return $result;
-        }
-        return $value;
+        return new static(array_map($callback, $this->items));
     }
+
+    /**
+     * @param callable|null $callback
+     * @return $this
+     */
+    public function filter(callable $callback = null): static
+    {
+        return new static(array_filter($this->items, $callback));
+    }
+
+    /**
+     * @param callable|null $callback
+     * @param $default
+     * @return mixed|null
+     */
+    public function first(callable $callback = null, $default = null)
+    {
+        foreach ($this->items as $key => $item) {
+            if (is_null($callback) || $callback($item, $key)) {
+                return $item;
+            }
+        }
+        return $default;
+    }
+
+    /**
+     * @param callable|null $callback
+     * @param $default
+     * @return mixed|null
+     */
+    public function last(callable $callback = null, $default = null)
+    {
+        return $this->reverse()->first($callback, $default);
+    }
+
+    /**
+     * @return $this
+     */
+    public function reverse(): static
+    {
+        return new static(array_reverse($this->items, true));
+    }
+
 
     // ArrayAccess
     public function offsetExists($offset): bool { return isset($this->items[$offset]); }
@@ -51,4 +93,41 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable
 
     // For convenience
     public function all(): array { return $this->items; }
+
+    /**
+     * @param $value
+     * @return array
+     */
+    private function recursiveToArray($value): array
+    {
+        if (is_object($value) && method_exists($value, 'toArray')) {
+            return $value->toArray();
+        } elseif (is_array($value)) {
+            $result = [];
+            foreach ($value as $k => $v) {
+                $result[$k] = $this->recursiveToArray($v);
+            }
+            return $result;
+        }
+        return $value;
+    }
+
+    /**
+     * @param $items
+     * @return void
+     */
+    private function mapItems($items)
+    {
+        if (is_null($items)) {
+            $this->items = [];
+        } elseif (is_array($items)) {
+            $this->items = $items;
+        } elseif ($items instanceof \Traversable) {
+            $this->items = iterator_to_array($items);
+        } elseif (is_object($items)) {
+            $this->items = [$items]; // wrap single model/object
+        } else {
+            throw new \InvalidArgumentException('Invalid items provided to Collection.');
+        }
+    }
 } 

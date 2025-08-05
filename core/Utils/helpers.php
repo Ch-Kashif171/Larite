@@ -7,6 +7,7 @@ if (!defined('root_path')) {
 
 use App\Providers\RouteServiceProvider;
 use Core\Support\Auth;
+use Core\Support\Collection\Collection;
 use Core\Support\Container\App;
 use Core\Support\Errors;
 use Core\Support\Facades\Route;
@@ -929,3 +930,24 @@ if (!function_exists('route')) {
     }
 }
 
+if (!function_exists('collect')) {
+    /**
+     * @param string $word
+     * @return string
+     */
+    function collect($items): Collection
+    {
+        return new Collection($items);
+    }
+}
+
+if (!function_exists('singular')) {
+    /**
+     * @param string $word
+     * @return string
+     */
+    function singular(string $word): string
+    {
+        return Str::plural($word);
+    }
+}
