@@ -2,6 +2,7 @@
 namespace Core\Support\Traits\Builder;
 
 use Core\Database\QueryBuilder;
+use Core\Exception\Handlers\DBException;
 use Core\Support\Facades\DB;
 
 /**
@@ -86,6 +87,7 @@ trait OrmMethods
      * @param string $localKey Local key on this model
      * @param string $relatedKey Local key on related model
      * @return array Array of related model instances
+     * @throws DBException
      */
     public function belongsToMany($related, $pivot, $foreignPivotKey, $relatedPivotKey, $localKey = 'id', $relatedKey = 'id')
     {
