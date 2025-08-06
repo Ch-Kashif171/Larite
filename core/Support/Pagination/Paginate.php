@@ -3,6 +3,7 @@
 namespace Core\Support\Pagination;
 
 use Core\Support\Collection\Collection;
+use Core\Support\Constants;
 use ReturnTypeWillChange;
 
 class Paginate implements \ArrayAccess, \IteratorAggregate, \Countable
@@ -26,7 +27,7 @@ class Paginate implements \ArrayAccess, \IteratorAggregate, \Countable
 
     public function __construct(array $pagination)
     {
-        foreach (PaginationMeta::keys() as $key) {
+        foreach (Constants::KEYS as $key) {
             $this->{$key} = $pagination[$key] ?? null;
         }
 
@@ -37,7 +38,7 @@ class Paginate implements \ArrayAccess, \IteratorAggregate, \Countable
     {
         $array = [];
 
-        foreach (PaginationMeta::keys() as $key) {
+        foreach (Constants::KEYS as $key) {
             $array[$key] = $this->{$key} ?? null;
         }
 

@@ -39,6 +39,17 @@ class Redirect
     }
 
     /**
+     * Redirect using named route (e.g., route('home.index'))
+     * Requires global `route()` helper to resolve route names
+     */
+    public function route(string $name, array $params = []): static
+    {
+        $this->url = route($name, $params);
+        return $this;
+    }
+
+
+    /**
      * Perform the redirect
      * @return void
      */
