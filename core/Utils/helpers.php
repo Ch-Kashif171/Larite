@@ -932,8 +932,8 @@ if (!function_exists('route')) {
 
 if (!function_exists('collect')) {
     /**
-     * @param string $word
-     * @return string
+     * @param $items
+     * @return Collection
      */
     function collect($items): Collection
     {
