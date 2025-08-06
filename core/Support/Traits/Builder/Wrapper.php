@@ -4,6 +4,7 @@ namespace Core\Support\Traits\Builder;
 
 use Core\Database\QueryBuilder;
 use Core\Support\Collection\Collection;
+use Core\Support\Pagination\Paginate;
 
 trait Wrapper
 {
@@ -70,7 +71,8 @@ trait Wrapper
         // Replace the data with processed data
         $pagination['data'] = $processedData;
 
-        return $pagination;
+        // Modify paginate to Return Collection via Paginate
+        return new Paginate($pagination);
     }
 
     /**
