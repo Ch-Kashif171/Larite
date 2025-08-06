@@ -70,8 +70,7 @@ trait Wrapper
         // Replace the data with processed data
         $pagination['data'] = $processedData;
 
-        // Modify ORM to Return Collection
-        return new Collection($pagination);
+        return $pagination;
     }
 
     /**

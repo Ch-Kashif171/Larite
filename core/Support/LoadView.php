@@ -2,6 +2,7 @@
 
 namespace Core\Support;
 
+use Core\Support\Pagination\Paginator;
 use stdClass;
 
 class LoadView
