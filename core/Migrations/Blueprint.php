@@ -62,6 +62,20 @@ class Blueprint
         return $this;
     }
 
+    public function longText($column)
+    {
+        $this->statement = " {$column} longtext ";
+        $this->columns[] = new Blueprint($this->statement);
+        return $this;
+    }
+
+    public function json($column)
+    {
+        $this->statement = " {$column} json ";
+        $this->columns[] = new Blueprint($this->statement);
+        return $this;
+    }
+
     /**
      * @param $column
      * @param int $length
