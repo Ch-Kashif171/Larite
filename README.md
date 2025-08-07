@@ -286,7 +286,7 @@ $rules = [
   'password' => 'required|min:6|max:20'
 ];
 
-$validation = Validator::validate($_POST, $rules);
+$validation = Validator::validate($request->all(), $rules);
 
 if ($validation->fails()) {
   return redirect()->backwithErrors($validation->errors());

@@ -10,6 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+
     <style>
         :root {
             /* Premium Color Palette */
@@ -882,13 +884,14 @@
         }
 
         .code-block {
-            background: #1e293b !important;
+            /*background: #1e293b !important;*/
+            background: #1a1a1a !important;
             color: #e2e8f0 !important;
             padding: var(--space-lg) !important;
             margin: 0 !important;
             overflow-x: auto;
             font-family: 'JetBrains Mono', 'Monaco', 'Menlo', monospace !important;
-            font-size: 0.85rem !important; /* Reduced font size */
+            font-size: 1rem !important;
             line-height: 1.6 !important;
             border: none !important;
             font-weight: 400 !important;
@@ -925,7 +928,7 @@
         }
 
         .code-block .operator {
-            color: #89ddff !important;
+            color: #eff5f8 !important;
             font-weight: 500 !important;
         }
 
@@ -1447,6 +1450,13 @@
             transform: scale(1.01);
             box-shadow: var(--shadow-md);
         }
+
+        .code-block,
+        .code-block code,
+        .code-block span {
+            font-family: 'Fira Code', 'Monaco', 'Menlo', monospace !important;
+        }
+
     </style>
 </head>
 <body>
@@ -2032,7 +2042,33 @@
                 </div>
             </section>
 
-            <!-- Middleware -->
+            <!-- Extending Routes -->
+            <section id="middleware" class="content-section">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h1 class="section-title">Extending Routes</h1>
+                </div>
+
+                <p>Register route files in <code>`app/Providers/RouteServiceProvider.php`</code></p>
+                <pre class="code-block"><code><span class="keyword">public static function </span><span class="function">register()</span><span class="property">: array </span>
+<span class="punctuation">{</span><span class="punctuation">
+     <span class="keywork">return</span> <span class="punctuation"> [</span>
+        <span class="string">'routes/web.php',</span>
+        <span class="string">'routes/api.php',</span>
+     <span class="punctuation"> ]</span><span class="punctuation">;</span>
+<span class="punctuation">}</span></code></pre>
+
+                <div class="alert info">
+                    <i class="fas fa-info-circle alert-icon"></i>
+                    <div class="alert-content">
+                        <strong>Note:</strong> Larite will autoload them all.
+                    </div>
+                </div>
+            </section>
+
+            <!--Middleware-->
             <section id="middleware" class="content-section">
                 <div class="section-header">
                     <div class="section-icon">
@@ -2074,6 +2110,20 @@
 <span class="punctuation">];</span></code></pre>
                 </div>
 
+                <p>You can define middleware in any controller's constructor:</p>
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="code-language">
+                            <div class="code-language-icon" style="background: #777BB4;"></div>
+                            <span>PHP</span>
+                        </div>
+                        <button class="copy-btn" onclick="copyToClipboard(this)">
+                            <i class="fas fa-copy"></i>
+                            Copy
+                        </button>
+                    </div>
+                    <pre class="code-block"><code><span class="class">$this</span><span class="operator">-></span><span class="method">middleware</span><span class="punctuation">(</span><span class="punctuation">[</span><span class="string">'auth'</span><span class="punctuation">,</span> <span class="punctuation"><span class="string">'web'</span>]</span><span class="punctuation">)</span><span class="punctuation">;</span> </code></pre>
+                </div>
                 <h3>Middleware per route</h3>
                 <div class="code-container">
                     <div class="code-header">
@@ -2115,7 +2165,7 @@
     <span class="string">'password'</span> <span class="operator">=></span> <span class="string">'required|min:6|max:20'</span>
 <span class="punctuation">];</span>
 
-<span class="php-variable">$validation</span> <span class="operator">=</span> <span class="class">Validator</span><span class="operator">::</span><span class="method">validate</span><span class="punctuation">(</span><span class="php-variable">$_POST</span><span class="punctuation">,</span> <span class="php-variable">$rules</span><span class="punctuation">);</span>
+<span class="php-variable">$validation</span> <span class="operator">=</span> <span class="class">Validator</span><span class="operator">::</span><span class="method">validate</span><span class="punctuation">(</span><span class="php-variable">$request</span><span class="string">-></span><span class="method">all()</span><span class="punctuation">,</span> <span class="php-variable">$rules</span><span class="punctuation">);</span>
 
 <span class="keyword">if</span> <span class="punctuation">(</span><span class="php-variable">$validation</span><span class="operator">-></span><span class="method">fails</span><span class="punctuation">())</span> <span class="punctuation">{</span>
     <span class="keyword">return</span> <span class="function">redirect</span><span class="punctuation">()</span><span class="operator">-></span><span class="method">back</span><span class="punctuation">()</span><span class="operator">-></span><span class="method">withErrors</span><span class="punctuation">(</span><span class="php-variable">$validation</span><span class="operator">-></span><span class="method">errors</span><span class="punctuation">());</span>
@@ -2662,6 +2712,10 @@
     <a href="#installation" class="toc-item">Installation</a>
     <a href="#routing" class="toc-item">Routing</a>
     <a href="#middleware" class="toc-item">Middleware</a>
+    <a href="#validation" class="toc-item">Validation</a>
+    <a href="#migrations" class="toc-item">Migrations</a>
+    <a href="#seeding" class="toc-item">Database Seeding</a>
+    <a href="#queries-orm" class="toc-item">Queries &amp; ORM</a>
     <a href="#commands" class="toc-item">CLI Commands</a>
     <a href="#contribute" class="toc-item">Contribute</a>
 </div>
