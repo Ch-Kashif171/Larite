@@ -70,6 +70,18 @@
             --radius-2xl: 24px;
             --radius-full: 9999px;
 
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+            --space-20: 5rem;
+
             /* Transitions */
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
@@ -195,14 +207,12 @@
         }
 
         .logo-text {
-            display: none;
-            font-size: 1.5rem; /* Reduced from 2rem */
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: -0.02em;
         }
 
         .header-nav {
@@ -371,15 +381,13 @@
 
         /* Sidebar - Compact */
         .sidebar {
-            width: 280px;
+            width: 300px;
             background: var(--bg-card);
-            border-right: 2px solid var(--border);
+            border-right: 1px solid var(--border);
             position: fixed;
-            height: calc(100vh - 80px);
+            height: calc(100vh - 70px);
             overflow-y: auto;
-            transition: var(--transition);
             z-index: 999;
-            box-shadow: var(--shadow-sm);
         }
 
         .sidebar-header {
@@ -494,16 +502,16 @@
         /* Main Content */
         .main-content {
             flex: 1;
-            margin-left: 280px; /* Adjusted for smaller sidebar */
             padding: 0;
             max-width: calc(100% - 280px);
+            margin-left: 300px;
         }
 
         /* Hero Section - Compact */
         .hero {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            padding: var(--space-2xl) 0; /* Reduced from var(--space-3xl) */
+            padding: var(--space-20) 0;
             position: relative;
             overflow: hidden;
         }
@@ -515,7 +523,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            background: url(data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>);
         }
 
         .hero::after {
@@ -530,16 +538,16 @@
         }
 
         .hero-content {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 var(--space-lg);
+            padding: 0 var(--space-6);
             text-align: center;
             position: relative;
             z-index: 1;
         }
 
         .hero-logo {
-            height: 80px; /* Reduced from 120px */
+            height: 100px; /* Reduced from 120px */
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-lg);
             animation: float 6s ease-in-out infinite;
@@ -553,23 +561,22 @@
         }
 
         .hero-title {
-            font-size: 2.5rem; /* Reduced from 4rem */
-            font-weight: 800;
-            margin-bottom: var(--space);
             line-height: 1.1;
             letter-spacing: -0.02em;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: var(--space-4);
         }
 
         .hero-subtitle {
-            font-size: 1.1rem; /* Reduced from 1.4rem */
-            opacity: 0.95;
-            margin-bottom: var(--space-xl);
-            max-width: 600px;
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: var(--space-8);
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
-            font-weight: 400;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .hero-features {
@@ -607,7 +614,7 @@
         .hero-cta {
             display: flex;
             justify-content: center;
-            gap: var(--space);
+            gap: var(--space-4);
         }
 
         .btn {
@@ -624,6 +631,10 @@
             font-size: 0.9rem; /* Reduced font size */
             position: relative;
             overflow: hidden;
+
+            gap: var(--space-2);
+            padding: var(--space-4) var(--space-6);
+            border-radius: var(--radius-md);
         }
 
         .btn::before {
@@ -1447,7 +1458,7 @@
     <div class="header-content">
         <div class="logo-section">
             <img src="https://raw.githubusercontent.com/Ch-Kashif171/Larite/4.x/public/images/logo/larite.jpg" alt="Larite Logo" class="logo">
-            <div class="logo-text">Larite</div>
+            <span class="logo-text">Larite</span>
         </div>
 
         <nav class="header-nav">
@@ -1619,7 +1630,7 @@
                     </div>
                     <div class="hero-feature">
                         <i class="fas fa-rocket"></i>
-                        <span>Fast Performance</span>
+                        <span>Fast</span>
                     </div>
                     <div class="hero-feature">
                         <i class="fas fa-code"></i>
@@ -1627,7 +1638,7 @@
                     </div>
                     <div class="hero-feature">
                         <i class="fas fa-shield-alt"></i>
-                        <span>Secure by Default</span>
+                        <span>Secure</span>
                     </div>
                 </div>
 
