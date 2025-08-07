@@ -247,15 +247,26 @@ class Router
 
         $route = self::$namedRoutes[$name];
         $uri = $route['uri'];
-
+        $usedParams = [];
 
         // Replace parameters in the URI
         foreach ($parameters as $key => $value) {
-            $uri = str_replace('{' . $key . '}', $value, $uri);
+            $placeholder = '{' . $key . '}';
+            if (str_contains($uri, $placeholder)) {
+                $uri = str_replace($placeholder, $value, $uri);
+                $usedParams[] = $key;
+            }
+        }
+
+        // Add remaining parameters as query string
+        $remainingParams = array_diff_key($parameters, array_flip($usedParams));
+        if (!empty($remainingParams)) {
+            $uri .= '?' . http_build_query($remainingParams);
         }
 
         return url($uri);
     }
+
 
     /**
      * Get all named routes
