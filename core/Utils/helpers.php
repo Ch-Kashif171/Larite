@@ -905,6 +905,14 @@ if (!function_exists('e')) {
     }
 }
 
+if (!function_exists('raw')) {
+
+    function raw($value): string
+    {
+        return html_entity_decode($value);
+    }
+}
+
 if (!function_exists('home')) {
     /**
      * Escape HTML entities in a string.
