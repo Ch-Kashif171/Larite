@@ -17,6 +17,7 @@ use Core\Commands\RouteListCommand;
 use Core\Dotenv\Dotenv;
 
 use Core\Scheduling\ScheduleRun;
+use Core\Support\DBQuery;
 use Symfony\Component\Console\Application;
 
 class Commander
@@ -77,6 +78,9 @@ class Commander
      */
     public function register(): Application
     {
+        // Bind DB facade (need to bind for cli her)
+        app('db', new DBQuery());
+
         $this->registerCoreCommands();
 
         $this->registerCustomCommands();
