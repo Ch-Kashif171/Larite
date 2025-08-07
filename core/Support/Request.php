@@ -2,158 +2,164 @@
 
 namespace Core\Support;
 
+use Exception;
+
 class Request
 {
-    private $field = [];
+    private array $fields = [];
 
-
-    public function post($key)
+    public function __construct()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            return isset($_POST[$key]) ? $this->sanitize($_POST[$key]) : null;
-        }
-
-        throw new \ErrorException("You are getting input value with post method, while your request is get.");
+        $this->fields = $this->collectRequestFields();
     }
 
-    public function get($key)
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            return isset($_GET[$key]) ? $this->sanitize($_GET[$key]) : null;
-        }
+    // ------------------ Public API ------------------ //
 
-        throw new \ErrorException("You are getting input value with get method, while your request is post");
+    public function input(string $key): mixed
+    {
+        return $this->fields[$key] ?? null;
     }
 
-    public function input($key)
+    public function get(string $key): mixed
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            return isset($_GET[$key]) ? $this->sanitize($_GET[$key]) : null;
-        }
-        return isset($_POST[$key]) ? $this->sanitize($_POST[$key]) : null;
+        $this->ensureMethod('GET');
+        return $_GET[$key] ?? null;
     }
 
-    public function all()
+    public function post(string $key): mixed
     {
-        $file = [];
-        $fields = [];
-        if (isset($_FILES)) {
-            $file = $this->getFilesName();
-        }
-
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            $fields = $this->sanitize($_GET);
-        } else {
-            $fields = $this->sanitize($_POST);
-        }
-
-        return array_merge($fields,$file);
+        $this->ensureMethod('POST');
+        return $_POST[$key] ?? null;
     }
 
-    public function getFile($file_name)
+    public function all(): array
     {
-        if (isset($_FILES)) {
-            return $_FILES[$file_name];
-        } else {
-            return false;
-        }
+        return $this->fields;
     }
 
-    public function getFiles()
+    public function has(string $key): bool
     {
-        if (isset($_FILES)) {
-            return $_FILES;
-        } else {
-            return false;
-        }
+        return isset($this->fields[$key]);
     }
 
-    public function hasFile($key)
+    public function only(...$keys): array
     {
-        if (isset($_FILES[$key]) && $_FILES[$key]['name'] != '') {
-            return true;
-        } else {
-            return false;
-        }
+        return array_intersect_key($this->fields, array_flip($keys));
     }
 
-    public function has($key)
+    public function except(...$keys): array
     {
-        $field = false;
-
-        if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_FILES[$key])) {
-            if (isset($_GET[$key])) {
-                $field = true;
-            } else {
-                $field = false;
-            }
-        } else if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_FILES[$key])) {
-            if (isset($_POST[$key])) {
-                $field = true;
-            } else {
-                $field = false;
-            }
-        } else if (isset($_FILES[$key])) {
-            $field = true;
-        } else {
-            $field = false;
-        }
-
-        return $field;
+        return array_diff_key($this->fields, array_flip($keys));
     }
 
-    private function getFilesName()
+    public function getFile(string $key): array|null
     {
-
-        $names = [];
-        $files = $_FILES;
-        foreach ($files as $name => $file) {
-            $names[$name] = $file['name'];
-        }
-
-        return $names;
+        return $_FILES[$key] ?? null;
     }
 
-    public function except()
+    public function getFiles(): array
     {
-        $args = func_get_args();
-        $inputs = $this->sanitize($_POST);
-        foreach ($args as $value){
-            unset($inputs[$value]);
-        }
-        return $inputs;
+        return $_FILES ?? [];
     }
 
-    public function only()
+    public function hasFile(string $key): bool
     {
-        $args = func_get_args();
-        $inputs = $this->sanitize($_POST);
-        $values = [];
-        foreach ($args as $value){
-            $values[$value] = isset($inputs[$value]) ? $inputs[$value] : null;
-        }
-        return $values;
+        return isset($_FILES[$key]) && !empty($_FILES[$key]['name']);
     }
 
-    public function session()
+    public function validateFile(array $file, array $allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'], int $maxSize = 2 * 1024 * 1024): bool|string
+    {
+        if (!isset($file['error']) || is_array($file['error'])) {
+            return 'Invalid file parameters.';
+        }
+
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            return 'File upload error.';
+        }
+
+        if ($file['size'] > $maxSize) {
+            return 'File size exceeds limit.';
+        }
+
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        $mime = $finfo->file($file['tmp_name']);
+
+        if (!in_array($mime, $allowedTypes)) {
+            return 'Invalid file type.';
+        }
+
+        return true;
+    }
+
+    public function session(): Session
     {
         return new Session();
     }
 
-    public function __get($name)
+    public function __get($key)
     {
-        $this->field = $this->all();
-        if(isset($this->field[$name])) {
-            return $this->field[$name];
-        } else {
-            throw new \Exception("$name does not exists");
+        if ($this->has($key)) {
+            return $this->fields[$key];
         }
+
+        throw new \Exception("Key '$key' does not exist in request.");
     }
 
-    /**
-     * Sanitize a value or array of values.
-     */
-    private function sanitize($data)
+    // ------------------ Internal Logic ------------------ //
+
+    private function collectRequestFields(): array
+    {
+        $data = $this->parseInputByType();
+        $files = $this->mapFileNames();
+        return array_merge($data, $files);
+    }
+
+    private function parseInputByType(): array
+    {
+        $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+        $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+
+        if ($this->isJson($contentType)) {
+            return $this->parseJsonPayload();
+        }
+
+        return match ($method) {
+            'GET' => $this->sanitize($_GET),
+            'POST' => $this->sanitize($_POST),
+            'PUT', 'PATCH' => $this->parseRawUrlEncoded(),
+            default => [],
+        };
+    }
+
+    private function parseJsonPayload(): array
+    {
+        $raw = file_get_contents('php://input');
+        $data = json_decode($raw, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE || !is_array($data)) {
+            throw new Exception("Invalid JSON payload: " . json_last_error_msg());
+        }
+
+        return $this->sanitize($data);
+    }
+
+    private function parseRawUrlEncoded(): array
+    {
+        $raw = file_get_contents('php://input');
+        parse_str($raw, $data);
+        return $this->sanitize($data);
+    }
+
+    private function mapFileNames(): array
+    {
+        $names = [];
+        foreach ($_FILES as $key => $file) {
+            $names[$key] = $file['name'];
+        }
+        return $names;
+    }
+
+    private function sanitize($data): mixed
     {
         if (is_array($data)) {
             return array_map([$this, 'sanitize'], $data);
@@ -161,29 +167,16 @@ class Request
         return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
     }
 
-    /**
-     * Validate an uploaded file (basic checks: type, size, error).
-     * @param array $file The file array from $_FILES
-     * @param array $allowedTypes List of allowed mime types
-     * @param int $maxSize Maximum allowed size in bytes
-     * @return bool|string True if valid, error message if not
-     */
-    public function validateFile($file, $allowedTypes = ['image/jpeg','image/png','application/pdf'], $maxSize = 2097152)
+    private function ensureMethod(string $expected): void
     {
-        if (!isset($file['error']) || is_array($file['error'])) {
-            return 'Invalid file parameters.';
+        $actual = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+        if (strtoupper($actual) !== strtoupper($expected)) {
+            throw new \ErrorException("Expected $expected request, but received $actual");
         }
-        if ($file['error'] !== UPLOAD_ERR_OK) {
-            return 'File upload error.';
-        }
-        if ($file['size'] > $maxSize) {
-            return 'File size exceeds limit.';
-        }
-        $finfo = new \finfo(FILEINFO_MIME_TYPE);
-        $mime = $finfo->file($file['tmp_name']);
-        if (!in_array($mime, $allowedTypes)) {
-            return 'Invalid file type.';
-        }
-        return true;
+    }
+
+    private function isJson(string $contentType): bool
+    {
+        return stripos($contentType, 'application/json') !== false;
     }
 }
