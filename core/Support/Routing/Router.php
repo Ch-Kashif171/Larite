@@ -247,18 +247,11 @@ class Router
 
         $route = self::$namedRoutes[$name];
         $uri = $route['uri'];
-        $usedParams = [];
 
-        // Replace parameters in the URI
-        foreach ($parameters as $key => $value) {
-            $placeholder = '{' . $key . '}';
-            if (str_contains($uri, $placeholder)) {
-                $uri = str_replace($placeholder, $value, $uri);
-                $usedParams[] = $key;
-            }
-        }
+        [$uri, $usedParams] = self::replaceUriPlaceholders($uri, $parameters);
 
-        // Add remaining parameters as query string
+        $uri = self::cleanUri($uri);
+
         $remainingParams = array_diff_key($parameters, array_flip($usedParams));
         if (!empty($remainingParams)) {
             $uri .= '?' . http_build_query($remainingParams);
@@ -267,6 +260,44 @@ class Router
         return url($uri);
     }
 
+    /**
+     * @param string $uri
+     * @param array $parameters
+     * @return array
+     * @throws RouteNotFoundException
+     */
+    private static function replaceUriPlaceholders(string $uri, array $parameters): array
+    {
+        $usedParams = [];
+
+        $uri = preg_replace_callback('/\{(\w+)(\?)?\}/', function ($matches) use ($parameters, &$usedParams) {
+            $key = $matches[1];
+            $optional = isset($matches[2]);
+
+            if (array_key_exists($key, $parameters)) {
+                $usedParams[] = $key;
+                return rawurlencode($parameters[$key]);
+            }
+
+            if ($optional) {
+                return '';
+            }
+
+            throw new RouteNotFoundException("Missing required parameter '{$key}' for route.");
+        }, $uri);
+
+        return [$uri, $usedParams];
+    }
+
+    /**
+     * @param string $uri
+     * @return string
+     */
+    private static function cleanUri(string $uri): string
+    {
+        $uri = preg_replace('#/{2,}#', '/', $uri);
+        return rtrim($uri, '/');
+    }
 
     /**
      * Get all named routes
@@ -277,55 +308,4 @@ class Router
         return self::$namedRoutes;
     }
 
-    /**
-     * Register a named route
-     * @param string $name
-     * @param string $uri
-     * @param string $method
-     * @param array $handler
-     * @return void
-     */
-    public static function registerNamedRoute(string $name, string $uri, string $method, array $handler): void
-    {
-        self::$namedRoutes[$name] = [
-            'uri' => $uri,
-            'method' => $method,
-            'handler' => $handler
-        ];
-    }
-
-    /**
-     * Create resource routes for a controller
-     * @param string $name
-     * @param string $controller
-     * @param array $options
-     * @return void
-     */
-    public static function resource(string $name, string $controller, array $options = []): void
-    {
-        $plural = $name;
-        $singular = Str::singular($name); // crude singularization
-        
-        // Index - GET /{resource}
-        self::get("/{$plural}", [$controller, 'index'])->name("{$name}.index");
-        
-        // Create - GET /{resource}/create
-        self::get("/{$plural}/create", [$controller, 'create'])->name("{$name}.create");
-        
-        // Store - POST /{resource}
-        self::post("/{$plural}", [$controller, 'store'])->name("{$name}.store");
-        
-        // Show - GET /{resource}/{id}
-        self::get("/{$plural}/{{$singular}}", [$controller, 'show'])->name("{$name}.show");
-        
-        // Edit - GET /{resource}/{id}/edit
-        self::get("/{$plural}/{{$singular}}/edit", [$controller, 'edit'])->name("{$name}.edit");
-        
-        // Update - PUT/PATCH /{resource}/{id}
-        self::put("/{$plural}/{{$singular}}", [$controller, 'update'])->name("{$name}.update");
-        self::patch("/{$plural}/{{$singular}}", [$controller, 'update'])->name("{$name}.update");
-        
-        // Destroy - DELETE /{resource}/{id}
-        self::delete("/{$plural}/{{$singular}}", [$controller, 'destroy'])->name("{$name}.destroy");
-    }
 }
