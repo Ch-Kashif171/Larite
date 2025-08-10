@@ -13,6 +13,7 @@ use Core\Support\Errors;
 use Core\Support\Facades\Route;
 use Core\Support\LoadView;
 use Core\Support\ModelFactory;
+use Core\Support\Path;
 use Core\Support\Response;
 use Core\Support\NotFound;
 use Core\Support\Redirect;
@@ -60,12 +61,11 @@ if(!function_exists('asset')) {
      * @param $path
      * @return string
      */
-    function asset($path): string
+    function asset($path)
     {
-        $path = preg_replace('/[^a-zA-Z0-9\-._\/]/', '', $path);
-        $path = trim($path, '/');
-        return url($path);
+        return Path::asset($path);
     }
+
 }
 
 if(!function_exists('url')) {
@@ -74,19 +74,9 @@ if(!function_exists('url')) {
      * @param string|null $path
      * @return string
      */
-    function url(?string $path): string
+    function url($path)
     {
-        $base = rtrim(path(), '/');
-        if (preg_match('/^\/+$/', $path)) {
-            return $base . '/';
-        }
-
-        // Remove dangerous patterns like ../, //, \\, etc.
-        $path = trim($path, '/');
-        $path = preg_replace('#(\.\./|//|\\\\)#', '', $path);
-        $path = filter_var($path, FILTER_SANITIZE_URL);
-
-        return $base . '/' . $path;
+        return Path::url($path);
     }
 }
 
@@ -97,17 +87,7 @@ if(!function_exists('path')) {
      */
     function path(): string
     {
-        // CLI fallback (e.g., Larite or PHPUnit)
-        if (php_sapi_name() === 'cli' || !isset($_SERVER['SERVER_NAME'])) {
-            return root_path;
-        }
-
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
-        $host = filter_var($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'], FILTER_SANITIZE_URL);
-        $scriptName = $_SERVER['SCRIPT_NAME'] ?? ''; // e.g. /project/index.php
-        $scriptDir = rtrim(str_replace(basename($scriptName), '', $scriptName), '/');
-
-        return rtrim($protocol . $host . $scriptDir, '/');
+        return Path::path();
     }
 
 }
@@ -115,24 +95,21 @@ if(!function_exists('path')) {
 if(!function_exists('full_path')) {
     function full_path()
     {
-        $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-        $withOutQs = explode('?',$actual_link);
-        return $withOutQs[0];
+        return Path::fullPath();
     }
 }
 
 if(!function_exists('base_path')) {
     function base_path(): string
     {
-        return defined('root_path') ? root_path : dirname(__DIR__, 1);
+        return Path::basePath();
     }
 }
 
 if(!function_exists('public_path')) {
     function public_path(?string $path = null): string
     {
-        $base = base_path() . DIRECTORY_SEPARATOR . 'public';
-        return is_null($path) ? $base : $base . DIRECTORY_SEPARATOR . $path;
+        return Path::publicPath($path);
     }
 }
 
@@ -181,9 +158,9 @@ if(!function_exists('response')) {
 
     /**
      * @param null $url
-     * @return Redirect|void
+     * @return Response
      */
-    function response()
+    function response(): Response
     {
         return new Response();
     }
@@ -271,15 +248,7 @@ if(!function_exists('include_html')) {
      */
     function include_html($path)
     {
-        $viewPath = root_path . '/views/' . $path;
-        if (!str_contains($path, '.php')) {
-            $viewPath .= '.php';
-        }
-        if (file_exists($viewPath)) {
-            include $viewPath;
-        } else {
-            throw new \Exception("Template not found: $path");
-        }
+        Path::includeHtml($path);
     }
 }
 
