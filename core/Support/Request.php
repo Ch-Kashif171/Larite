@@ -13,6 +13,37 @@ class Request
         $this->fields = $this->collectRequestFields();
     }
 
+    public function user(): ?stdClass
+    {
+        $user = Auth::user();
+        return $user === false ? null : $user;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function ip(): ?string
+    {
+        $keys = [
+            'HTTP_CLIENT_IP',
+            'HTTP_X_FORWARDED_FOR',
+            'REMOTE_ADDR',
+        ];
+
+        foreach ($keys as $key) {
+            if (!empty($_SERVER[$key])) {
+                $ip = $_SERVER[$key];
+                if ($key === 'HTTP_X_FORWARDED_FOR') {
+                    $ipList = explode(',', $ip);
+                    return trim($ipList[0]);
+                }
+                return $ip;
+            }
+        }
+
+        return null;
+    }
+
     // ------------------ Public API ------------------ //
 
     public function input(string $key): mixed

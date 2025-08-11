@@ -14,6 +14,7 @@ use Core\Support\Facades\Route;
 use Core\Support\LoadView;
 use Core\Support\ModelFactory;
 use Core\Support\Path;
+use Core\Support\Request;
 use Core\Support\Response;
 use Core\Support\NotFound;
 use Core\Support\Redirect;
@@ -918,4 +919,29 @@ if (!function_exists('singular')) {
     {
         return Str::plural($word);
     }
+}
+
+if (!function_exists('request')) {
+    /**
+     * Get the current Request instance or input item by key.
+     *
+     * @param string|null $key
+     * @param mixed|null $default
+     * @return mixed
+     */
+    function request(string $key = null, mixed $default = null): mixed
+    {
+        static $instance = null;
+
+        if ($instance === null) {
+            $instance = new Request();
+        }
+
+        if ($key === null) {
+            return $instance;
+        }
+
+        return $instance->input($key) ?? $default;
+    }
+
 }
