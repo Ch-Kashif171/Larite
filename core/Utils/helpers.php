@@ -125,15 +125,6 @@ if(!function_exists('view')) {
     {
         return LoadView::View($view, $datas, $loadHtml);
     }
-
-    /**
-     * @param $view
-     * @return mixed
-     */
-    function coreView($view)
-    {
-        return require_once(root_path . "/" . makeView($view) . ".php");
-    }
 }
 
 if(!function_exists('redirect')) {

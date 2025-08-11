@@ -141,6 +141,7 @@ class Application
 
     /**
      * @return bool
+     * @throws MiddlewareException
      */
     public function init(): bool
     {

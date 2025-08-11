@@ -6,7 +6,7 @@
         <h1 class="welcome-title">Welcome Home!</h1>
         <p class="subtitle">You are logged in to your Larite Home Page.<br>Start building your application or explore the documentation below.</p>
         <div class="home-actions" style="margin-top:32px;">
-            <a href="<?php echo url('documentation'); ?>" class="btn btn-outline-secondary" style="margin: 0 0 10px 0;">View Documentation</a>
+            <a href="https://larite.dev" class="btn btn-outline-secondary" style="margin: 0 0 10px 0;">View Documentation</a>
         </div>
     </div>
 </div>
