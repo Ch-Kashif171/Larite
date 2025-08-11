@@ -150,37 +150,64 @@ class Auth
     }
 
     /**
-     * @param $credentials
+     * @param array $credentials
      * @return array
      * @throws ErrorException
      */
-    private function getAuthTableFieldsSkipPassword($credentials)
+    private function getAuthTableFieldsSkipPassword(array $credentials): array
     {
-        self::initDB();
-        $query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '".$this->database."' AND TABLE_NAME = '".$this->table."' ";
-        $fields = $this->db->rawQuery($query);
-        if ($fields === false) {
-            $fields = [];
+        $this->initDB();
+
+        $columns = $this->getTableColumns($this->database, $this->table);
+
+        if (empty($columns)) {
+            throw new ErrorException("The table '{$this->table}' for authentication does not exist or cannot be accessed.");
         }
 
-        if(count($fields) > 0) {
-
-            $auth_fields = [];
-            $key = 0;
-            foreach ($fields as $field) {
-                if (!str_contains($field->COLUMN_NAME, 'password')) {
-                    if (isset($credentials[$field->COLUMN_NAME])) {
-                        $auth_fields[$field->COLUMN_NAME] = $credentials[$field->COLUMN_NAME];
-                    }
-
-                }
-                $key++;
-            }
-
-            return $auth_fields;
-        }
-
-        throw new ErrorException("The ". $this->table ." table for authentication is not exists.");
+        return $this->filterCredentialsByColumns($credentials, $columns);
     }
+
+    /**
+     * @param string $database
+     * @param string $table
+     * @return array
+     */
+    private function getTableColumns(string $database, string $table): array
+    {
+        // Sanitize inputs to avoid SQL injection
+        $dbSafe = preg_replace('/[^a-zA-Z0-9_]/', '', $database);
+        $tableSafe = preg_replace('/[^a-zA-Z0-9_]/', '', $table);
+
+        $query = "SELECT COLUMN_NAME 
+              FROM INFORMATION_SCHEMA.COLUMNS 
+              WHERE TABLE_SCHEMA = '{$dbSafe}' 
+                AND TABLE_NAME = '{$tableSafe}'";
+
+        $fields = $this->db->rawQuery($query);
+
+        return $fields ?: [];
+    }
+
+    /**
+     * @param array $credentials
+     * @param array $columns
+     * @return array
+     */
+    private function filterCredentialsByColumns(array $credentials, array $columns): array
+    {
+        $authFields = [];
+
+        foreach ($columns as $field) {
+            $columnName = $field->COLUMN_NAME;
+
+            // Skip columns containing 'password' (case-insensitive)
+            if (stripos($columnName, 'password') === false && array_key_exists($columnName, $credentials)) {
+                $authFields[$columnName] = $credentials[$columnName];
+            }
+        }
+
+        return $authFields;
+    }
+
 
 }

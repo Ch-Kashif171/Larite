@@ -3,6 +3,7 @@
 namespace Core\Support;
 
 use Exception;
+use stdClass;
 
 class Request
 {
