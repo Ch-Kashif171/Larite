@@ -1,6 +1,16 @@
 <?php
 
-define('root_path', dirname(__DIR__));
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    define('root_path', realpath(__DIR__ . '/../'));
+}
+// Attempt 2: else if `vendor/autoload.php` exists in current dir (index.php in root)
+elseif (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    define('root_path', realpath(__DIR__));
+}
+else {
+    // fallback: just use current dir (or throw error)
+    define('root_path', realpath(__DIR__));
+}
 
 /*
 |--------------------------------------------------------------------------

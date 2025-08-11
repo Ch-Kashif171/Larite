@@ -5,9 +5,6 @@ if (!defined('root_path')) {
     define('root_path', dirname(__DIR__));
 }
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
-
 use Core\Foundation\Application;
 
 /*
