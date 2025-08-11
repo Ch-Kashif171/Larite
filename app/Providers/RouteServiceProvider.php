@@ -12,6 +12,7 @@ class RouteServiceProvider
     {
         return [
             'routes/web.php',
+            'routes/api.php',
             // Add more route files here...
         ];
     }

@@ -3,6 +3,7 @@
 namespace Core\Support\Routing;
 
 use Closure;
+use Core\Support\Facades\Route;
 
 class RouteGroup
 {
@@ -19,6 +20,21 @@ class RouteGroup
         self::restorePreviousState($previousState);
         
         return $result;
+    }
+
+    /**
+     * @param $prefix
+     * @return Router
+     */
+    public static function applyPrefix($prefix): Router
+    {
+        $previousState = self::savePreviousState();
+        self::applyGroupConfig($prefix);
+
+
+        self::restorePreviousState($previousState);
+
+        return new Router();
     }
 
     /**

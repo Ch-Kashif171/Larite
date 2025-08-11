@@ -205,6 +205,33 @@ class Router
     }
 
     /**
+     * @param string $prefix
+     * @return RouteGroupBuilder
+     */
+    public static function prefix(string $prefix): RouteGroupBuilder
+    {
+        return new RouteGroupBuilder(['prefix' => $prefix]);
+    }
+
+    /**
+     * @param string $middleware
+     * @return RouteGroupBuilder
+     */
+    public static function middleware(string $middleware): RouteGroupBuilder
+    {
+        return new RouteGroupBuilder(['middleware' => $middleware]);
+    }
+
+    /**
+     * @param string $namespace
+     * @return RouteGroupBuilder
+     */
+    public static function namespace(string $namespace): RouteGroupBuilder
+    {
+        return new RouteGroupBuilder(['namespace' => $namespace]);
+    }
+
+    /**
      * @param array|null $disable
      * @return void
      */
