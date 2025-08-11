@@ -227,7 +227,7 @@ class QueryBuilder implements QueryBuilderInterface
      * @return bool
      * @throws ErrorException
      */
-    public function update($fields): bool
+    public function update(array $fields): mixed
     {
         return $this->doctrine->update($fields);
     }
@@ -252,10 +252,10 @@ class QueryBuilder implements QueryBuilderInterface
     }
 
     /**
-     * @param $attributes
+     * @param array $attributes
      * @return mixed
      */
-    public function create($attributes): mixed
+    public function create(array $attributes): mixed
     {
         return $this->doctrine->create($attributes);
     }

@@ -186,10 +186,10 @@ interface QueryBuilderInterface
     public function insertGetId($data);
 
     /**
-     * @param $fields
+     * @param array $fields
      * @return bool
      */
-    public function update($fields): bool;
+    public function update(array $fields): mixed;
 
     /**
      * @return bool
@@ -204,10 +204,10 @@ interface QueryBuilderInterface
     public function updateOrCreate($attributes, $values);
 
     /**
-     * @param $attributes
+     * @param array $attributes
      * @return mixed
      */
-    public function create($attributes);
+    public function create(array $attributes);
 
     /**
      * @param $column

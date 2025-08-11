@@ -10,7 +10,6 @@ trait Queries
 {
     public $con;
     protected $table;
-    public $statement;
     public $where_statement;
     public $where;
     public $fields;

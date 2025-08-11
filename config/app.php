@@ -52,7 +52,25 @@ return [
     */
     'timezone' => 'Asia/Karachi',
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default Auth Table
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the default auth table for your application authentication
+    */
+
     'table' => env('AUTH_TABLE', 'users'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Log Channel
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the log channels for your application logging
+    | e.g daily, single
+    */
 
     'log_channel' => env('LOG_CHANNEL') ?: 'single',
 ];
