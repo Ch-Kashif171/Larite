@@ -11,7 +11,7 @@ class RollbackMigrationCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('migration:rollback')
+            ->setName('migrate:rollback')
             ->setDescription('Rollback the last run migration.')
             ->setHelp('This command rolls back the last run migration.');
     }

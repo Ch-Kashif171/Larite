@@ -11,7 +11,7 @@ class MigrationCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('migration:migrate')
+            ->setName('migrate')
             ->setDescription('Run all pending migrations.')
             ->setHelp('This command runs all pending migrations.');
     }
