@@ -28,6 +28,55 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable
     }
 
     /**
+     * Filter the collection by a given key / operator / value.
+     *
+     * @param string $key
+     * @param mixed|null $operator
+     * @param mixed|null $value
+     * @return static
+     */
+    public function where(string $key, mixed $operator = null, mixed $value = null): static
+    {
+        // If only two args given, operator is '='
+        if (func_num_args() === 2) {
+            $value = $operator;
+            $operator = '=';
+        }
+
+        $operator = $this->normalizeOperator($operator);
+
+        $filtered = array_filter($this->items, function ($item) use ($key, $operator, $value) {
+            // Get the item value by key (support array or object)
+            $itemValue = is_array($item) ? ($item[$key] ?? null) : ($item->{$key} ?? null);
+
+            switch ($operator) {
+                case '=':
+                case '==':
+                    return $itemValue == $value;
+                case '!=':
+                case '<>':
+                    return $itemValue != $value;
+                case '<':
+                    return $itemValue < $value;
+                case '<=':
+                    return $itemValue <= $value;
+                case '>':
+                    return $itemValue > $value;
+                case '>=':
+                    return $itemValue >= $value;
+                case '===':
+                    return $itemValue === $value;
+                case '!==':
+                    return $itemValue !== $value;
+                default:
+                    throw new \InvalidArgumentException("Invalid operator '{$operator}' in where clause.");
+            }
+        });
+
+        return new static($filtered);
+    }
+
+    /**
      * @param callable $callback
      * @return $this
      */
@@ -399,6 +448,30 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable
 
     // For convenience
     public function all(): array { return $this->items; }
+
+    /**
+     * Normalize operator strings.
+     *
+     * @param string|null $operator
+     * @return string
+     */
+    private function normalizeOperator(?string $operator): string
+    {
+        $map = [
+            '='  => '=',
+            '==' => '=',
+            '!=' => '!=',
+            '<>' => '!=',
+            '<'  => '<',
+            '<=' => '<=',
+            '>'  => '>',
+            '>=' => '>=',
+            '===' => '===',
+            '!==' => '!==',
+        ];
+
+        return $map[$operator] ?? '=';
+    }
 
     /**
      * @param $value

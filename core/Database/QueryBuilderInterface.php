@@ -12,7 +12,7 @@ interface QueryBuilderInterface
      * @param $value
      * @return QueryBuilderInterface
      */
-    public function where($column, $operator, $value): QueryBuilderInterface;
+    public function where($column, $operator = null, $value = null): QueryBuilderInterface;
 
     /**
      * @param ...$fields

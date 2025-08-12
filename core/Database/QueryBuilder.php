@@ -37,10 +37,16 @@ class QueryBuilder implements QueryBuilderInterface
      * @param $value
      * @return QueryBuilderInterface
      */
-    public function where($column, $operator, $value): QueryBuilderInterface
+    public function where($column, $operator = null, $value = null): QueryBuilderInterface
     {
+        if (func_num_args() == 2) {
+            // only column and value passed, operator defaults to '='
+            $value = $operator;
+            $operator = '=';
+        }
+
         $this->doctrine = $this->doctrine->where($column, $operator, $value);
-        // Ensure modelClass is preserved
+
         return $this;
     }
 
@@ -148,8 +154,14 @@ class QueryBuilder implements QueryBuilderInterface
      * @param $value
      * @return QueryBuilderInterface
      */
-    public function orWhere($column, $operator, $value): QueryBuilderInterface
+    public function orWhere($column, $operator = null, $value = null): QueryBuilderInterface
     {
+        if (func_num_args() == 2) {
+            // only column and value passed, operator defaults to '='
+            $value = $operator;
+            $operator = '=';
+        }
+
         $this->doctrine = $this->doctrine->orWhere($column, $operator, $value);
         // Ensure modelClass is preserved
         return $this;

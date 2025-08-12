@@ -10,28 +10,28 @@ trait Clauses
 {
     /**
      * @param $column
-     * @param $condition
-     * @param $value
+     * @param null $operator
+     * @param null $value
      * @return QueryBuilderInterface
      * @throws DBException
      */
-    public static function where($column, $condition, $value): QueryBuilderInterface
+    public static function where($column, $operator = null, $value = null): QueryBuilderInterface
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->where($column, $condition, $value);
+        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->where(...func_get_args());
     }
 
     /**
      * @param $column
-     * @param $condition
-     * @param $value
+     * @param null $operator
+     * @param null $value
      * @return QueryBuilderInterface
      * @throws DBException
      */
-    public static function orWhere($column, $condition, $value): QueryBuilderInterface
+    public static function orWhere($column, $operator = null, $value = null): QueryBuilderInterface
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->orWhere($column, $condition, $value);
+        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->orWhere(...func_get_args());
     }
 
     /**

@@ -16,7 +16,9 @@ trait OrmMethods
      */
     public static function hydrate($data)
     {
-        if (is_null($data)) return null;
+        if (empty($data)) {
+            return null;
+        }
         $model = new static();
         foreach ((array)$data as $key => $value) {
             $model->$key = $value; // This will use __set and store in $attributes
