@@ -32,25 +32,6 @@ class QueryBuilder implements QueryBuilderInterface
     }
 
     /**
-     * @param $column
-     * @param $operator
-     * @param $value
-     * @return QueryBuilderInterface
-     */
-    public function where($column, $operator = null, $value = null): QueryBuilderInterface
-    {
-        if (func_num_args() == 2) {
-            // only column and value passed, operator defaults to '='
-            $value = $operator;
-            $operator = '=';
-        }
-
-        $this->doctrine = $this->doctrine->where($column, $operator, $value);
-
-        return $this;
-    }
-
-    /**
      * @param ...$fields
      * @return QueryBuilderInterface
      */
@@ -154,16 +135,52 @@ class QueryBuilder implements QueryBuilderInterface
      * @param $value
      * @return QueryBuilderInterface
      */
+    public function where($column, $operator = null, $value = null): QueryBuilderInterface
+    {
+        return $this->addWhere('where', ...func_get_args());
+    }
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param $value
+     * @return QueryBuilderInterface
+     */
     public function orWhere($column, $operator = null, $value = null): QueryBuilderInterface
     {
-        if (func_num_args() == 2) {
-            // only column and value passed, operator defaults to '='
+        return $this->addWhere('orWhere', ...func_get_args());
+    }
+
+    /**
+     * Handles both where and orWhere calls with flexible arguments.
+     * @param string $method 'where' or 'orWhere'
+     * @param mixed $column
+     * @param mixed|null $operator
+     * @param mixed|null $value
+     * @return QueryBuilderInterface
+     */
+    private function addWhere(string $method, mixed $column, mixed $operator = null, mixed $value = null): QueryBuilderInterface
+    {
+        if (is_array($column)) {
+            foreach ($column as $key => $val) {
+                if (is_array($val) && count($val) === 2) {
+                    [$op, $v] = $val;
+                    $this->doctrine = $this->doctrine->$method($key, $op, $v);
+                } else {
+                    $this->doctrine = $this->doctrine->$method($key, '=', $val);
+                }
+            }
+            return $this;
+        }
+
+        if (func_num_args() === 3) {
+            // Called with two params: where('id', 1)
             $value = $operator;
             $operator = '=';
         }
 
-        $this->doctrine = $this->doctrine->orWhere($column, $operator, $value);
-        // Ensure modelClass is preserved
+        $this->doctrine = $this->doctrine->$method($column, $operator, $value);
+
         return $this;
     }
 

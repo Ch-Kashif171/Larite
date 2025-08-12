@@ -132,7 +132,7 @@ interface QueryBuilderInterface
      * @param $value
      * @return QueryBuilderInterface
      */
-    public function orWhere($column, $operator, $value): QueryBuilderInterface;
+    public function orWhere($column, $operator = null, $value = null): QueryBuilderInterface;
 
     /**
      * @param $column

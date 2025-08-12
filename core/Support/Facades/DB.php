@@ -39,7 +39,7 @@ namespace Core\Support\Facades;
  * @method static \Core\Support\Facades\DB groupBy($fields)
  * @method static \Core\Support\Facades\DB take($take)
  * @method static \Core\Support\Facades\DB offset($offset)
- * @method static \Core\Support\Facades\DB where($column, $operator, $value)
+ * @method static \Core\Support\Facades\DB where($column, $operator = null, $value = null)
  * @method static \Core\Support\Facades\DB orWhere($column, $operator, $value)
  * @method static \Core\Support\Facades\DB whereIn($column, array $values)
  * @method static \Core\Support\Facades\DB whereNull($column)
