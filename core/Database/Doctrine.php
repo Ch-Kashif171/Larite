@@ -24,13 +24,22 @@ class Doctrine
      * @return mixed
      * @throws ErrorException
      */
-    public function first()
+    public function first($timestamp = [])
     {
         if (empty($this->fields)) {
             $columns = '*';
         } else {
             $columns = $this->fields;
         }
+
+        // skip the timestamp if false in model
+        $columns = Timestamp::withoutTimestamps(
+            $this->table,
+            $this->con,
+            [$columns],
+            $timestamp
+        );
+
         $limitClause = $this->limit ?: '';
         $offsetClause = $this->offset ?: '';
         $sql = $this->selectStatement($columns)
@@ -48,16 +57,25 @@ class Doctrine
 
     /**
      * @param $id
+     * @param array $timestamp
      * @return mixed
-     * @throws ErrorException
      */
-    public function find($id)
+    public function find($id, array $timestamp = [])
     {
         if (empty($this->fields)) {
             $columns = '*';
         } else {
             $columns = $this->fields;
         }
+
+        // skip the timestamp if false in model
+        $columns = Timestamp::withoutTimestamps(
+            $this->table,
+            $this->con,
+            [$columns],
+            $timestamp
+        );
+
         $sql = $this->selectStatement($columns)
             . $this->joins
             . $this->groupBy
@@ -71,9 +89,9 @@ class Doctrine
         return $this->result;
     }
 
-    public function findOrFail($id)
+    public function findOrFail($id, $timestamp = [])
     {
-        $record = $this->find($id);
+        $record = $this->find($id, $timestamp);
 
         if (!$record) {
             throw new \Exception("Record not found with ID: $id", 404);
@@ -87,13 +105,22 @@ class Doctrine
      * @return array|false
      * @throws ErrorException
      */
-    public function get()
+    public function get($timestamp = [])
     {
         if (empty($this->fields)) {
             $columns = '*';
         } else {
             $columns = $this->fields;
         }
+
+        // skip the timestamp if false in model
+        $columns = Timestamp::withoutTimestamps(
+            $this->table,
+            $this->con,
+            [$columns],
+            $timestamp
+        );
+
         $limitClause = $this->limit ?: '';
         $offsetClause = $this->offset ?: '';
         $sql = $this->selectStatement($columns)
@@ -215,7 +242,7 @@ class Doctrine
      * @return bool
      * @throws ErrorException
      */
-    public function insert($data)
+    public function insert($data): bool
     {
         $fields = '`' . implode('`, `', array_keys($data)) . '`';
         $placeholders = ':' . implode(', :', array_keys($data));
@@ -232,8 +259,9 @@ class Doctrine
     /**
      * @param $data
      * @return string
+     * @throws ErrorException
      */
-    public function insertGetId($data)
+    public function insertGetId($data): string
     {
         $fields = '`' . implode('`, `', array_keys($data)) . '`';
         $placeholders = ':' . implode(', :', array_keys($data));
@@ -252,24 +280,35 @@ class Doctrine
     /**
      * @param $fields
      * @return Doctrine
+     * @throws \Core\Exception\Handlers\DBException
      */
     public function select()
     {
         $fields = func_get_args();
+
+        // Flatten if first argument is an array
+        if (count($fields) === 1 && is_array($fields[0])) {
+            $fields = $fields[0];
+        }
+
         // Convert 'table*' to 'table.*'
         foreach ($fields as &$field) {
             if (preg_match('/^([a-zA-Z0-9_]+)\*$/', $field, $matches)) {
                 $field = $matches[1] . '.*';
             }
         }
+
         unset($field);
+
         $this->fields = implode(',', $fields);
-        return new Doctrine($this->table);
+
+        return $this;
     }
 
     /**
      * @param $fields
      * @return bool
+     * @throws ErrorException
      */
     public function update($fields)
     {
@@ -506,9 +545,10 @@ class Doctrine
 
     /**
      * @param $limit
+     * @param array $timestamp
      * @return array
      */
-    public function paginate($limit)
+    public function paginate($limit, array $timestamp = [])
     {
         $pagination = [];
 
@@ -541,6 +581,15 @@ class Doctrine
         } else {
             $columns = $this->fields;
         }
+
+        // skip the timestamp if false in model
+        $columns = Timestamp::withoutTimestamps(
+            $this->table,
+            $this->con,
+            [$columns],
+            $timestamp
+        );
+
         $sql = "SELECT {$columns} FROM {$this->table}"
             . $this->joins
             . $this->wheres
@@ -572,9 +621,9 @@ class Doctrine
         return $pagination;
     }
 
-    public function simplePaginate($limit)
+    public function simplePaginate($limit, $timestamp = [])
     {
-        $pagination['simple'] = $this->paginate($limit);
+        $pagination['simple'] = $this->paginate($limit, $timestamp);
         return $pagination;
 
     }
@@ -643,9 +692,9 @@ class Doctrine
      * @return mixed
      * @throws Exception
      */
-    public function firstOrFail()
+    public function firstOrFail($timestamp = [])
     {
-        $result = $this->first();
+        $result = $this->first($timestamp);
         if (!$result) {
             throw new Exception("No record found.");
         }
@@ -656,6 +705,7 @@ class Doctrine
      * Create a new record and return it.
      * @param array $data
      * @return mixed
+     * @throws ErrorException
      */
     public function create(array $data)
     {
@@ -668,21 +718,27 @@ class Doctrine
      * @param array $attributes
      * @param array $values
      * @return mixed
+     * @throws ErrorException
      */
-    public function updateOrCreate(array $attributes, array $values)
+    public function updateOrCreate(array $attributes, array $values): mixed
     {
-        $query = $this;
+        // Find existing record based on attributes
+        $record = $this;
         foreach ($attributes as $key => $value) {
-            $query = $query->where($key, '=', $value);
+            $record = $record->where($key, '=', $value);
         }
-        $record = $query->first();
+        $record = $record->first();
+
         if ($record) {
+            unset($values['created_at']); // Prevent overwriting created_at
             $this->update($values);
             return $this->find($record->id);
-        } else {
-            return $this->create(array_merge($attributes, $values));
         }
+
+        unset($attributes['id']); // Never manually insert primary key
+        return $this->create($attributes + $values);
     }
+
 
     /**
      * Add a whereIn clause to the query.

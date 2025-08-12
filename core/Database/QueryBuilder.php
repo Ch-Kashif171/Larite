@@ -18,22 +18,27 @@ class QueryBuilder implements QueryBuilderInterface
     protected $hidden = [];
     protected $modelClass;
     protected array $with = [];
+    protected bool $isTimestamp = false;
+
     /**
      * @param $table
-     * @param $hidden
-     * @param $modelClass
+     * @param null $hidden
+     * @param null $modelClass
+     * @param bool $isTimestamp
      * @throws DBException
      */
-    public function __construct($table, $hidden = null, $modelClass = null)
+    public function __construct($table, $hidden = null, $modelClass = null, bool $isTimestamp = false)
     {
         $this->doctrine = new Doctrine($table);
         $this->hidden = $hidden;
         $this->modelClass = $modelClass;
+        $this->isTimestamp = $isTimestamp;
     }
 
     /**
      * @param ...$fields
      * @return QueryBuilderInterface
+     * @throws DBException
      */
     public function select(...$fields): QueryBuilderInterface
     {
@@ -238,6 +243,9 @@ class QueryBuilder implements QueryBuilderInterface
      */
     public function insert($data): bool
     {
+        // add timestamp in case of orm
+        $data = Timestamp::addTimeStamp($data, $this->modelClass ?? null);
+
         return $this->doctrine->insert($data);
     }
 
@@ -248,6 +256,9 @@ class QueryBuilder implements QueryBuilderInterface
      */
     public function insertGetId($data)
     {
+        // add timestamp in case of orm
+        $data = Timestamp::addTimeStamp($data, $this->modelClass ?? null);
+
         return $this->doctrine->insertGetId($data);
     }
 
@@ -258,6 +269,9 @@ class QueryBuilder implements QueryBuilderInterface
      */
     public function update(array $fields): mixed
     {
+        // update timestamp in case of orm
+        $fields = Timestamp::updateTimeStamp($fields, $this->modelClass ?? null);
+
         return $this->doctrine->update($fields);
     }
 
@@ -274,18 +288,26 @@ class QueryBuilder implements QueryBuilderInterface
      * @param $attributes
      * @param $values
      * @return mixed
+     * @throws ErrorException
      */
     public function updateOrCreate($attributes, $values): mixed
     {
+        // add timestamp in case of orm
+        $values = Timestamp::addTimeStamp($values, $this->modelClass ?? null);
+
         return $this->doctrine->updateOrCreate($attributes, $values);
     }
 
     /**
      * @param array $attributes
      * @return mixed
+     * @throws ErrorException
      */
     public function create(array $attributes): mixed
     {
+        // add timestamp in case of orm
+        $attributes = Timestamp::addTimeStamp($attributes, $this->modelClass ?? null);
+
         return $this->doctrine->create($attributes);
     }
 

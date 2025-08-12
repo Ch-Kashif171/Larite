@@ -4,6 +4,7 @@ namespace Core\Support\Traits\Internal;
 
 use Core\Database\Connection\Database;
 use Core\Database\Doctrine;
+use Core\Exception\Handlers\DBException;
 use Whoops\Exception\ErrorException;
 
 trait Queries
@@ -17,7 +18,7 @@ trait Queries
     public $exception;
 
     /**
-     * @throws \Core\Exception\Handlers\DBException
+     * @throws DBException
      */
     public function __construct($table = null)
     {

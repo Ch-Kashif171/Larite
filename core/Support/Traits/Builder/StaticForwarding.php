@@ -3,9 +3,16 @@
 namespace Core\Support\Traits\Builder;
 
 use Core\Database\QueryBuilder;
+use Core\Exception\Handlers\DBException;
 
 trait StaticForwarding
 {
+    /**
+     * @param $method
+     * @param $parameters
+     * @return mixed
+     * @throws DBException
+     */
     public static function __callStatic($method, $parameters)
     {
         $instance = new static();

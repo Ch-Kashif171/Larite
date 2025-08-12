@@ -2,6 +2,7 @@
 
 namespace Core\Support\Traits\Builder;
 
+use Core\Database\Timestamp;
 use Core\Support\Collection\Collection;
 
 trait Getters
@@ -23,7 +24,10 @@ trait Getters
      */
     public function get(): array|Collection
     {
-        return $this->wrapMultiple(fn() => $this->doctrine->get());
+        // skip timestamp
+        $timestamp = Timestamp::timestamp($this->modelClass ?? null);
+
+        return $this->wrapMultiple(fn() => $this->doctrine->get($timestamp));
     }
 
     /**
@@ -32,7 +36,10 @@ trait Getters
      */
     public function first()
     {
-        return $this->wrapSingle(fn() => $this->doctrine->first());
+        // skip timestamp
+        $timestamp = Timestamp::timestamp($this->modelClass ?? null);
+
+        return $this->wrapSingle(fn() => $this->doctrine->first($timestamp));
     }
 
     /**
@@ -51,12 +58,18 @@ trait Getters
      */
     public function find($id)
     {
-        return $this->wrapSingle(fn() => $this->doctrine->find($id));
+        // skip timestamp
+        $timestamp = Timestamp::timestamp($this->modelClass ?? null);
+
+        return $this->wrapSingle(fn() => $this->doctrine->find($id, $timestamp));
     }
 
     public function findOrFail($id)
     {
-        return $this->wrapSingle(fn() => $this->doctrine->findOrFail($id));
+        // skip timestamp
+        $timestamp = Timestamp::timestamp($this->modelClass ?? null);
+
+        return $this->wrapSingle(fn() => $this->doctrine->findOrFail($id, $timestamp));
     }
 
     /**
@@ -65,7 +78,10 @@ trait Getters
      */
     public function firstOrFail()
     {
-        return $this->wrapSingle(fn() => $this->doctrine->firstOrFail());
+        // skip timestamp
+        $timestamp = Timestamp::timestamp($this->modelClass ?? null);
+
+        return $this->wrapSingle(fn() => $this->doctrine->firstOrFail($timestamp));
     }
 
     /**
@@ -74,7 +90,10 @@ trait Getters
      */
     public function paginate($limit)
     {
-        return $this->wrapPaginate(fn() => $this->doctrine->paginate($limit));
+        // skip timestamp
+        $timestamp = Timestamp::timestamp($this->modelClass ?? null);
+
+        return $this->wrapPaginate(fn() => $this->doctrine->paginate($limit, $timestamp));
     }
 
     /**
@@ -83,7 +102,10 @@ trait Getters
      */
     public function simplePaginate($limit): array
     {
-        return $this->wrapSimplePaginate(fn() => $this->doctrine->simplePaginate($limit));
+        // skip timestamp
+        $timestamp = Timestamp::timestamp($this->modelClass ?? null);
+
+        return $this->wrapSimplePaginate(fn() => $this->doctrine->simplePaginate($limit, $timestamp));
     }
 
 }
