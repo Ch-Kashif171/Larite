@@ -49,28 +49,17 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable
             // Get the item value by key (support array or object)
             $itemValue = is_array($item) ? ($item[$key] ?? null) : ($item->{$key} ?? null);
 
-            switch ($operator) {
-                case '=':
-                case '==':
-                    return $itemValue == $value;
-                case '!=':
-                case '<>':
-                    return $itemValue != $value;
-                case '<':
-                    return $itemValue < $value;
-                case '<=':
-                    return $itemValue <= $value;
-                case '>':
-                    return $itemValue > $value;
-                case '>=':
-                    return $itemValue >= $value;
-                case '===':
-                    return $itemValue === $value;
-                case '!==':
-                    return $itemValue !== $value;
-                default:
-                    throw new \InvalidArgumentException("Invalid operator '{$operator}' in where clause.");
-            }
+            return match ($operator) {
+                '=', '==' => $itemValue == $value,
+                '!=', '<>' => $itemValue != $value,
+                '<' => $itemValue < $value,
+                '<=' => $itemValue <= $value,
+                '>' => $itemValue > $value,
+                '>=' => $itemValue >= $value,
+                '===' => $itemValue === $value,
+                '!==' => $itemValue !== $value,
+                default => throw new \InvalidArgumentException("Invalid operator '{$operator}' in where clause."),
+            };
         });
 
         return new static($filtered);
