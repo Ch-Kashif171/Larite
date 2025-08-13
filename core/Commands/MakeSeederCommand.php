@@ -29,14 +29,14 @@ class MakeSeederCommand extends Command
             mkdir($path, 0755, true);
         }
 
-        $filePath = root_path . '/'.Constants::SEEDER_DIR.'/' . $fileName;
+        $filePath = ROOT_PATH . '/'.Constants::SEEDER_DIR.'/' . $fileName;
 
         if (file_exists($filePath)) {
             $output->writeln("<error>Seeder '{$className}' already exists!</error>");
             return Command::FAILURE;
         }
 
-        $stubPath = root_path . '/core/Templates/Seeders/SeederTemplate.php';
+        $stubPath = ROOT_PATH . '/core/Templates/Seeders/SeederTemplate.php';
 
         if (!file_exists($stubPath)) {
             $output->writeln("<error>Stub file 'Seeders/SeederTemplates.php' not found.</error>");

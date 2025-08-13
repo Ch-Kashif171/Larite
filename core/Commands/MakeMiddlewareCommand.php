@@ -36,7 +36,7 @@ class MakeMiddlewareCommand extends Command
             return Command::FAILURE;
         }
 
-        $stubPath = root_path . '/core/Templates/Middleware/MiddlewareTemplate.php';
+        $stubPath = ROOT_PATH . '/core/Templates/Middleware/MiddlewareTemplate.php';
 
         if (!file_exists($stubPath)) {
             $output->writeln("<error>Stub file 'MiddlewareTemplate.php' not found at ".Constants::MIDDLEWARE_DIR.".</error>");

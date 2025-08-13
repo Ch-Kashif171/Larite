@@ -1,15 +1,15 @@
 <?php
 
 if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
-    define('root_path', realpath(__DIR__ . '/../'));
+    define('ROOT_PATH', realpath(__DIR__ . '/../'));
 }
 // Attempt 2: else if `vendor/autoload.php` exists in current dir (index.php in root)
 elseif (file_exists(__DIR__ . '/vendor/autoload.php')) {
-    define('root_path', realpath(__DIR__));
+    define('ROOT_PATH', realpath(__DIR__));
 }
 else {
     // fallback: just use current dir (or throw error)
-    define('root_path', realpath(__DIR__));
+    define('ROOT_PATH', realpath(__DIR__));
 }
 
 /*
@@ -23,7 +23,7 @@ else {
 |
 */
 
-require_once root_path . '/vendor/autoload.php';
+require_once ROOT_PATH . '/vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +36,7 @@ require_once root_path . '/vendor/autoload.php';
 |
 */
 
-$app = require_once root_path . '/bootstrap/app.php';
+$app = require_once ROOT_PATH . '/bootstrap/app.php';
 
 /*
 |--------------------------------------------------------------------------

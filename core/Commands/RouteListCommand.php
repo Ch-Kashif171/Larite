@@ -69,8 +69,8 @@ class RouteListCommand extends Command
         $routeFiles = RouteServiceProvider::register();
 
         foreach ($routeFiles as $file) {
-            if (file_exists(root_path . '/' . $file)) {
-                require_once root_path . '/' . $file;
+            if (file_exists(ROOT_PATH . '/' . $file)) {
+                require_once ROOT_PATH . '/' . $file;
             }
         }
     }

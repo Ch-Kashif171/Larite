@@ -6,7 +6,7 @@ namespace Core\Generators;
 use Core\Support\Constants;
 use Core\Support\Facades\DB;
 
-define('ROOT_PATH', defined('root_path') ? root_path : dirname(__DIR__, 2));
+define('ROOT_PATH', defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 2));
 
 class Generator
 {

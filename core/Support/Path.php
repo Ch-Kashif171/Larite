@@ -13,7 +13,7 @@ class Path
 
         $publicDir = self::getPublicDirName();
 
-        $rootFs    = rtrim(root_path, DIRECTORY_SEPARATOR);
+        $rootFs    = rtrim(ROOT_PATH, DIRECTORY_SEPARATOR);
         $publicFs  = $rootFs . DIRECTORY_SEPARATOR . $publicDir . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $path);
         $directFs  = $rootFs . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $path);
 
@@ -69,7 +69,7 @@ class Path
      */
     public static function basePath(): string
     {
-        return defined('root_path') ? root_path : dirname(__DIR__, 1);
+        return defined('ROOT_PATH') ? ROOT_PATH : dirname(__DIR__, 1);
     }
 
     /**
@@ -88,7 +88,7 @@ class Path
     public static function path(): string
     {
         if (php_sapi_name() === 'cli' || !isset($_SERVER['SERVER_NAME'])) {
-            return root_path;
+            return ROOT_PATH;
         }
 
         $protocol   = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
@@ -115,7 +115,7 @@ class Path
      */
     public static function includeHtml(string $path): void
     {
-        $viewPath = root_path . '/views/' . (str_ends_with($path, '.php') ? $path : "$path.php");
+        $viewPath = ROOT_PATH . '/views/' . (str_ends_with($path, '.php') ? $path : "$path.php");
 
         if (file_exists($viewPath)) {
             include_once $viewPath;

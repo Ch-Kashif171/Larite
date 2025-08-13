@@ -56,7 +56,7 @@ class Log
      */
     protected static function getLogFile($logChannel): string
     {
-        $logDir = root_path . '/storage/logs/';
+        $logDir = ROOT_PATH . '/storage/logs/';
         if ($logChannel === 'daily') {
             $date = date('Y-m-d');
             return $logDir . "Larite-{$date}.log";

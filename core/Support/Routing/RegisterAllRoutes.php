@@ -15,7 +15,7 @@ class RegisterAllRoutes
     {
         $routeFiles = RouteServiceProvider::register();
         foreach ($routeFiles as $file) {
-            require_once root_path . '/' . $file;
+            require_once ROOT_PATH . '/' . $file;
         }
     }
 } 

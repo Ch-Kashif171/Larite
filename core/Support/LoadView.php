@@ -29,14 +29,14 @@ class LoadView
              * Loading view for pdf etc
              */
             ob_start();
-            require_once(root_path . "/views/" . makeView($view) . ".php");
+            require_once(ROOT_PATH . "/views/" . makeView($view) . ".php");
             $res = ob_get_contents();
             ob_end_clean();
 
             return $res;
         }
 
-        return require_once(root_path . "/views/" . makeView($view) . ".php");
+        return require_once(ROOT_PATH . "/views/" . makeView($view) . ".php");
     }
 
 

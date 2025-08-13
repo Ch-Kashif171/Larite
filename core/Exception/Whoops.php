@@ -13,7 +13,7 @@ class Whoops
         $whoops = new Run;
         $handler = new PrettyPageHandler;
         $handler->setEditor('vscode');
-        $handler->setApplicationRootPath(root_path);
+        $handler->setApplicationRootPath(ROOT_PATH);
         $handler->setPageTitle("Larite Exception - Something went wrong!");
         $handler->addDataTable('Environment', $_ENV);
         $handler->addDataTable('Server', $_SERVER);
@@ -21,7 +21,7 @@ class Whoops
         $handler->addDataTable('Session', isset($_SESSION) ? $_SESSION : []);
         $handler->addDataTable('Cookies', $_COOKIE);
 
-        $logFile = root_path . '/storage/logs/Larite.log';
+        $logFile = ROOT_PATH . '/storage/logs/Larite.log';
         if (file_exists($logFile)) {
             $lines = @file($logFile);
             $recent = $lines ? array_slice($lines, -20) : [];

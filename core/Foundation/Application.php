@@ -125,18 +125,18 @@ class Application
      */
     protected function registerSingletons(): void
     {
-        $this->singleton('dotenv', LoadEnv::class, [root_path]);
+        $this->singleton('dotenv', LoadEnv::class, [ROOT_PATH]);
         $this->singleton('whoops', [Whoops::class, 'handler']);
         $this->singleton('assetsNotFound', [AssetsNotFound::class, 'run']);
         // Add more singletons here as needed
     }
 
     /**
-     * Helper to include a file from root_path.
+     * Helper to include a file from ROOT_PATH.
      */
     protected function includeFile(string $path): void
     {
-        require_once root_path . $path;
+        require_once ROOT_PATH . $path;
     }
 
     /**
@@ -164,7 +164,7 @@ class Application
 
         // If no route matched, handle 404
         if (!$routeMatched) {
-            require_once root_path . $this->notFound['routeExist'];
+            require_once ROOT_PATH . $this->notFound['routeExist'];
         }
 
         return true;
@@ -176,7 +176,7 @@ class Application
     protected function includeFiles()
     {
         foreach ($this->includes as $file) {
-            require_once root_path . $file;
+            require_once ROOT_PATH . $file;
         }
     }
 

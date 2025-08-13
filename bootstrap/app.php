@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-if (!defined('root_path')) {
-    define('root_path', dirname(__DIR__));
+if (!defined('ROOT_PATH')) {
+    define('ROOT_PATH', dirname(__DIR__));
 }
 
 use Core\Foundation\Application;

@@ -5,7 +5,7 @@ use Core\Commands\Executor\Commander;
 use Core\Foundation\Application as App;
 use Symfony\Component\Console\Application;
 
-const root_path = __DIR__;
+const ROOT_PATH = __DIR__;
 
 /*
 |--------------------------------------------------------------------------

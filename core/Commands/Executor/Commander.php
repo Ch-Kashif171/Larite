@@ -93,7 +93,7 @@ class Commander
      */
     private function loadEnv()
     {
-        $dotenv = new Dotenv(root_path);
+        $dotenv = new Dotenv(ROOT_PATH);
         $dotenv->load();
     }
 }

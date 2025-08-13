@@ -43,7 +43,7 @@ class MakeCommandCommand extends Command
             return Command::FAILURE;
         }
 
-        $stubPath = root_path . '/core/Templates/Console/CommandTemplate.php';
+        $stubPath = ROOT_PATH . '/core/Templates/Console/CommandTemplate.php';
 
         if (!file_exists($stubPath)) {
             $output->writeln("<error>file not found at core/Templates/Console/CommandTemplate.php</error>");

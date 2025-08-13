@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
-if (!defined('root_path')) {
+if (!defined('ROOT_PATH')) {
     // Always resolve to the project root, even if called from public/index.php
-    define('root_path', dirname(__DIR__, 2));
+    define('ROOT_PATH', dirname(__DIR__, 2));
 }
 
 use App\Providers\RouteServiceProvider;
@@ -808,7 +808,7 @@ if (!function_exists('config')) {
         $file = $parts[0];
         $path = $parts[1] ?? null;
 
-        $configPath = root_path . "/config/{$file}.php"; // Use project root for config files
+        $configPath = ROOT_PATH . "/config/{$file}.php"; // Use project root for config files
 
         // Load and cache config file
         if (!isset($configs[$file])) {
