@@ -2,8 +2,8 @@
 
 namespace Core\Support\Traits\Builder;
 
+use Core\Database\Contracts\QueryBuilderContract;
 use Core\Database\QueryBuilder;
-use Core\Database\QueryBuilderInterface;
 use Core\Exception\Handlers\DBException;
 use Whoops\Exception\ErrorException;
 
@@ -11,10 +11,10 @@ trait Statements
 {
     /**
      * @param string $column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      * @throws DBException
      */
-    public static function latest(string $column = 'created_at'): QueryBuilderInterface
+    public static function latest(string $column = 'created_at'): QueryBuilderContract
     {
         $instance = new static();
         return (new QueryBuilder($instance->table, $instance->hidden, static::class))->latest($column);
@@ -22,10 +22,10 @@ trait Statements
 
     /**
      * @param string $column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      * @throws DBException
      */
-    public static function oldest(string $column = 'created_at'): QueryBuilderInterface
+    public static function oldest(string $column = 'created_at'): QueryBuilderContract
     {
         $instance = new static();
         return (new QueryBuilder($instance->table, $instance->hidden, static::class))->oldest($column);
@@ -57,10 +57,10 @@ trait Statements
 
     /**
      * @param ...$fields
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      * @throws DBException
      */
-    public static function select(...$fields): QueryBuilderInterface
+    public static function select(...$fields): QueryBuilderContract
     {
         $instance = new static();
         return (new QueryBuilder($instance->table, $instance->hidden, static::class))->select(...$fields);

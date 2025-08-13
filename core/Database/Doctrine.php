@@ -526,6 +526,40 @@ class Doctrine
     }
 
     /**
+     * @param string $column
+     * @param string $operator
+     * @param int $month
+     * @return $this
+     */
+    public function whereMonth(string $column, string $operator, int $month): self
+    {
+        $escapedValue = (int) $month;
+        if ($this->wheres === '') {
+            $this->wheres = " WHERE MONTH({$column}) {$operator} {$escapedValue} ";
+        } else {
+            $this->wheres .= " AND MONTH({$column}) {$operator} {$escapedValue} ";
+        }
+        return $this;
+    }
+
+    /**
+     * @param string $column
+     * @param string $operator
+     * @param int $year
+     * @return $this
+     */
+    public function whereYear(string $column, string $operator, int $year): self
+    {
+        $escapedValue = (int) $year;
+        if ($this->wheres === '') {
+            $this->wheres = " WHERE YEAR({$column}) {$operator} {$escapedValue} ";
+        } else {
+            $this->wheres .= " AND YEAR({$column}) {$operator} {$escapedValue} ";
+        }
+        return $this;
+    }
+
+    /**
      * @param $column
      * @param array $values
      * @return $this

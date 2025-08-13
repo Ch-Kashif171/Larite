@@ -2,8 +2,8 @@
 
 namespace Core\Support\Traits\Builder;
 
+use Core\Database\Contracts\QueryBuilderContract;
 use Core\Database\QueryBuilder;
-use Core\Database\QueryBuilderInterface;
 use Core\Exception\Handlers\DBException;
 
 trait Joins
@@ -13,10 +13,10 @@ trait Joins
      * @param $column
      * @param $equal
      * @param $second_column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      * @throws DBException
      */
-    public static function join($table, $column, $equal, $second_column): QueryBuilderInterface
+    public static function join($table, $column, $equal, $second_column): QueryBuilderContract
     {
         $instance = new static();
         return (new QueryBuilder($instance->table, $instance->hidden))->join($table, $column, $equal, $second_column);
@@ -27,10 +27,10 @@ trait Joins
      * @param $column
      * @param $equal
      * @param $second_column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      * @throws DBException
      */
-    public static function leftJoin($table, $column, $equal, $second_column): QueryBuilderInterface
+    public static function leftJoin($table, $column, $equal, $second_column): QueryBuilderContract
     {
         $instance = new static();
         return (new QueryBuilder($instance->table, $instance->hidden))->leftJoin($table, $column, $equal, $second_column);
@@ -41,10 +41,10 @@ trait Joins
      * @param $column
      * @param $equal
      * @param $second_column
-     * @return QueryBuilderInterface
+     * @return \Core\Database\Contracts\QueryBuilderContract
      * @throws DBException
      */
-    public static function rightJoin($table, $column, $equal, $second_column): QueryBuilderInterface
+    public static function rightJoin($table, $column, $equal, $second_column): QueryBuilderContract
     {
         $instance = new static();
         return (new QueryBuilder($instance->table, $instance->hidden))->rightJoin($table, $column, $equal, $second_column);
@@ -55,10 +55,10 @@ trait Joins
      * @param $column
      * @param $equal
      * @param $second_column
-     * @return QueryBuilderInterface
+     * @return \Core\Database\Contracts\QueryBuilderContract
      * @throws DBException
      */
-    public static function fullOuterJoin($table, $column, $equal, $second_column): QueryBuilderInterface
+    public static function fullOuterJoin($table, $column, $equal, $second_column): QueryBuilderContract
     {
         $instance = new static();
         return (new QueryBuilder($instance->table, $instance->hidden))->fullOuterJoin($table, $column, $equal, $second_column);

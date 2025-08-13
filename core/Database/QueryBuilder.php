@@ -3,6 +3,7 @@
 namespace Core\Database;
 
 
+use Core\Database\Contracts\QueryBuilderContract;
 use Core\Exception\Handlers\DBException;
 use Core\Support\Constants;
 use Core\Support\Traits\Builder\Aggregators;
@@ -11,7 +12,7 @@ use Core\Support\Traits\Builder\Getters;
 use Core\Support\Traits\Builder\MakeResult;
 use Whoops\Exception\ErrorException;
 
-class QueryBuilder implements QueryBuilderInterface
+class QueryBuilder implements QueryBuilderContract
 {
     use MakeResult, Getters, Aggregators, EagerLoading;
 
@@ -38,10 +39,10 @@ class QueryBuilder implements QueryBuilderInterface
 
     /**
      * @param ...$fields
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      * @throws DBException
      */
-    public function select(...$fields): QueryBuilderInterface
+    public function select(...$fields): QueryBuilderContract
     {
         $this->doctrine = $this->doctrine->select(...$fields);
         // Ensure modelClass is preserved
@@ -51,9 +52,9 @@ class QueryBuilder implements QueryBuilderInterface
     /**
      * @param $field
      * @param string $order
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function orderBy($field, string $order = 'ASC'): QueryBuilderInterface
+    public function orderBy($field, string $order = 'ASC'): QueryBuilderContract
     {
         $this->doctrine = $this->doctrine->orderBy($field, $order);
         // Ensure modelClass is preserved
@@ -62,9 +63,9 @@ class QueryBuilder implements QueryBuilderInterface
 
     /**
      * @param $field
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function orderByDesc($field): QueryBuilderInterface
+    public function orderByDesc($field): QueryBuilderContract
     {
         $this->doctrine = $this->doctrine->orderByDesc($field);
         // Ensure modelClass is preserved
@@ -73,9 +74,9 @@ class QueryBuilder implements QueryBuilderInterface
 
     /**
      * @param $limit
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function limit($limit): QueryBuilderInterface
+    public function limit($limit): QueryBuilderContract
     {
         $this->doctrine = $this->doctrine->limit($limit);
         // Ensure modelClass is preserved
@@ -84,9 +85,9 @@ class QueryBuilder implements QueryBuilderInterface
 
     /**
      * @param $column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function latest($column): QueryBuilderInterface
+    public function latest($column): QueryBuilderContract
     {
         $this->doctrine = $this->doctrine->orderByDesc($column);
         return $this;
@@ -94,9 +95,9 @@ class QueryBuilder implements QueryBuilderInterface
 
     /**
      * @param $column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function oldest($column): QueryBuilderInterface
+    public function oldest($column): QueryBuilderContract
     {
         $this->doctrine = $this->doctrine->orderBy($column);
         return $this;
@@ -104,9 +105,9 @@ class QueryBuilder implements QueryBuilderInterface
 
     /**
      * @param $fields
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function groupBy($fields): QueryBuilderInterface
+    public function groupBy($fields): QueryBuilderContract
     {
         $this->doctrine = $this->doctrine->groupBy($fields);
         // Ensure modelClass is preserved
@@ -115,9 +116,9 @@ class QueryBuilder implements QueryBuilderInterface
 
     /**
      * @param $take
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function take($take): QueryBuilderInterface
+    public function take($take): QueryBuilderContract
     {
         $this->doctrine = $this->doctrine->take($take);
         // Ensure modelClass is preserved
@@ -126,9 +127,9 @@ class QueryBuilder implements QueryBuilderInterface
 
     /**
      * @param $offset
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function offset($offset): QueryBuilderInterface
+    public function offset($offset): QueryBuilderContract
     {
         $this->doctrine = $this->doctrine->offset($offset);
         // Ensure modelClass is preserved
@@ -139,9 +140,9 @@ class QueryBuilder implements QueryBuilderInterface
      * @param $column
      * @param $operator
      * @param $value
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function where($column, $operator = null, $value = null): QueryBuilderInterface
+    public function where($column, $operator = null, $value = null): QueryBuilderContract
     {
         return $this->addWhere('where', ...func_get_args());
     }
@@ -150,9 +151,9 @@ class QueryBuilder implements QueryBuilderInterface
      * @param $column
      * @param $operator
      * @param $value
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function orWhere($column, $operator = null, $value = null): QueryBuilderInterface
+    public function orWhere($column, $operator = null, $value = null): QueryBuilderContract
     {
         return $this->addWhere('orWhere', ...func_get_args());
     }
@@ -160,9 +161,9 @@ class QueryBuilder implements QueryBuilderInterface
     /**
      * @param $column
      * @param array $values
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function whereIn($column, array $values): QueryBuilderInterface
+    public function whereIn($column, array $values): QueryBuilderContract
     {
         $this->doctrine = $this->doctrine->whereIn($column, $values);
         // Ensure modelClass is preserved
@@ -171,9 +172,9 @@ class QueryBuilder implements QueryBuilderInterface
 
     /**
      * @param $column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function whereNull($column): QueryBuilderInterface
+    public function whereNull($column): QueryBuilderContract
     {
         $this->doctrine = $this->doctrine->whereNull($column);
         // Ensure modelClass is preserved
@@ -182,9 +183,9 @@ class QueryBuilder implements QueryBuilderInterface
 
     /**
      * @param $column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function whereNotNull($column): QueryBuilderInterface
+    public function whereNotNull($column): QueryBuilderContract
     {
         $this->doctrine = $this->doctrine->whereNotNull($column);
         // Ensure modelClass is preserved
@@ -195,9 +196,9 @@ class QueryBuilder implements QueryBuilderInterface
      * @param $column
      * @param $operator
      * @param $value
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function whereDate($column, $operator = null, $value = null): QueryBuilderInterface
+    public function whereDate($column, $operator = null, $value = null): QueryBuilderContract
     {
         return $this->addWhere('whereDate', ...func_get_args());
     }
@@ -206,19 +207,41 @@ class QueryBuilder implements QueryBuilderInterface
      * @param $column
      * @param $operator
      * @param $value
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function orWhereDate($column, $operator = null, $value = null): QueryBuilderInterface
+    public function orWhereDate($column, $operator = null, $value = null): QueryBuilderContract
     {
         return $this->addWhere('orWhereDate', ...func_get_args());
     }
 
     /**
      * @param $column
-     * @param $values
-     * @return QueryBuilderInterface
+     * @param $operator
+     * @param $value
+     * @return QueryBuilderContract
      */
-    public function whereBetween($column, $values): QueryBuilderInterface
+    public function whereMonth($column, $operator = null, $value = null): QueryBuilderContract
+    {
+        return $this->addWhere('whereMonth', ...func_get_args());
+    }
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param $year
+     * @return QueryBuilderContract
+     */
+    public function whereYear($column, $operator = null, $year = null): QueryBuilderContract
+    {
+        return $this->addWhere('whereYear', ...func_get_args());
+    }
+
+    /**
+     * @param $column
+     * @param $values
+     * @return QueryBuilderContract
+     */
+    public function whereBetween($column, $values): QueryBuilderContract
     {
         return $this->addWhere('whereBetween', ...func_get_args());
     }
@@ -226,9 +249,9 @@ class QueryBuilder implements QueryBuilderInterface
     /**
      * @param $column
      * @param $values
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function whereNotBetween($column, $values): QueryBuilderInterface
+    public function whereNotBetween($column, $values): QueryBuilderContract
     {
         return $this->addWhere('whereNotBetween', ...func_get_args());
     }
@@ -236,9 +259,9 @@ class QueryBuilder implements QueryBuilderInterface
     /**
      * @param $column
      * @param $values
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function orWhereBetween($column, $values): QueryBuilderInterface
+    public function orWhereBetween($column, $values): QueryBuilderContract
     {
         return $this->addWhere('orWhereBetween', ...func_get_args());
     }
@@ -246,9 +269,9 @@ class QueryBuilder implements QueryBuilderInterface
     /**
      * @param $column
      * @param $values
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function orWhereNotBetween($column, $values): QueryBuilderInterface
+    public function orWhereNotBetween($column, $values): QueryBuilderContract
     {
         return $this->addWhere('orWhereNotBetween', ...func_get_args());
     }
@@ -259,9 +282,9 @@ class QueryBuilder implements QueryBuilderInterface
      * @param mixed $column
      * @param mixed|null $operator
      * @param mixed|null $value
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    private function addWhere(string $method, mixed $column, mixed $operator = null, mixed $value = null): QueryBuilderInterface
+    private function addWhere(string $method, mixed $column, mixed $operator = null, mixed $value = null): QueryBuilderContract
     {
         // Handle array of conditions
         if (is_array($column) && !in_array($method, Constants::WHERE_BETWEENS)) {
@@ -298,9 +321,9 @@ class QueryBuilder implements QueryBuilderInterface
      * @param $column
      * @param $operator
      * @param $value
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function having($column, $operator, $value): QueryBuilderInterface
+    public function having($column, $operator, $value): QueryBuilderContract
     {
         $this->doctrine = $this->doctrine->having($column, $operator, $value);
         // Ensure modelClass is preserved
@@ -398,9 +421,9 @@ class QueryBuilder implements QueryBuilderInterface
      * @param $column
      * @param $equal
      * @param $second_column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function join($table, $column, $equal, $second_column): QueryBuilderInterface
+    public function join($table, $column, $equal, $second_column): QueryBuilderContract
     {
         $this->doctrine = $this->doctrine->join($table, $column, $equal, $second_column);
         return $this;
@@ -411,9 +434,9 @@ class QueryBuilder implements QueryBuilderInterface
      * @param $column
      * @param $equal
      * @param $second_column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function leftJoin($table, $column, $equal, $second_column): QueryBuilderInterface
+    public function leftJoin($table, $column, $equal, $second_column): QueryBuilderContract
     {
         $this->doctrine = $this->doctrine->leftJoin($table, $column, $equal, $second_column);
         return $this;
@@ -424,9 +447,9 @@ class QueryBuilder implements QueryBuilderInterface
      * @param $column
      * @param $equal
      * @param $second_column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function rightJoin($table, $column, $equal, $second_column): QueryBuilderInterface
+    public function rightJoin($table, $column, $equal, $second_column): QueryBuilderContract
     {
         $this->doctrine = $this->doctrine->rightJoin($table, $column, $equal, $second_column);
         return $this;
@@ -437,9 +460,9 @@ class QueryBuilder implements QueryBuilderInterface
      * @param $column
      * @param $equal
      * @param $second_column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function fullOuterJoin($table, $column, $equal, $second_column): QueryBuilderInterface
+    public function fullOuterJoin($table, $column, $equal, $second_column): QueryBuilderContract
     {
         $this->doctrine = $this->doctrine->fullOuterJoin($table, $column, $equal, $second_column);
         return $this;

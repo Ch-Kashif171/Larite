@@ -10,7 +10,7 @@ use Whoops\Exception\ErrorException;
 trait Queries
 {
     public $con;
-    protected $table;
+    public $table;
     public $where_statement;
     public $where;
     public $fields;

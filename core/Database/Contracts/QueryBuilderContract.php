@@ -1,24 +1,24 @@
 <?php
 
-namespace Core\Database;
+namespace Core\Database\Contracts;
 
 use Core\Support\Collection\Collection;
 
-interface QueryBuilderInterface
+interface QueryBuilderContract
 {
     /**
      * @param $column
      * @param $operator
      * @param $value
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function where($column, $operator = null, $value = null): QueryBuilderInterface;
+    public function where($column, $operator = null, $value = null): QueryBuilderContract;
 
     /**
      * @param ...$fields
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function select(...$fields): QueryBuilderInterface;
+    public function select(...$fields): QueryBuilderContract;
 
     /**
      * @return array|\Core\Support\Collection\Collection
@@ -48,21 +48,21 @@ interface QueryBuilderInterface
     /**
      * @param $field
      * @param string $order
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function orderBy($field, string $order = 'ASC'): QueryBuilderInterface;
+    public function orderBy($field, string $order = 'ASC'): QueryBuilderContract;
 
     /**
      * @param $field
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function orderByDesc($field): QueryBuilderInterface;
+    public function orderByDesc($field): QueryBuilderContract;
 
     /**
      * @param $limit
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function limit($limit): QueryBuilderInterface;
+    public function limit($limit): QueryBuilderContract;
 
     /**
      * @param string $column
@@ -104,70 +104,70 @@ interface QueryBuilderInterface
 
     /**
      * @param $column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function latest($column): QueryBuilderInterface;
+    public function latest($column): QueryBuilderContract;
 
     /**
      * @param $column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function oldest($column): QueryBuilderInterface;
+    public function oldest($column): QueryBuilderContract;
 
     /**
      * @param $fields
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function groupBy($fields): QueryBuilderInterface;
+    public function groupBy($fields): QueryBuilderContract;
 
     /**
      * @param $take
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function take($take): QueryBuilderInterface;
+    public function take($take): QueryBuilderContract;
 
     /**
      * @param $column
      * @param $operator
      * @param $value
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function orWhere($column, $operator = null, $value = null): QueryBuilderInterface;
+    public function orWhere($column, $operator = null, $value = null): QueryBuilderContract;
 
     /**
      * @param $column
      * @param $operator
      * @param $value
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function whereDate($column, $operator = null, $value = null): QueryBuilderInterface;
+    public function whereDate($column, $operator = null, $value = null): QueryBuilderContract;
 
     /**
      * @param $column
      * @param array $values
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function whereIn($column, array $values): QueryBuilderInterface;
+    public function whereIn($column, array $values): QueryBuilderContract;
 
     /**
      * @param $column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function whereNull($column): QueryBuilderInterface;
+    public function whereNull($column): QueryBuilderContract;
 
     /**
      * @param $column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function whereNotNull($column): QueryBuilderInterface;
+    public function whereNotNull($column): QueryBuilderContract;
 
     /**
      * @param $column
      * @param $operator
      * @param $value
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function having($column, $operator, $value): QueryBuilderInterface;
+    public function having($column, $operator, $value): QueryBuilderContract;
 
     /**
      * @param $limit
@@ -236,36 +236,36 @@ interface QueryBuilderInterface
      * @param $column
      * @param $equal
      * @param $second_column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function join($table, $column, $equal, $second_column): QueryBuilderInterface;
+    public function join($table, $column, $equal, $second_column): QueryBuilderContract;
 
     /**
      * @param $table
      * @param $column
      * @param $equal
      * @param $second_column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function leftJoin($table, $column, $equal, $second_column): QueryBuilderInterface;
+    public function leftJoin($table, $column, $equal, $second_column): QueryBuilderContract;
 
     /**
      * @param $table
      * @param $column
      * @param $equal
      * @param $second_column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function rightJoin($table, $column, $equal, $second_column): QueryBuilderInterface;
+    public function rightJoin($table, $column, $equal, $second_column): QueryBuilderContract;
 
     /**
      * @param $table
      * @param $column
      * @param $equal
      * @param $second_column
-     * @return QueryBuilderInterface
+     * @return QueryBuilderContract
      */
-    public function fullOuterJoin($table, $column, $equal, $second_column): QueryBuilderInterface;
+    public function fullOuterJoin($table, $column, $equal, $second_column): QueryBuilderContract;
 
     /**
      * @param $relations
