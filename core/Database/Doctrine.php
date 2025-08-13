@@ -526,6 +526,55 @@ class Doctrine
     }
 
     /**
+     * @param $column
+     * @param $operator
+     * @param $day
+     * @return $this
+     */
+    public function whereDay($column, $operator, int $day): self
+    {
+        if ($this->wheres === '') {
+            $this->wheres = " WHERE DAY({$column}) {$operator} {$day} ";
+        } else {
+            $this->wheres .= " AND DAY({$column}) {$operator} {$day} ";
+        }
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param int $day
+     * @return $this
+     */
+    public function whereDayOfWeek($column, $operator, int $day): self
+    {
+        if ($this->wheres === '') {
+            $this->wheres = " WHERE DAYOFWEEK({$column}) {$operator} {$day} ";
+        } else {
+            $this->wheres .= " AND DAYOFWEEK({$column}) {$operator} {$day} ";
+        }
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param $time
+     * @return $this
+     */
+    public function whereTime($column, $operator, $time): self
+    {
+        $escapedValue = "'" . addslashes($time) . "'";
+        if ($this->wheres === '') {
+            $this->wheres = " WHERE TIME({$column}) {$operator} {$escapedValue} ";
+        } else {
+            $this->wheres .= " AND TIME({$column}) {$operator} {$escapedValue} ";
+        }
+        return $this;
+    }
+
+    /**
      * @param string $column
      * @param string $operator
      * @param int $month

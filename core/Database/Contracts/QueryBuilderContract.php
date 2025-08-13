@@ -144,6 +144,82 @@ interface QueryBuilderContract
 
     /**
      * @param $column
+     * @param $operator
+     * @param $value
+     * @return QueryBuilderContract
+     */
+    public function orWhereDate($column, $operator = null, $value = null): QueryBuilderContract;
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param $day
+     * @return QueryBuilderContract
+     */
+    public function whereDay($column, $operator = null, $day = null): QueryBuilderContract;
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param $day
+     * @return QueryBuilderContract
+     */
+    public function whereDayOfWeek($column, $operator = null, $day = null): QueryBuilderContract;
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param $time
+     * @return QueryBuilderContract
+     */
+    public function whereTime($column, $operator = null, $time = null): QueryBuilderContract;
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param $value
+     * @return QueryBuilderContract
+     */
+    public function whereMonth($column, $operator = null, $value = null): QueryBuilderContract;
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param $year
+     * @return QueryBuilderContract
+     */
+    public function whereYear($column, $operator = null, $year = null): QueryBuilderContract;
+
+    /**
+     * @param $column
+     * @param $values
+     * @return QueryBuilderContract
+     */
+    public function whereBetween($column, $values): QueryBuilderContract;
+
+    /**
+     * @param $column
+     * @param $values
+     * @return QueryBuilderContract
+     */
+    public function whereNotBetween($column, $values): QueryBuilderContract;
+
+    /**
+     * @param $column
+     * @param $values
+     * @return QueryBuilderContract
+     */
+    public function orWhereBetween($column, $values): QueryBuilderContract;
+
+    /**
+     * @param $column
+     * @param $values
+     * @return QueryBuilderContract
+     */
+    public function orWhereNotBetween($column, $values): QueryBuilderContract;
+
+    /**
+     * @param $column
      * @param array $values
      * @return QueryBuilderContract
      */

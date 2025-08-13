@@ -97,6 +97,45 @@ trait Clauses
     /**
      * @param $column
      * @param $operator
+     * @param $day
+     * @return QueryBuilderContract
+     * @throws DBException
+     */
+    public static function whereDay($column, $operator = null, $day = null): QueryBuilderContract
+    {
+        $instance = new static();
+        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->whereDay(...func_get_args());
+    }
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param $day
+     * @return QueryBuilderContract
+     * @throws DBException
+     */
+    public static function whereDayOfWeek($column, $operator = null, $day = null): QueryBuilderContract
+    {
+        $instance = new static();
+        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->whereDayOfWeek(...func_get_args());
+    }
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param $time
+     * @return QueryBuilderContract
+     * @throws DBException
+     */
+    public static function whereTime($column, $operator = null, $time = null): QueryBuilderContract
+    {
+        $instance = new static();
+        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->whereTime(...func_get_args());
+    }
+
+    /**
+     * @param $column
+     * @param $operator
      * @param $month
      * @return QueryBuilderContract
      * @throws DBException

@@ -217,6 +217,33 @@ class QueryBuilder implements QueryBuilderContract
     /**
      * @param $column
      * @param $operator
+     * @param $day
+     * @return $this
+     */
+    public function whereDay($column, $operator = null, $day = null): static
+    {
+        return $this->addWhere('whereDay', ...func_get_args());
+    }
+
+    public function whereDayOfWeek($column, $operator = null, $day = null): static
+    {
+        return $this->addWhere('whereDayOfWeek', ...func_get_args());
+    }
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param $time
+     * @return $this
+     */
+    public function whereTime($column, $operator = null, $time = null): static
+    {
+        return $this->addWhere('whereTime', ...func_get_args());
+    }
+
+    /**
+     * @param $column
+     * @param $operator
      * @param $value
      * @return QueryBuilderContract
      */
@@ -235,6 +262,7 @@ class QueryBuilder implements QueryBuilderContract
     {
         return $this->addWhere('whereYear', ...func_get_args());
     }
+
 
     /**
      * @param $column
