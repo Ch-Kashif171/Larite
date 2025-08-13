@@ -118,7 +118,7 @@ class Path
         $viewPath = root_path . '/views/' . (str_ends_with($path, '.php') ? $path : "$path.php");
 
         if (file_exists($viewPath)) {
-            include $viewPath;
+            include_once $viewPath;
         } else {
             throw new \RuntimeException("Template not found: $path");
         }
