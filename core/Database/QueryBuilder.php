@@ -407,6 +407,14 @@ class QueryBuilder implements QueryBuilderContract
     }
 
     /**
+     * @throws DBException
+     */
+    public function truncate(): bool
+    {
+        return $this->doctrine->truncate();
+    }
+
+    /**
      * @param $attributes
      * @param $values
      * @return mixed

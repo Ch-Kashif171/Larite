@@ -2,6 +2,7 @@
 
 namespace Core\Database;
 
+use Core\Exception\Handlers\DBException;
 use Core\Support\Traits\Internal\Queries;
 use Exception;
 use Whoops\Exception\ErrorException;
@@ -977,6 +978,22 @@ class Doctrine
         $query = " WHERE {$column} IS NOT NULL";
         $this->wheres .= $query;
         return $this;
+    }
+
+    /**
+     * @return bool
+     * @throws DBException
+     */
+    public function truncate(): bool
+    {
+        try {
+            $sql = "TRUNCATE TABLE {$this->table}";
+            return $this->con->exec($sql) === 0;
+        } catch (\PDOException $e) {
+            throw new DBException(
+                "Failed to truncate table {$this->table}: " . $e->getMessage()
+            );
+        }
     }
 
     /**

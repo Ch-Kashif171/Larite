@@ -1,4 +1,6 @@
-# Larite
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Ch-Kashif171/Larite/4.x/public/images/logo/larite.jpg" width="200" alt="Larite Logo">
+</p>
 
 > **Lightweight. Laravel-Inspired. 100% Custom.**
 

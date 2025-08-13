@@ -281,6 +281,11 @@ interface QueryBuilderContract
     public function delete(): bool;
 
     /**
+     * @return bool
+     */
+    public function truncate(): bool;
+
+    /**
      * @param $attributes
      * @param $values
      * @return mixed

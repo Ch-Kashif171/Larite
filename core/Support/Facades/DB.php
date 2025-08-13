@@ -26,6 +26,7 @@ namespace Core\Support\Facades;
  * @method static \Core\Support\Facades\DB updateOrCreate(array $attributes, array $values)
  * @method static \Core\Support\Facades\DB update($fields)
  * @method static \Core\Support\Facades\DB delete()
+ * @method static \Core\Support\Facades\DB truncate()
  * @method static \Core\Support\Facades\DB join($table, $column, $equal, $second_column)
  * @method static \Core\Support\Facades\DB leftJoin($table, $column, $equal, $second_column)
  * @method static \Core\Support\Facades\DB rightJoin($table, $column, $equal, $second_column)
