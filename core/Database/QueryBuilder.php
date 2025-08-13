@@ -4,6 +4,7 @@ namespace Core\Database;
 
 
 use Core\Exception\Handlers\DBException;
+use Core\Support\Constants;
 use Core\Support\Traits\Builder\Aggregators;
 use Core\Support\Traits\Builder\EagerLoading;
 use Core\Support\Traits\Builder\Getters;
@@ -157,39 +158,6 @@ class QueryBuilder implements QueryBuilderInterface
     }
 
     /**
-     * Handles both where and orWhere calls with flexible arguments.
-     * @param string $method 'where' or 'orWhere'
-     * @param mixed $column
-     * @param mixed|null $operator
-     * @param mixed|null $value
-     * @return QueryBuilderInterface
-     */
-    private function addWhere(string $method, mixed $column, mixed $operator = null, mixed $value = null): QueryBuilderInterface
-    {
-        if (is_array($column)) {
-            foreach ($column as $key => $val) {
-                if (is_array($val) && count($val) === 2) {
-                    [$op, $v] = $val;
-                    $this->doctrine = $this->doctrine->$method($key, $op, $v);
-                } else {
-                    $this->doctrine = $this->doctrine->$method($key, '=', $val);
-                }
-            }
-            return $this;
-        }
-
-        if (func_num_args() === 3) {
-            // Called with two params: where('id', 1)
-            $value = $operator;
-            $operator = '=';
-        }
-
-        $this->doctrine = $this->doctrine->$method($column, $operator, $value);
-
-        return $this;
-    }
-
-    /**
      * @param $column
      * @param array $values
      * @return QueryBuilderInterface
@@ -222,6 +190,109 @@ class QueryBuilder implements QueryBuilderInterface
         // Ensure modelClass is preserved
         return $this;
     }
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param $value
+     * @return QueryBuilderInterface
+     */
+    public function whereDate($column, $operator = null, $value = null): QueryBuilderInterface
+    {
+        return $this->addWhere('whereDate', ...func_get_args());
+    }
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param $value
+     * @return QueryBuilderInterface
+     */
+    public function orWhereDate($column, $operator = null, $value = null): QueryBuilderInterface
+    {
+        return $this->addWhere('orWhereDate', ...func_get_args());
+    }
+
+    /**
+     * @param $column
+     * @param $values
+     * @return QueryBuilderInterface
+     */
+    public function whereBetween($column, $values): QueryBuilderInterface
+    {
+        return $this->addWhere('whereBetween', ...func_get_args());
+    }
+
+    /**
+     * @param $column
+     * @param $values
+     * @return QueryBuilderInterface
+     */
+    public function whereNotBetween($column, $values): QueryBuilderInterface
+    {
+        return $this->addWhere('whereNotBetween', ...func_get_args());
+    }
+
+    /**
+     * @param $column
+     * @param $values
+     * @return QueryBuilderInterface
+     */
+    public function orWhereBetween($column, $values): QueryBuilderInterface
+    {
+        return $this->addWhere('orWhereBetween', ...func_get_args());
+    }
+
+    /**
+     * @param $column
+     * @param $values
+     * @return QueryBuilderInterface
+     */
+    public function orWhereNotBetween($column, $values): QueryBuilderInterface
+    {
+        return $this->addWhere('orWhereNotBetween', ...func_get_args());
+    }
+
+    /**
+     * Handles both where and orWhere calls with flexible arguments.
+     * @param string $method 'where' or 'orWhere'
+     * @param mixed $column
+     * @param mixed|null $operator
+     * @param mixed|null $value
+     * @return QueryBuilderInterface
+     */
+    private function addWhere(string $method, mixed $column, mixed $operator = null, mixed $value = null): QueryBuilderInterface
+    {
+        // Handle array of conditions
+        if (is_array($column) && !in_array($method, Constants::WHERE_BETWEENS)) {
+            foreach ($column as $key => $val) {
+                if (is_array($val) && count($val) === 2) {
+                    [$op, $v] = $val;
+                    $this->doctrine = $this->doctrine->$method($key, $op, $v);
+                } else {
+                    $this->doctrine = $this->doctrine->$method($key, '=', $val);
+                }
+            }
+            return $this;
+        }
+
+        // Special case: Between / NotBetween (expects exactly two args)
+        if (in_array($method, Constants::WHERE_BETWEENS)) {
+            $this->doctrine = $this->doctrine->$method($column, $operator);
+            return $this;
+        }
+
+        // Default behavior: if only two params, assume '='
+        if (func_num_args() === 3) {
+            $value = $operator;
+            $operator = '=';
+        }
+
+        $this->doctrine = $this->doctrine->$method($column, $operator, $value);
+
+        return $this;
+    }
+
 
     /**
      * @param $column

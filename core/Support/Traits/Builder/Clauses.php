@@ -70,6 +70,80 @@ trait Clauses
 
     /**
      * @param $column
+     * @param $operator
+     * @param $date
+     * @return QueryBuilderInterface
+     * @throws DBException
+     */
+    public static function whereDate($column, $operator = null, $date = null): QueryBuilderInterface
+    {
+        $instance = new static();
+        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->whereDate(...func_get_args());
+    }
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param $value
+     * @return QueryBuilderInterface
+     * @throws DBException
+     */
+    public static function orWhereDate($column, $operator = null, $value = null): QueryBuilderInterface
+    {
+        $instance = new static();
+        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->orWhereDate(...func_get_args());
+    }
+
+    /**
+     * @param $column
+     * @param $values
+     * @return QueryBuilderInterface
+     * @throws DBException
+     */
+    public static function whereBetween($column, $values): QueryBuilderInterface
+    {
+        $instance = new static();
+        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->whereBetween(...func_get_args());
+    }
+
+    /**
+     * @param $column
+     * @param $values
+     * @return QueryBuilderInterface
+     * @throws DBException
+     */
+    public static function whereNotBetween($column, $values): QueryBuilderInterface
+    {
+        $instance = new static();
+        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->whereNotBetween(...func_get_args());
+    }
+
+    /**
+     * @param $column
+     * @param $values
+     * @return QueryBuilderInterface
+     * @throws DBException
+     */
+    public static function orWhereBetween($column, $values): QueryBuilderInterface
+    {
+        $instance = new static();
+        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->orWhereBetween(...func_get_args());
+    }
+
+    /**
+     * @param $column
+     * @param $values
+     * @return QueryBuilderInterface
+     * @throws DBException
+     */
+    public static function orWhereNotBetween($column, $values): QueryBuilderInterface
+    {
+        $instance = new static();
+        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->orWhereNotBetween(...func_get_args());
+    }
+
+    /**
+     * @param $column
      * @param $condition
      * @param $value
      * @return QueryBuilderInterface

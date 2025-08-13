@@ -478,7 +478,7 @@ class Doctrine
     public function orWhere($column, $condition, $value): self
     {
         // Only strip prefix if there are no joins
-        if (empty($this->joins) && strpos($column, '.') !== false) {
+        if (empty($this->joins) && str_contains($column, '.')) {
             list(, $col) = explode('.', $column, 2);
             $column = $col;
         }
@@ -487,6 +487,122 @@ class Doctrine
             $this->wheres = " WHERE {$column} {$condition} {$escapedValue} ";
         } else {
             $this->wheres .= " OR {$column} {$condition} {$escapedValue} ";
+        }
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $condition
+     * @param $date
+     * @return $this
+     */
+    public function whereDate($column, $condition, $date): self
+    {
+        $escapedValue = "'" . addslashes($date) . "'";
+        if ($this->wheres === '') {
+            $this->wheres = " WHERE DATE({$column}) {$condition} {$escapedValue} ";
+        } else {
+            $this->wheres .= " AND DATE({$column}) {$condition} {$escapedValue} ";
+        }
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $condition
+     * @param $date
+     * @return $this
+     */
+    public function orWhereDate($column, $condition, $date): self
+    {
+        $escapedValue = "'" . addslashes($date) . "'";
+        if ($this->wheres === '') {
+            $this->wheres = " WHERE DATE({$column}) {$condition} {$escapedValue} ";
+        } else {
+            $this->wheres .= " OR DATE({$column}) {$condition} {$escapedValue} ";
+        }
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param array $values
+     * @return $this
+     */
+    public function whereBetween($column, array $values): self
+    {
+        if (count($values) !== 2) {
+            throw new \InvalidArgumentException('whereBetween requires exactly two values.');
+        }
+
+        $escapedFrom = "'" . addslashes($values[0]) . "'";
+        $escapedTo   = "'" . addslashes($values[1]) . "'";
+
+        if ($this->wheres === '') {
+            $this->wheres = " WHERE {$column} BETWEEN {$escapedFrom} AND {$escapedTo} ";
+        } else {
+            $this->wheres .= " AND {$column} BETWEEN {$escapedFrom} AND {$escapedTo} ";
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param array $values
+     * @return $this
+     */
+    public function whereNotBetween($column, array $values): self
+    {
+        if (count($values) !== 2) {
+            throw new \InvalidArgumentException('whereNotBetween requires exactly two values.');
+        }
+
+        $escapedFrom = "'" . addslashes($values[0]) . "'";
+        $escapedTo   = "'" . addslashes($values[1]) . "'";
+
+        if ($this->wheres === '') {
+            $this->wheres = " WHERE {$column} NOT BETWEEN {$escapedFrom} AND {$escapedTo} ";
+        } else {
+            $this->wheres .= " AND {$column} NOT BETWEEN {$escapedFrom} AND {$escapedTo} ";
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $start
+     * @param $end
+     * @return $this
+     */
+    public function orWhereBetween($column, $start, $end): self
+    {
+        $escapedStart = "'" . addslashes($start) . "'";
+        $escapedEnd = "'" . addslashes($end) . "'";
+        if ($this->wheres === '') {
+            $this->wheres = " WHERE {$column} BETWEEN {$escapedStart} AND {$escapedEnd} ";
+        } else {
+            $this->wheres .= " OR {$column} BETWEEN {$escapedStart} AND {$escapedEnd} ";
+        }
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $start
+     * @param $end
+     * @return $this
+     */
+    public function orWhereNotBetween($column, $start, $end): self
+    {
+        $escapedStart = "'" . addslashes($start) . "'";
+        $escapedEnd = "'" . addslashes($end) . "'";
+        if ($this->wheres === '') {
+            $this->wheres = " WHERE {$column} NOT BETWEEN {$escapedStart} AND {$escapedEnd} ";
+        } else {
+            $this->wheres .= " OR {$column} NOT BETWEEN {$escapedStart} AND {$escapedEnd} ";
         }
         return $this;
     }

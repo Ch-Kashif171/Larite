@@ -28,4 +28,6 @@ class Constants
         'prev_page_url',
         'path',
     ];
+
+    const WHERE_BETWEENS = ['whereBetween', 'orWhereBetween', 'whereNotBetween', 'orWhereNotBetween'];
 }

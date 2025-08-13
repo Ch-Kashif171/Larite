@@ -136,6 +136,14 @@ interface QueryBuilderInterface
 
     /**
      * @param $column
+     * @param $operator
+     * @param $value
+     * @return QueryBuilderInterface
+     */
+    public function whereDate($column, $operator = null, $value = null): QueryBuilderInterface;
+
+    /**
+     * @param $column
      * @param array $values
      * @return QueryBuilderInterface
      */
