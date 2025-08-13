@@ -14,7 +14,7 @@ use Core\Support\Routing\RegisterAllRoutes;
 
 class Application
 {
-    const VERSION = '4.x';
+    const VERSION = '4.0.0';
 
     const FRAMEWORK = 'Larite';
 
