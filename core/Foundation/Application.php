@@ -125,8 +125,18 @@ class Application
      */
     protected function registerSingletons(): void
     {
-        $this->singleton('dotenv', LoadEnv::class, [ROOT_PATH]);
-        $this->singleton('whoops', [Whoops::class, 'handler']);
+        /**
+         * In case if .env file not exists then bind whoops to throw whoops
+         * exception first if env load failed
+         */
+        if (!file_exists('.env')) {
+            $this->singleton('whoops', [Whoops::class, 'handler']);
+            $this->singleton('dotenv', LoadEnv::class, [ROOT_PATH]);
+        } else { // if .env exists then first bing dotenv
+            $this->singleton('dotenv', LoadEnv::class, [ROOT_PATH]);
+            $this->singleton('whoops', [Whoops::class, 'handler']);
+        }
+
         $this->singleton('assetsNotFound', [AssetsNotFound::class, 'run']);
         // Add more singletons here as needed
     }
