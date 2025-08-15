@@ -8,6 +8,8 @@ class Constants
 
     const SEEDER_DIR = 'database/seeders';
 
+    const PROVIDER_DIR = 'app/Providers';
+
     const MIDDLEWARE_DIR = 'app/Http/Middleware';
 
     const CONSOLE_DIR = 'app/Console/Commands';

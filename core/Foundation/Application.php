@@ -3,6 +3,7 @@
 namespace Core\Foundation;
 
 use App\Exceptions\Handler;
+use App\Providers\AppServiceProvider;
 use Core\Exception\Handlers\MiddlewareException;
 use Core\Exception\Handlers\RouteNotFoundException;
 use Core\Exception\Log;
@@ -11,138 +12,113 @@ use Core\Support\AssetsNotFound;
 use Core\Support\Facades\Route;
 use Core\Support\LoadEnv;
 use Core\Support\Routing\RegisterAllRoutes;
+use Core\Support\Container\App as Container;
 
 class Application
 {
     const VERSION = '4.0.0';
-
     const FRAMEWORK = 'Larite';
 
-    protected array $bindings = [];
+    protected Container $container;
 
-    /**
-     * @var array|string[]
-     */
     protected array $includes = [
         '/core/Utils/helpers.php',
         '/config/app.php',
         '/config/mail.php',
-        // Add other files to include before singletons here
     ];
 
-    /**
-     * @var array|string[]
-     */
     protected array $notFound = [
         'routeExist' => '/core/Utils/routeExist.php',
-
     ];
 
-    /**
-     * @return string
-     */
+    public function __construct(Container $container = null)
+    {
+        $this->container = $container ?? new Container();
+    }
+
     public static function version(): string
     {
         return static::VERSION;
     }
 
-    /**
-     * @return string
-     */
     public static function framework(): string
     {
         return static::FRAMEWORK;
     }
 
     /**
-     * @param $key
-     * @return mixed|null
+     * Get service from container
      */
     public function get($key)
     {
-        return $this->bindings[$key] ?? null;
+        return $this->container->make($key);
     }
 
     /**
-     * @param string $key
-     * @param mixed $concrete
-     * @param array $args
-     * @return mixed
-     * @throws \ReflectionException
-     */
-    public function bind(string $key, mixed $concrete, array $args = []): mixed
-    {
-        if (!isset($this->bindings[$key])) {
-            if (is_callable($concrete)) {
-                $this->bindings[$key] = $concrete();
-            } elseif (is_string($concrete) && class_exists($concrete)) {
-                $reflection = new \ReflectionClass($concrete);
-                $this->bindings[$key] = $reflection->newInstanceArgs($args);
-            } elseif (is_string($concrete) && file_exists($concrete)) {
-                $this->bindings[$key] = require_once $concrete;
-            } else {
-                $this->bindings[$key] = $concrete;
-            }
-        }
-        return $this->bindings[$key];
-    }
-
-    /**
-     * @param string $key
-     * @param mixed $concrete
-     * @param array $args
-     * @return mixed
-     * @throws \ReflectionException
-     */
-    public function singleton(string $key, mixed $concrete, array $args = []): mixed
-    {
-        return $this->bind($key, $concrete, $args);
-    }
-
-    /**
-     * Boot the application: load files and register services in order.
-     * @throws \ReflectionException
+     * Boot the application
      */
     public function boot(): void
     {
-
         foreach ($this->includes as $file) {
             $this->includeFile($file);
         }
-
 
         $this->registerSingletons();
 
         if (config('app.app_env') !== 'production') {
             $this->registerExceptionHandler();
         }
-
     }
 
     /**
-     * @return void
-     * @throws \ReflectionException
+     * Register all singletons for bootstrap
      */
     protected function registerSingletons(): void
     {
-        /**
-         * In case if .env file not exists then bind whoops to throw whoops
-         * exception first if env load failed
-         */
         if (!file_exists('.env')) {
-            $this->singleton('whoops', [Whoops::class, 'handler']);
-            $this->singleton('dotenv', LoadEnv::class, [ROOT_PATH]);
-        } else { // if .env exists then first bing dotenv
-            $this->singleton('dotenv', LoadEnv::class, [ROOT_PATH]);
-            $this->singleton('whoops', [Whoops::class, 'handler']);
+            $this->registerBootstrapSingleton('whoops', [Whoops::class, 'handler']);
+            $this->registerBootstrapSingleton('dotenv', LoadEnv::class, [ROOT_PATH]);
+        } else {
+            $this->registerBootstrapSingleton('dotenv', LoadEnv::class, [ROOT_PATH]);
+            $this->registerBootstrapSingleton('whoops', [Whoops::class, 'handler']);
         }
 
-        $this->singleton('assetsNotFound', [AssetsNotFound::class, 'run']);
-        // Add more singletons here as needed
+        $this->registerBootstrapSingleton('assetsNotFound', [AssetsNotFound::class, 'run']);
     }
 
     /**
-     * Helper to include a file from ROOT_PATH.
+     * Handle bootstrapping singletons (static callables, constructors, or files)
+     */
+    protected function registerBootstrapSingleton(string $key, mixed $concrete, array $args = [])
+    {
+        $instance = null;
+
+        // Static callable
+        if (is_array($concrete) && isset($concrete[0], $concrete[1])) {
+            $class = $concrete[0];
+            $method = $concrete[1];
+            $instance = $class::$method(...$args);
+        }
+        // Class name
+        elseif (is_string($concrete) && class_exists($concrete)) {
+            $reflection = new \ReflectionClass($concrete);
+            $instance = $reflection->newInstanceArgs($args);
+        }
+        // File path
+        elseif (is_string($concrete) && file_exists($concrete)) {
+            $instance = require_once $concrete;
+        }
+        // Raw value
+        else {
+            $instance = $concrete;
+        }
+
+        $this->container->singleton($key, $instance);
+    }
+
+    /**
+     * @param string $path
+     * @return void
      */
     protected function includeFile(string $path): void
     {
@@ -155,15 +131,19 @@ class Application
      */
     public function init(): bool
     {
-        $this->includeFiles();
+        foreach ($this->includes as $file) {
+            require_once ROOT_PATH . $file;
+        }
 
-        // Bind all facades here
         Binding::facades();
 
-        // Initialize all routes
+
+        // Register all service providers dynamically
+        $this->registerServiceProviders();
+
+        // Load routes
         RegisterAllRoutes::loadAll();
 
-        // Try to execute the matched route
         $routeMatched = false;
         try {
             $routeMatched = Route::executeRoutes();
@@ -172,7 +152,6 @@ class Application
             throw new MiddlewareException($e->getMessage());
         }
 
-        // If no route matched, handle 404
         if (!$routeMatched) {
             require_once ROOT_PATH . $this->notFound['routeExist'];
         }
@@ -183,18 +162,32 @@ class Application
     /**
      * @return void
      */
-    protected function includeFiles()
-    {
-        foreach ($this->includes as $file) {
-            require_once ROOT_PATH . $file;
-        }
-    }
-
     protected function registerExceptionHandler(): void
     {
         $handler = new Handler(!(config('app.app_env') === 'production'));
-
         set_exception_handler([$handler, 'handle']);
+    }
+
+    /**
+     * Dynamically register and boot all service providers
+     */
+    protected function registerServiceProviders(): void
+    {
+        $providers = config('providers'); // load array from config/providers.php
+
+        foreach ($providers as $providerClass) {
+            $provider = new $providerClass($this->container);
+
+            // Register bindings
+            if (method_exists($provider, 'register')) {
+                $provider->register();
+            }
+
+            // Boot any services
+            if (method_exists($provider, 'boot')) {
+                $provider->boot();
+            }
+        }
     }
 
 }

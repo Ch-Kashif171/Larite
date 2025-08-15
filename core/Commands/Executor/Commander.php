@@ -11,6 +11,7 @@ use Core\Commands\MakeAuth;
 use Core\Commands\MakeCommandCommand;
 use Core\Commands\MakeMiddlewareCommand;
 use Core\Commands\MakeSeederCommand;
+use Core\Commands\MakeServiceProviderCommand;
 use Core\Commands\MigrationCommand;
 use Core\Commands\RollbackMigrationCommand;
 use Core\Commands\RouteListCommand;
@@ -51,6 +52,7 @@ class Commander
             RouteListCommand::class,
             MakeMiddlewareCommand::class,
             MakeCommandCommand::class,
+            MakeServiceProviderCommand::class,
         ];
 
         foreach ($coreCommands as $command) {

@@ -633,13 +633,12 @@ if (!function_exists('app')) {
         }
 
         // Binding
-        if ($key && $concrete) {
-            if ($concrete instanceof Closure) {
+        if ($key && $concrete !== null) {
+            if ($concrete instanceof \Closure) {
                 $container->bind($key, $concrete);
             } else {
                 $container->singleton($key, $concrete);
             }
-
             return $concrete;
         }
 

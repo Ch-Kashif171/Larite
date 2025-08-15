@@ -15,16 +15,16 @@ class Binding
     public static function facades()
     {
         // Bind route facade
-        app('router', new Router());
+        app()->singleton('router', new Router());
 
         // Bind DB facade
-        app('db', new DBQuery());
+        app()->singleton('db', new DBQuery());
 
         // Bind mail facade
-        app('mailer', new Mailer());
+        app()->singleton('mailer', new Mailer());
 
         // Bind validation facade
-        app('validator', new Validation());
+        app()->singleton('validator', new Validation());
 
     }
 }

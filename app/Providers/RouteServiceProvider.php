@@ -2,18 +2,23 @@
 
 namespace App\Providers;
 
-class RouteServiceProvider
-{
-    public const BACK_URL = '/';
+use Core\Foundation\ServiceProvider;
 
+class RouteServiceProvider extends ServiceProvider
+{
     public const HOME = '/home';
 
-    public static function register(): array
+    /**
+     * @return void
+     */
+    public function register(): void
     {
-        return [
-            'routes/web.php',
-            'routes/api.php',
-            // Add more route files here...
-        ];
+        $this->routes(function () {
+            return [
+                'routes/web.php',
+                'routes/api.php',
+                // Add more route files here...
+            ];
+        });
     }
 } 

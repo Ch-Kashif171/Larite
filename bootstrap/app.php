@@ -19,6 +19,7 @@ use Core\Foundation\Application;
 */
 $app = new Application();
 
+
 //  Boot the application: load files and register services in order.
 $app->boot();
 
