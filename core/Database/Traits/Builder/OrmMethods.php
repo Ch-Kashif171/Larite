@@ -1,5 +1,5 @@
 <?php
-namespace Core\Support\Traits\Builder;
+namespace Core\Database\Traits\Builder;
 
 use Core\Database\QueryBuilder;
 use Core\Exception\Handlers\DBException;

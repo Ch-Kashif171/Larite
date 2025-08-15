@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Support\Traits\Builder;
+namespace Core\Database\Traits\Builder;
 
 use Core\Database\Contracts\QueryBuilderContract;
 use Core\Database\QueryBuilder;

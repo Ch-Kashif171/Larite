@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Support\Traits\Builder;
+namespace Core\Database\Traits;
 
 trait Timestampable
 {

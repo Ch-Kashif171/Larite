@@ -1,11 +1,12 @@
 <?php
 
-namespace Core\Support\Traits\Builder;
+namespace Core\Database\Traits\Builder;
 
 use Core\Database\Doctrine;
 use Core\Exception\Handlers\DBException;
 use Core\Support\Str;
 use Whoops\Exception\ErrorException;
+use function getTable;
 
 trait Builder
 {

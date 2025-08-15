@@ -1,12 +1,12 @@
 <?php
 namespace Core\Database;
 
-use Core\Support\Traits\Builder\Arrayable;
-use Core\Support\Traits\Builder\Builder;
-use Core\Support\Traits\Builder\OrmMethods;
-use Core\Support\Traits\Builder\Relational;
-use Core\Support\Traits\Builder\StaticForwarding;
-use Core\Support\Traits\Builder\Timestampable;
+use Core\Database\Traits\Builder\Arrayable;
+use Core\Database\Traits\Builder\Builder;
+use Core\Database\Traits\Builder\OrmMethods;
+use Core\Database\Traits\Builder\Relational;
+use Core\Database\Traits\Builder\StaticForwarding;
+use Core\Database\Traits\Timestampable;
 
 /**
  * Base ORM Model

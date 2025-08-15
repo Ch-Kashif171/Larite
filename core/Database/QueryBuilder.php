@@ -4,12 +4,12 @@ namespace Core\Database;
 
 
 use Core\Database\Contracts\QueryBuilderContract;
+use Core\Database\Traits\Builder\Aggregators;
+use Core\Database\Traits\Builder\EagerLoading;
+use Core\Database\Traits\Builder\Getters;
+use Core\Database\Traits\Builder\MakeResult;
 use Core\Exception\Handlers\DBException;
 use Core\Support\Constants;
-use Core\Support\Traits\Builder\Aggregators;
-use Core\Support\Traits\Builder\EagerLoading;
-use Core\Support\Traits\Builder\Getters;
-use Core\Support\Traits\Builder\MakeResult;
 use Whoops\Exception\ErrorException;
 
 class QueryBuilder implements QueryBuilderContract
