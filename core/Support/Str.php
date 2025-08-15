@@ -4,6 +4,8 @@ namespace Core\Support;
 
 class Str
 {
+
+    protected static string $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     /**
      * @var string[]
      */
@@ -227,4 +229,25 @@ class Str
         $title = preg_replace('~-+~', $separator, $title);
         return strtolower($title);
     }
+
+    /**
+     * @param int $length
+     * @return string
+     * @throws \Exception
+     */
+    public static function random(int $length = 10): string
+    {
+        $pool = self::$pool;
+
+        $poolLength = strlen($pool);
+        $str = '';
+
+        for ($i = 0; $i < $length; $i++) {
+            $str .= $pool[random_int(0, $poolLength - 1)];
+        }
+
+        return $str;
+    }
+
 }
+

@@ -544,11 +544,14 @@ if(!function_exists('getTable')) {
 
 if(!function_exists('str_random')) {
 
-    function str_random($length = 10)
+    /**
+     * @param int $length
+     * @return string
+     * @throws Exception
+     */
+    function str_random(int $length = 10): string
     {
-        $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-        return substr(str_shuffle(str_repeat($pool, 5)), 0, $length);
+        return Str::random($length);
     }
 }
 
