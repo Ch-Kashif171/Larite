@@ -111,4 +111,16 @@ trait Statements
         $instance = new static();
         return (new QueryBuilder($instance->table, $instance->hidden, static::class))->create($attributes);
     }
+
+    /**
+     * @param $rows
+     * @return mixed
+     * @throws DBException
+     * @throws ErrorException
+     */
+    public static function createMany($rows): mixed
+    {
+        $instance = new static();
+        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->createMany($rows);
+    }
 }

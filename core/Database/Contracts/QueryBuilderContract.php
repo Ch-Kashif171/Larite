@@ -299,6 +299,12 @@ interface QueryBuilderContract
     public function create(array $attributes);
 
     /**
+     * @param array $rows
+     * @return bool
+     */
+    public function createMany(array $rows): bool;
+
+    /**
      * @param $column
      * @param int $value
      * @return bool

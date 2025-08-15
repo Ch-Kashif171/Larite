@@ -365,9 +365,6 @@ class QueryBuilder implements QueryBuilderContract
      */
     public function insert($data): bool
     {
-        // add timestamp in case of orm
-        $data = Timestamp::addTimeStamp($data, $this->modelClass ?? null);
-
         return $this->doctrine->insert($data);
     }
 
@@ -439,6 +436,16 @@ class QueryBuilder implements QueryBuilderContract
         $attributes = Timestamp::addTimeStamp($attributes, $this->modelClass ?? null);
 
         return $this->doctrine->create($attributes);
+    }
+
+    /**
+     * @param array $rows
+     * @return bool
+     * @throws ErrorException
+     */
+    public function createMany(array $rows): bool
+    {
+        return $this->doctrine->createMany($rows);
     }
 
     /**

@@ -90,6 +90,12 @@ class Doctrine
         return $this->result;
     }
 
+    /**
+     * @param $id
+     * @param $timestamp
+     * @return mixed
+     * @throws Exception
+     */
     public function findOrFail($id, $timestamp = [])
     {
         $record = $this->find($id, $timestamp);
@@ -239,22 +245,13 @@ class Doctrine
     }
 
     /**
-     * @param $data
+     * @param $rows
      * @return bool
      * @throws ErrorException
      */
-    public function insert($data): bool
+    public function insert($rows): bool
     {
-        $fields = '`' . implode('`, `', array_keys($data)) . '`';
-        $placeholders = ':' . implode(', :', array_keys($data));
-        $sql = "INSERT INTO {$this->table} ($fields) VALUES ({$placeholders})";
-
-        try {
-            return $this->con->prepare($sql)->execute($data);
-        } catch (Exception $e) {
-            throw new ErrorException($e->getMessage());
-        }
-
+        return $this->createMany($rows);
     }
 
     /**
@@ -909,8 +906,47 @@ class Doctrine
      */
     public function create(array $data)
     {
+        // Insert record and get ID
         $id = $this->insertGetId($data);
-        return $this->find($id);
+
+        // Return lightweight object with inserted values
+        return (object) array_merge(['id' => $id], $data);
+    }
+
+    /**
+     * @param array $records
+     * @return bool
+     * @throws ErrorException
+     */
+    public function createMany(array $records): bool
+    {
+        if (empty($records)) {
+            return false;
+        }
+
+        // If first element is not an array, wrap it into a 2D array
+        if (!is_array(reset($records))) {
+            $records = [$records];
+        }
+
+        // Extract columns from the first record
+        $columns = array_keys($records[0]);
+        $fields = '`' . implode('`, `', $columns) . '`';
+
+        // Prepare escaped values for all rows
+        $escapedRows = [];
+        foreach ($records as $record) {
+            $escaped = array_map(fn($value) => $this->con->quote($value), array_values($record));
+            $escapedRows[] = '(' . implode(', ', $escaped) . ')';
+        }
+
+        $sql = "INSERT INTO {$this->table} ($fields) VALUES " . implode(', ', $escapedRows);
+
+        try {
+            return $this->con->exec($sql) !== false;
+        } catch (Exception $e) {
+            throw new ErrorException($e->getMessage());
+        }
     }
 
     /**
@@ -922,23 +958,33 @@ class Doctrine
      */
     public function updateOrCreate(array $attributes, array $values): mixed
     {
-        // Find existing record based on attributes
-        $record = $this;
+        // Build query for existing record
+        $query = clone $this;
         foreach ($attributes as $key => $value) {
-            $record = $record->where($key, '=', $value);
+            $query = $query->where($key, '=', $value);
         }
-        $record = $record->first();
+
+        // Try to get existing record
+        $record = $query->first();
 
         if ($record) {
-            unset($values['created_at']); // Prevent overwriting created_at
-            $this->update($values);
-            return $this->find($record->id);
+            // Remove created_at if passed
+            unset($values['created_at']);
+
+            // Perform update (assumes update() affects the record found)
+            $updateQuery = clone $this;
+            $updateQuery->where('id', '=', $record->id)->update($values);
+
+            // Merge old + new data into a single object (no extra SELECT)
+            return (object) array_merge((array) $record, $values);
         }
 
-        unset($attributes['id']); // Never manually insert primary key
+        // Remove 'id' if given — never insert PK manually
+        unset($attributes['id']);
+
+        // Create new record (uses optimized create())
         return $this->create($attributes + $values);
     }
-
 
     /**
      * Add a whereIn clause to the query.
