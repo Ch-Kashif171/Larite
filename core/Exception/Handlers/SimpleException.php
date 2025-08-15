@@ -23,7 +23,7 @@ class SimpleException extends Exception
         $this->trace = $e->getTraceAsString();
 
         // Call parent constructor with original message, code and previous exception
-        parent::__construct($this->shortMessage, $e->getCode(), $e);
+        parent::__construct($this->shortMessage, (int) $e->getCode(), $e);
     }
 
     /**

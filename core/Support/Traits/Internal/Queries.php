@@ -13,7 +13,7 @@ trait Queries
     public $table;
     public $where_statement;
     public $where;
-    public $fields;
+    public $fields = '*';
     public $result;
     public $exception;
 

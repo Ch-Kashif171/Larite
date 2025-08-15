@@ -60,11 +60,6 @@ trait Builder
         return $this->doctrine->groupBy($fields);
     }
 
-    public function take($take)
-    {
-        return $this->doctrine->take($take);
-    }
-
     /**
      * @return bool
      * @throws DBException
