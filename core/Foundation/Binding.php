@@ -5,6 +5,7 @@ namespace Core\Foundation;
 use Core\Support\DBQuery;
 use Core\Support\Mailer;
 use Core\Support\Routing\Router;
+use Core\Support\Validation\Validation;
 
 class Binding
 {
@@ -21,6 +22,9 @@ class Binding
 
         // Bind mail facade
         app('mailer', new Mailer());
-        
+
+        // Bind validation facade
+        app('validator', new Validation());
+
     }
 }

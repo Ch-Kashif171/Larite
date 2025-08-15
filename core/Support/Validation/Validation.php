@@ -12,17 +12,17 @@ use Core\Exception\Handlers\ValidationException;
 use Core\Support\Facades\DB;
 use Core\Support\Session;
 
-class Validator
+class Validation
 {
     protected static array $messages = [];
 
     /**
      * @param array $fields
      * @param array $rules
-     * @return Validator|string
+     * @return Validation|string
      * @throws DBException
      */
-    public static function validate(array $fields, array $rules): Validator|string
+    public static function validate(array $fields, array $rules): Validation|string
     {
         if (empty($rules)) {
             return "Please provide the validation rules.";
