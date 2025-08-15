@@ -40,12 +40,13 @@ trait OrmMethods
 
     /**
      * Define a hasOne relationship.
-     * @param string $related Related model class
+     * @param mixed $related Related model class
      * @param string $foreignKey Foreign key on related model
      * @param string $localKey Local key on this model
      * @return QueryBuilder
+     * @throws DBException
      */
-    public function hasOne($related, $foreignKey, $localKey = 'id')
+    public function hasOne(mixed $related, string $foreignKey, string $localKey = 'id'): QueryBuilder
     {
         $instance = new $related();
         return (new QueryBuilder($instance->table, $instance->hidden, $related))
@@ -54,12 +55,13 @@ trait OrmMethods
 
     /**
      * Define a hasMany relationship.
-     * @param string $related Related model class
+     * @param mixed $related Related model class
      * @param string $foreignKey Foreign key on related model
      * @param string $localKey Local key on this model
      * @return QueryBuilder
+     * @throws DBException
      */
-    public function hasMany($related, $foreignKey, $localKey = 'id')
+    public function hasMany(mixed $related, string $foreignKey, string $localKey = 'id')
     {
         $instance = new $related();
         return (new QueryBuilder($instance->table, $instance->hidden, $related))
@@ -68,12 +70,13 @@ trait OrmMethods
 
     /**
      * Define a belongsTo relationship.
-     * @param string $related Related model class
+     * @param mixed $related Related model class
      * @param string $foreignKey Foreign key on this model
      * @param string $ownerKey Key on related model
      * @return QueryBuilder
+     * @throws DBException
      */
-    public function belongsTo($related, $foreignKey, $ownerKey = 'id')
+    public function belongsTo(mixed $related, string $foreignKey, string $ownerKey = 'id')
     {
         $instance = new $related();
         return (new QueryBuilder($instance->table, $instance->hidden, $related))
@@ -82,7 +85,7 @@ trait OrmMethods
 
     /**
      * Define a belongsToMany relationship (pivot table).
-     * @param string $related Related model class
+     * @param mixed $related Related model class
      * @param string $pivot Pivot table name
      * @param string $foreignPivotKey Foreign key on pivot table for this model
      * @param string $relatedPivotKey Foreign key on pivot table for related model
@@ -91,7 +94,7 @@ trait OrmMethods
      * @return array Array of related model instances
      * @throws DBException
      */
-    public function belongsToMany($related, $pivot, $foreignPivotKey, $relatedPivotKey, $localKey = 'id', $relatedKey = 'id')
+    public function belongsToMany(mixed $related, string $pivot, string $foreignPivotKey, string $relatedPivotKey, string $localKey = 'id', string $relatedKey = 'id')
     {
         $instance = new $related();
         $pivotRows = DB::table($pivot)->where($foreignPivotKey, '=', $this->$localKey)->get();
@@ -101,4 +104,5 @@ trait OrmMethods
             ->whereIn($relatedKey, $relatedIds)
             ->get();
     }
-} 
+
+}

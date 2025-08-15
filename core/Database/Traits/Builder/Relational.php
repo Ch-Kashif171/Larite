@@ -2,13 +2,18 @@
 
 namespace Core\Database\Traits\Builder;
 
+use Core\Database\QueryBuilder;
+use Whoops\Exception\ErrorException;
+
 trait Relational
 {
     protected array $attributes = [];
+    protected array $original = [];
 
     /**
      * @param $name
      * @return array|mixed|null
+     * @throws ErrorException
      */
     public function __get($name)
     {
@@ -20,7 +25,7 @@ trait Relational
         if (method_exists($this, $name)) {
             $result = $this->$name();
             // If the result is a QueryBuilder, call get() and cache
-            if ($result instanceof \Core\Database\QueryBuilder) {
+            if ($result instanceof QueryBuilder) {
                 $related = $result->get();
                 $this->attributes[$name] = $related;
                 return $related;
@@ -39,6 +44,7 @@ trait Relational
     public function __set($name, $value)
     {
         $this->attributes[$name] = $value;
+        $this->original[$name] = $value;
     }
 
     /**
@@ -60,7 +66,7 @@ trait Relational
         if (method_exists($this, $method)) {
             $result = $this->$method(...$arguments);
             // If the result is a QueryBuilder, call get() automatically
-            if ($result instanceof \Core\Database\QueryBuilder) {
+            if ($result instanceof QueryBuilder) {
                 return $result->get();
             }
             return $result;
