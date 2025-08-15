@@ -3,6 +3,7 @@
 namespace Core\Foundation;
 
 use Core\Support\DBQuery;
+use Core\Support\Mailer;
 use Core\Support\Routing\Router;
 
 class Binding
@@ -17,5 +18,9 @@ class Binding
 
         // Bind DB facade
         app('db', new DBQuery());
+
+        // Bind mail facade
+        app('mailer', new Mailer());
+        
     }
 }

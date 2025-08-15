@@ -15,44 +15,70 @@ class SendMail
     public $attachment_name;
     public $load_view;
 
+    /**
+     * @param $view
+     * @param $data
+     */
     public function __construct($view,$data)
     {
-        $this->load_view = view($view,$data,true);
+        $this->load_view = view($view, $data,true);
     }
 
-    public function to($to, $to_name){
-
+    /**
+     * @param $to
+     * @param string $to_name
+     * @return $this
+     */
+    public function to($to, string $to_name = ''): static
+    {
         $this->to = $to;
         $this->to_name = $to_name;
         return $this;
     }
 
-    public function subject($subject){
-
+    /**
+     * @param $subject
+     * @return $this
+     */
+    public function subject($subject): static
+    {
         $this->subject = $subject;
         return $this;
     }
 
-    public function from($from, $from_name){
-
+    /**
+     * @param $from
+     * @param string $from_name
+     * @return $this
+     */
+    public function from($from, string $from_name = ''): static
+    {
         $this->from = $from;
         $this->from_name = $from_name;
         return $this;
     }
 
-    public function attachment($attachment, $attachment_name){
-
+    /**
+     * @param $attachment
+     * @param string $attachment_name
+     * @return $this
+     */
+    public function attachment($attachment, string $attachment_name = ''): static
+    {
         $this->attachment = $attachment;
         $this->attachment_name = $attachment_name;
         return $this;
     }
 
-    public function mailing()
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    public function sendMail(): bool
     {
         $mail = new PHPMailer(true);
 
         try {
-
             $mail->SMTPDebug = 0;
             $mail->isSMTP();
             $mail->Host = config('mail.host');
@@ -82,8 +108,6 @@ class SendMail
         } catch (Exception $e) {
             throw $e;
         }
-
-
 
     }
 
