@@ -80,9 +80,6 @@ class Commander
      */
     public function register(): Application
     {
-        // Bind DB facade (need to bind for cli her)
-        app('db', new DBQuery());
-
         $this->registerCoreCommands();
 
         $this->registerCustomCommands();

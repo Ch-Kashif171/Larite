@@ -21,10 +21,21 @@ class Application
 
     protected Container $container;
 
-    protected array $includes = [
-        '/core/Utils/helpers.php',
-        '/config/app.php',
-        '/config/mail.php',
+    /**
+     * Config files to load.
+     * We split them into common, http-only, and cli-only sets.
+     */
+    protected array $configFiles = [
+        'common' => [
+            '/core/Utils/helpers.php',
+            '/config/app.php',
+        ],
+        'http' => [
+            '/config/mail.php',
+        ],
+        'cli' => [
+            // keep empty for now, add cli configs if needed
+        ],
     ];
 
     protected array $notFound = [
@@ -59,7 +70,7 @@ class Application
      */
     public function boot(): void
     {
-        foreach ($this->includes as $file) {
+        foreach ($this->getConfigFiles() as $file) {
             $this->includeFile($file);
         }
 
@@ -68,6 +79,22 @@ class Application
         if (config('app.app_env') !== 'production') {
             $this->registerExceptionHandler();
         }
+    }
+
+    /**
+     * Dynamically pick config files based on SAPI.
+     */
+    protected function getConfigFiles(): array
+    {
+        $files = $this->configFiles['common'];
+
+        if ($this->isCli()) {
+            $files = array_merge($files, $this->configFiles['cli']);
+        } else {
+            $files = array_merge($files, $this->configFiles['http']);
+        }
+
+        return $files;
     }
 
     /**
@@ -83,7 +110,15 @@ class Application
             $this->registerBootstrapSingleton('whoops', [Whoops::class, 'handler']);
         }
 
-        $this->registerBootstrapSingleton('assetsNotFound', [AssetsNotFound::class, 'run']);
+        // We'll this only if request is http
+        if (!$this->isCli()) {
+            $this->registerBootstrapSingleton('assetsNotFound', [AssetsNotFound::class, 'run']);
+        }
+    }
+
+    protected function isCli(): bool
+    {
+        return PHP_SAPI === 'cli';
     }
 
     /**
@@ -126,17 +161,14 @@ class Application
     }
 
     /**
+     * @param null $commander
      * @return bool
      * @throws MiddlewareException
      */
-    public function init(): bool
+    public function init($commander = null): bool
     {
-        foreach ($this->includes as $file) {
-            require_once ROOT_PATH . $file;
-        }
-
+        // Bind the default facades
         Binding::facades();
-
 
         // Register all service providers dynamically
         $this->registerServiceProviders();
@@ -144,6 +176,10 @@ class Application
         // Load routes
         RegisterAllRoutes::loadAll();
 
+        // Commander on run if it is cli request
+        $commander?->run();
+
+        //Execute routes here
         $routeMatched = false;
         try {
             $routeMatched = Route::executeRoutes();

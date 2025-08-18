@@ -40,8 +40,29 @@ $app = require_once ROOT_PATH . '/bootstrap/app.php';
 
 /*
 |--------------------------------------------------------------------------
-| Initiate Application
+| Run The HTTP Kernel
 |--------------------------------------------------------------------------
-| This function responsible to initiate the application instances.
+|
+| Here we create the HTTP kernel instance for the framework. The kernel is
+| responsible for booting and handling the application lifecycle for web
+| requests. First we call "handle()" which boots the application and runs
+| the router to produce output.
+|
 */
-$app->init(); 
+$kernel = new Core\Http\HttpKernel($app);
+
+$kernel->handle();
+
+/*
+|--------------------------------------------------------------------------
+| Terminate The Request
+|--------------------------------------------------------------------------
+|
+| After the response has been sent to the browser, we call "terminate()"
+| to finish the request lifecycle. This ensures that sessions are written,
+| resources are released, and any termination middleware/events are run.
+| Even though the client already received the response, this cleanup step
+| is essential for a graceful shutdown.
+|
+*/
+$kernel->terminate();

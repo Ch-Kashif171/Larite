@@ -1,9 +1,8 @@
 #!/usr/bin/env php
 <?php
 
-use Core\Commands\Executor\Commander;
-use Core\Foundation\Application as App;
-use Symfony\Component\Console\Application;
+use Core\Foundation\Application;
+use Symfony\Component\Console\Application  as App;
 
 const ROOT_PATH = __DIR__;
 
@@ -20,9 +19,17 @@ const ROOT_PATH = __DIR__;
 */
 require_once 'vendor/autoload.php';
 
-require_once 'core/Utils/helpers.php';
-require_once 'core/Migrations/Migrate.php';
-require_once 'core/Migrations/Blueprint.php';
+/*
+|--------------------------------------------------------------------------
+| Run The Application
+|--------------------------------------------------------------------------
+|
+| Once we have the application, we can handle the incoming request using
+| the application's HTTP kernel. Then, we will send the response back
+| to this client's browser, allowing them to enjoy our application.
+|
+*/
+$app = require_once ROOT_PATH . '/bootstrap/app.php';
 
 /***********************************************************/
 
@@ -36,26 +43,22 @@ require_once 'core/Migrations/Blueprint.php';
 | or another output device for the developers. Here goes nothing!
 |
 */
-$application = new Application("Welcome to ".App::framework()." Developed By Kashif Sohail, Version: ", App::version());
+$application = new App("Welcome to ".Application::framework()." Developed By Kashif Sohail, Version: ", Application::version());
 
 /*
 |--------------------------------------------------------------------------
-| Register Components
-|--------------------------------------------------------------------------
-| To register all require components and classes to prepare for
-| execution to run the all Larite commands in terminal
-*/
-$commander = new Commander($application);
-
-$app = $commander->register();
-
-/*
-|--------------------------------------------------------------------------
-| Run The Application
+| Run The Console Kernel
 |--------------------------------------------------------------------------
 |
-| Once Larite has register all require components and classes, we will
-| Execute the commander
+| Here we create the Console kernel instance for the framework. The kernel
+| is responsible for bootstrapping the application when running in the CLI
+| environment. It prepares all available console commands and then calls
+| $app->init() internally to execute the given command.
+|
+| Finally, we exit with the return code from "handle()", ensuring that the
+| CLI process returns the correct status to the operating system.
 |
 */
-$app->run();
+$kernel = new Core\Console\ConsoleKernel($app);
+
+exit($kernel->handle());

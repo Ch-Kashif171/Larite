@@ -26,7 +26,7 @@ class RouteListCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // Load all routes first
-        $this->loadRoutes();
+      //  $this->loadRoutes();
 
         $methodFilter = $input->getOption('method');
         $nameFilter = $input->getOption('name');
