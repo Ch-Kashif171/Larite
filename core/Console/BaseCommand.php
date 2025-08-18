@@ -57,6 +57,29 @@ abstract class BaseCommand extends Command
     }
 
     /**
+     * @param string $question
+     * @param string|null $default
+     * @return string
+     */
+    protected function ask(string $question, ?string $default = null): string
+    {
+        $this->line($question . ($default ? " [{$default}]" : '') . ': ');
+
+        $input = trim(fgets(STDIN));
+
+        if ($input === '' && $default !== null) {
+            return $default;
+        }
+
+        return $input;
+    }
+
+    protected function line(string $string): void
+    {
+        $this->output->writeln($string);
+    }
+
+    /**
      * @param string $message
      * @return void
      */
