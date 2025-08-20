@@ -2,7 +2,7 @@
 
 namespace Core\Support;
 
-use Core\Database\QueryBuilder;
+use Core\Database\ORMBuilder;
 use Core\Exception\Handlers\DBException;
 use Whoops\Exception\ErrorException;
 
@@ -13,12 +13,12 @@ class DBQuery
 {
     /**
      * @param $table
-     * @return QueryBuilder
+     * @return ORMBuilder
      * @throws DBException
      */
-    public static function table($table): QueryBuilder
+    public static function table($table): ORMBuilder
     {
-        return new QueryBuilder($table);
+        return new ORMBuilder($table);
     }
 
     /**
@@ -26,9 +26,9 @@ class DBQuery
      * @return bool
      * @throws ErrorException
      */
-    public static function rawQuery($sql)
+    public static function rawQuery($sql): bool
     {
-        return QueryBuilder::rawQuery($sql);
+        return ORMBuilder::rawQuery($sql);
     }
 
 }
