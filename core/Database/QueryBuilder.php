@@ -2,17 +2,17 @@
 
 namespace Core\Database;
 
+
 use Core\Database\Contracts\QueryBuilderContract;
 use Core\Database\Traits\Builder\Aggregators;
-use Core\Database\Traits\Builder\EagerLoading;
 use Core\Database\Traits\Builder\Getters;
 use Core\Exception\Handlers\DBException;
 use Core\Support\Constants;
 use Whoops\Exception\ErrorException;
 
-class QueryBuilder implements QueryBuilderContract
+class QueryBuilder
 {
-    use Getters, Aggregators, EagerLoading;
+    use Getters, Aggregators;
 
     protected Doctrine $doctrine;
     protected $hidden = [];
@@ -223,6 +223,12 @@ class QueryBuilder implements QueryBuilderContract
         return $this->addWhere('whereDay', ...func_get_args());
     }
 
+    /**
+     * @param $column
+     * @param $operator
+     * @param $day
+     * @return $this
+     */
     public function whereDayOfWeek($column, $operator = null, $day = null): static
     {
         return $this->addWhere('whereDayOfWeek', ...func_get_args());
@@ -373,9 +379,6 @@ class QueryBuilder implements QueryBuilderContract
      */
     public function insertGetId($data)
     {
-        // add timestamp in case of orm
-        $data = Timestamp::addTimeStamp($data, $this->modelClass ?? null);
-
         return $this->doctrine->insertGetId($data);
     }
 
@@ -386,9 +389,6 @@ class QueryBuilder implements QueryBuilderContract
      */
     public function update(array $fields): mixed
     {
-        // update timestamp in case of orm
-        $fields = Timestamp::updateTimeStamp($fields, $this->modelClass ?? null);
-
         return $this->doctrine->update($fields);
     }
 
@@ -417,9 +417,6 @@ class QueryBuilder implements QueryBuilderContract
      */
     public function updateOrCreate($attributes, $values): mixed
     {
-        // add timestamp in case of orm
-        $values = Timestamp::addTimeStamp($values, $this->modelClass ?? null);
-
         return $this->doctrine->updateOrCreate($attributes, $values);
     }
 
@@ -430,9 +427,6 @@ class QueryBuilder implements QueryBuilderContract
      */
     public function create(array $attributes): mixed
     {
-        // add timestamp in case of orm
-        $attributes = Timestamp::addTimeStamp($attributes, $this->modelClass ?? null);
-
         return $this->doctrine->create($attributes);
     }
 

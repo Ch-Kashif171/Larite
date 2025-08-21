@@ -3,7 +3,7 @@
 namespace Core\Database\Traits\Builder;
 
 use Core\Database\Contracts\QueryBuilderContract;
-use Core\Database\QueryBuilder;
+use Core\Database\ORMQueryBuilder;
 use Core\Exception\Handlers\DBException;
 
 trait Joins
@@ -19,7 +19,7 @@ trait Joins
     public static function join($table, $column, $equal, $second_column): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden))->join($table, $column, $equal, $second_column);
+        return (new ORMQueryBuilder($instance->table, $instance->hidden))->join($table, $column, $equal, $second_column);
     }
 
     /**
@@ -33,7 +33,7 @@ trait Joins
     public static function leftJoin($table, $column, $equal, $second_column): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden))->leftJoin($table, $column, $equal, $second_column);
+        return (new ORMQueryBuilder($instance->table, $instance->hidden))->leftJoin($table, $column, $equal, $second_column);
     }
 
     /**
@@ -41,13 +41,13 @@ trait Joins
      * @param $column
      * @param $equal
      * @param $second_column
-     * @return \Core\Database\Contracts\QueryBuilderContract
+     * @return QueryBuilderContract
      * @throws DBException
      */
     public static function rightJoin($table, $column, $equal, $second_column): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden))->rightJoin($table, $column, $equal, $second_column);
+        return (new ORMQueryBuilder($instance->table, $instance->hidden))->rightJoin($table, $column, $equal, $second_column);
     }
 
     /**
@@ -55,12 +55,12 @@ trait Joins
      * @param $column
      * @param $equal
      * @param $second_column
-     * @return \Core\Database\Contracts\QueryBuilderContract
+     * @return QueryBuilderContract
      * @throws DBException
      */
     public static function fullOuterJoin($table, $column, $equal, $second_column): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden))->fullOuterJoin($table, $column, $equal, $second_column);
+        return (new ORMQueryBuilder($instance->table, $instance->hidden))->fullOuterJoin($table, $column, $equal, $second_column);
     }
 }

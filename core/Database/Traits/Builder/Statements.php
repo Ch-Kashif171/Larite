@@ -3,7 +3,7 @@
 namespace Core\Database\Traits\Builder;
 
 use Core\Database\Contracts\QueryBuilderContract;
-use Core\Database\QueryBuilder;
+use Core\Database\ORMQueryBuilder;
 use Core\Exception\Handlers\DBException;
 use Whoops\Exception\ErrorException;
 
@@ -17,7 +17,7 @@ trait Statements
     public static function latest(string $column = 'created_at'): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->latest($column);
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->latest($column);
     }
 
     /**
@@ -28,7 +28,7 @@ trait Statements
     public static function oldest(string $column = 'created_at'): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->oldest($column);
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->oldest($column);
     }
 
     /**
@@ -40,7 +40,7 @@ trait Statements
     public static function insert($data): bool
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->insert($data);
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->insert($data);
     }
 
     /**
@@ -52,7 +52,7 @@ trait Statements
     public static function insertGetId($data): string
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->insertGetId($data);
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->insertGetId($data);
     }
 
     /**
@@ -63,7 +63,7 @@ trait Statements
     public static function select(...$fields): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->select(...$fields);
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->select(...$fields);
     }
 
     /**
@@ -75,7 +75,7 @@ trait Statements
     public static function update($fields): bool
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->update($fields);
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->update($fields);
     }
 
     /**
@@ -86,7 +86,7 @@ trait Statements
     public static function delete(): bool
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->delete();
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->delete();
     }
 
     /**
@@ -98,7 +98,7 @@ trait Statements
     public static function updateOrCreate($attributes, $values): mixed
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->updateOrCreate($attributes, $values);
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->updateOrCreate($attributes, $values);
     }
 
     /**
@@ -109,7 +109,7 @@ trait Statements
     public static function create($attributes): mixed
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->create($attributes);
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->create($attributes);
     }
 
     /**
@@ -121,6 +121,6 @@ trait Statements
     public static function createMany($rows): mixed
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->createMany($rows);
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->createMany($rows);
     }
 }

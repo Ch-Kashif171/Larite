@@ -2,7 +2,7 @@
 
 namespace Core\Database\Traits\Builder;
 
-use Core\Database\QueryBuilder;
+use Core\Database\ORMQueryBuilder;
 use Whoops\Exception\ErrorException;
 
 trait Relational
@@ -25,8 +25,8 @@ trait Relational
         // If a method exists with this name, treat as relationship
         if (method_exists($this, $name)) {
             $result = $this->$name();
-            // If the result is a QueryBuilder, call get() and cache
-            if ($result instanceof QueryBuilder) {
+            // If the result is a ORMQueryBuilder, call get() and cache
+            if ($result instanceof ORMQueryBuilder) {
                 $related = $result->get();
                 $this->attributes[$name] = $related;
                 return $related;
@@ -66,8 +66,8 @@ trait Relational
     {
         if (method_exists($this, $method)) {
             $result = $this->$method(...$arguments);
-            // If the result is a QueryBuilder, call get() automatically
-            if ($result instanceof QueryBuilder) {
+            // If the result is a ORMQueryBuilder, call get() automatically
+            if ($result instanceof ORMQueryBuilder) {
                 return $result->get();
             }
             return $result;

@@ -2,7 +2,7 @@
 
 namespace Core\Database\Traits\Builder;
 
-use Core\Database\QueryBuilder;
+use Core\Database\ORMQueryBuilder;
 use Core\Exception\Handlers\DBException;
 
 trait StaticForwarding
@@ -16,12 +16,12 @@ trait StaticForwarding
     public static function __callStatic($method, $parameters)
     {
         $instance = new static();
-        $builder = new QueryBuilder($instance->table, $instance->hidden, static::class);
+        $builder = new ORMQueryBuilder($instance->table, $instance->hidden, static::class);
 
         if (method_exists($builder, $method)) {
             return $builder->$method(...$parameters);
         }
 
-        throw new \Exception("Method {$method} does not exist on Builder.");
+        throw new \Exception("Method {$method} does not exist on ORMQueryBuilder.");
     }
 } 

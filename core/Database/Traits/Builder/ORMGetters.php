@@ -2,6 +2,7 @@
 
 namespace Core\Database\Traits\Builder;
 
+use Core\Database\Timestamp;
 use Core\Support\Collection\Collection;
 
 trait ORMGetters
@@ -9,36 +10,46 @@ trait ORMGetters
     use Wrapper;
 
     /**
-     * @return array|Collection
+     * @return array|\Core\Support\Collection\Collection
+     * @throws \Whoops\Exception\ErrorException
      */
     public function all(): array|Collection
     {
-        return new Collection($this->doctrine->get());
+        $timestamp = Timestamp::timestamp($this->modelClass ?? null);
+        return $this->wrapMultiple(fn() => $this->doctrine->get($timestamp, $this->hidden));
     }
 
     /**
-     * @return array|Collection
+     * @return array|\Core\Support\Collection\Collection
+     * @throws \Whoops\Exception\ErrorException
      */
     public function get(): array|Collection
     {
-        return new Collection($this->doctrine->get());
+        // skip timestamp
+        $timestamp = Timestamp::timestamp($this->modelClass ?? null);
+
+        return $this->wrapMultiple(fn() => $this->doctrine->get($timestamp, $this->hidden));
     }
 
     /**
      * @return mixed
+     * @throws \Whoops\Exception\ErrorException
      */
     public function first()
     {
-        return new Collection($this->doctrine->first());
+        // skip timestamp
+        $timestamp = Timestamp::timestamp($this->modelClass ?? null);
+
+        return $this->wrapSingle(fn() => $this->doctrine->first($timestamp, $this->hidden));
     }
 
     /**
      * @param $columns
      * @return array
      */
-    public function pluck($columns): array
+    public function pluck($columns): Collection
     {
-        return $this->doctrine->pluck($columns);
+        return $this->doctrine->pluck(...func_get_args());
     }
 
     /**
@@ -48,17 +59,18 @@ trait ORMGetters
      */
     public function find($id)
     {
-        return new Collection($this->doctrine->find($id));
+        // skip timestamp
+        $timestamp = Timestamp::timestamp($this->modelClass ?? null);
+
+        return $this->wrapSingle(fn() => $this->doctrine->find($id, $timestamp, $this->hidden));
     }
 
-    /**
-     * @param $id
-     * @return mixed
-     * @throws \Exception
-     */
     public function findOrFail($id)
     {
-        return new Collection($this->doctrine->findOrFail($id));
+        // skip timestamp
+        $timestamp = Timestamp::timestamp($this->modelClass ?? null);
+
+        return $this->wrapSingle(fn() => $this->doctrine->findOrFail($id, $timestamp, $this->hidden));
     }
 
     /**
@@ -67,7 +79,10 @@ trait ORMGetters
      */
     public function firstOrFail()
     {
-        return new Collection($this->doctrine->firstOrFail());
+        // skip timestamp
+        $timestamp = Timestamp::timestamp($this->modelClass ?? null);
+
+        return $this->wrapSingle(fn() => $this->doctrine->firstOrFail($timestamp));
     }
 
     /**
@@ -76,7 +91,10 @@ trait ORMGetters
      */
     public function paginate($limit)
     {
-        return new Collection($this->doctrine->paginate($limit));
+        // skip timestamp
+        $timestamp = Timestamp::timestamp($this->modelClass ?? null);
+
+        return $this->wrapPaginate(fn() => $this->doctrine->paginate($limit, $timestamp));
     }
 
     /**
@@ -85,7 +103,10 @@ trait ORMGetters
      */
     public function simplePaginate($limit): array
     {
-        return new Collection($this->doctrine->simplePaginate($limit));
+        // skip timestamp
+        $timestamp = Timestamp::timestamp($this->modelClass ?? null);
+
+        return $this->wrapSimplePaginate(fn() => $this->doctrine->simplePaginate($limit, $timestamp));
     }
 
 }

@@ -6,7 +6,7 @@ use Core\Support\Collection\Collection;
 use PDO;
 
 /**
- * Contract for the Query Builder, inspired by Laravel's Query Builder contract.
+ * Contract for the Query ORMQueryBuilder, inspired by Laravel's Query ORMQueryBuilder contract.
  */
 interface DoctrineContract
 {

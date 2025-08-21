@@ -3,7 +3,7 @@
 namespace Core\Database\Traits\Builder;
 
 use Core\Database\Contracts\QueryBuilderContract;
-use Core\Database\QueryBuilder;
+use Core\Database\ORMQueryBuilder;
 use Core\Exception\Handlers\DBException;
 
 trait Clauses
@@ -18,7 +18,7 @@ trait Clauses
     public static function where($column, $operator = null, $value = null): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->where(...func_get_args());
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->where(...func_get_args());
     }
 
     /**
@@ -31,7 +31,7 @@ trait Clauses
     public static function orWhere($column, $operator = null, $value = null): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->orWhere(...func_get_args());
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->orWhere(...func_get_args());
     }
 
     /**
@@ -43,7 +43,7 @@ trait Clauses
     public static function whereIn($column, $value): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->whereIn($column, $value);
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->whereIn($column, $value);
     }
 
     /**
@@ -54,7 +54,7 @@ trait Clauses
     public static function whereNull($column): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->whereNull($column);
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->whereNull($column);
     }
 
     /**
@@ -65,7 +65,7 @@ trait Clauses
     public static function whereNotNull($column): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->whereNotNull($column);
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->whereNotNull($column);
     }
 
     /**
@@ -78,7 +78,7 @@ trait Clauses
     public static function whereDate($column, $operator = null, $date = null): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->whereDate(...func_get_args());
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->whereDate(...func_get_args());
     }
 
     /**
@@ -91,46 +91,46 @@ trait Clauses
     public static function orWhereDate($column, $operator = null, $value = null): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->orWhereDate(...func_get_args());
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->orWhereDate(...func_get_args());
     }
 
     /**
      * @param $column
      * @param $operator
      * @param $day
-     * @return QueryBuilderContract
+     * @return ORMQueryBuilder
      * @throws DBException
      */
-    public static function whereDay($column, $operator = null, $day = null): QueryBuilderContract
+    public static function whereDay($column, $operator = null, $day = null): ORMQueryBuilder
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->whereDay(...func_get_args());
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->whereDay(...func_get_args());
     }
 
     /**
      * @param $column
      * @param $operator
      * @param $day
-     * @return QueryBuilderContract
+     * @return ORMQueryBuilder
      * @throws DBException
      */
-    public static function whereDayOfWeek($column, $operator = null, $day = null): QueryBuilderContract
+    public static function whereDayOfWeek($column, $operator = null, $day = null): ORMQueryBuilder
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->whereDayOfWeek(...func_get_args());
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->whereDayOfWeek(...func_get_args());
     }
 
     /**
      * @param $column
      * @param $operator
      * @param $time
-     * @return QueryBuilderContract
+     * @return ORMQueryBuilder
      * @throws DBException
      */
-    public static function whereTime($column, $operator = null, $time = null): QueryBuilderContract
+    public static function whereTime($column, $operator = null, $time = null): ORMQueryBuilder
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->whereTime(...func_get_args());
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->whereTime(...func_get_args());
     }
 
     /**
@@ -143,7 +143,7 @@ trait Clauses
     public static function whereMonth($column, $operator = null, $month = null): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->whereMonth(...func_get_args());
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->whereMonth(...func_get_args());
     }
 
     /**
@@ -156,7 +156,7 @@ trait Clauses
     public static function whereYear($column, $operator = null, $year = null): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->whereYear(...func_get_args());
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->whereYear(...func_get_args());
     }
 
     /**
@@ -168,19 +168,19 @@ trait Clauses
     public static function whereBetween($column, $values): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->whereBetween(...func_get_args());
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->whereBetween(...func_get_args());
     }
 
     /**
      * @param $column
      * @param $values
-     * @return \Core\Database\Contracts\QueryBuilderContract
+     * @return QueryBuilderContract
      * @throws DBException
      */
     public static function whereNotBetween($column, $values): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->whereNotBetween(...func_get_args());
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->whereNotBetween(...func_get_args());
     }
 
     /**
@@ -192,19 +192,19 @@ trait Clauses
     public static function orWhereBetween($column, $values): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->orWhereBetween(...func_get_args());
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->orWhereBetween(...func_get_args());
     }
 
     /**
      * @param $column
      * @param $values
-     * @return \Core\Database\Contracts\QueryBuilderContract
+     * @return QueryBuilderContract
      * @throws DBException
      */
     public static function orWhereNotBetween($column, $values): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->orWhereNotBetween(...func_get_args());
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->orWhereNotBetween(...func_get_args());
     }
 
     /**
@@ -217,6 +217,6 @@ trait Clauses
     public static function having($column, $condition, $value): QueryBuilderContract
     {
         $instance = new static();
-        return (new QueryBuilder($instance->table, $instance->hidden, static::class))->having($column, $condition, $value);
+        return (new ORMQueryBuilder($instance->table, $instance->hidden, static::class))->having($column, $condition, $value);
     }
 }

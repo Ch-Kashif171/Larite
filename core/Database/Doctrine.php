@@ -14,7 +14,7 @@ use Core\Database\Traits\WhereTrait;
 use Core\Support\Traits\Internal\Queries;
 
 /**
- * Main Query Builder class implementing the contract and composing traits.
+ * Main Query ORMQueryBuilder class implementing the contract and composing traits.
  */
 class Doctrine implements DoctrineContract
 {
