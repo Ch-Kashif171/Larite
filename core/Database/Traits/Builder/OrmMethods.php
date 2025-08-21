@@ -20,9 +20,8 @@ trait OrmMethods
             return null;
         }
         $model = new static();
-        foreach ((array)$data as $key => $value) {
-            $model->$key = $value; // This will use __set and store in $attributes
-        }
+        $model->attributes = (array) $data;
+        $model->original = (array) $data;
         return $model;
     }
 

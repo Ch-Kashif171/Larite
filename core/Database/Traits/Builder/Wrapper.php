@@ -3,23 +3,23 @@
 namespace Core\Database\Traits\Builder;
 
 use Core\Database\QueryBuilder;
+use Core\Exception\Handlers\DBException;
 use Core\Support\Collection\Collection;
 use Core\Support\Pagination\Paginate;
+use Whoops\Exception\ErrorException;
 
 trait Wrapper
 {
     use Hydrate;
+
     /**
      * @param callable $callback
-     * @return array
+     * @return array|Collection
      */
     protected function wrapMultiple(callable $callback): array|Collection
     {
         // Execute the query and retrieve raw results from the database
         $result = $callback();
-
-        // Filter out hidden attributes as defined in the model's $hidden property
-        $result = $this->getResult($result);
 
         // Automatically load any defined relationships
         $result = $this->hydrates($result);
@@ -29,7 +29,6 @@ trait Wrapper
             $result = $this->eagerLoadRelations($result, $this->with);
         }
 
-        // Modify ORM to Return Collection
         return new Collection($result);
     }
 
@@ -41,9 +40,6 @@ trait Wrapper
     {
         // Execute the query and retrieve raw results from the database
         $result = $callback();
-
-        // Filter out hidden attributes as defined in the model's $hidden property
-        $result = $this->getResult($result);
 
         // Automatically load any defined relationships
         $result = $this->hydrate($result);
@@ -66,7 +62,7 @@ trait Wrapper
         $pagination = $callback();
 
         // Process the data portion through the relation pipeline
-        $processedData = $this->processPaginationData($pagination['data']);
+        $processedData = $this->processPaginationData($pagination['data'], $this->hidden);
 
         // Replace the data with processed data
         $pagination['data'] = $processedData;
@@ -85,7 +81,7 @@ trait Wrapper
         $pagination = $callback();
 
         // Process the data portion through the relation pipeline
-        $processedData = $this->processPaginationData($pagination['simple']['data']);
+        $processedData = $this->processPaginationData($pagination['simple']['data'], $this->hidden);
 
         // Replace the data with processed data
         $pagination['simple']['data'] = $processedData;
@@ -117,6 +113,7 @@ trait Wrapper
      * @param $models
      * @param $with
      * @return mixed
+     * @throws ErrorException
      */
     private function singleRelation($models, $with): mixed
     {
@@ -137,6 +134,7 @@ trait Wrapper
      * @param $models
      * @param $with
      * @return mixed
+     * @throws DBException
      */
     private function multiRelation($models, $with): mixed
     {
@@ -193,15 +191,13 @@ trait Wrapper
     /**
      * Process pagination data through the relation pipeline
      * @param array $data
+     * @param array $hidden
      * @return array
      */
-    private function processPaginationData($data): array
+    private function processPaginationData(array $data, array $hidden = []): array
     {
-        // Filter out hidden attributes as defined in the model's $hidden property
-        $result = $this->getResult($data);
-
         // Automatically load any defined relationships
-        $result = $this->hydrates($result);
+        $result = $this->hydrates($data);
 
         // Eager load
         if (property_exists($this, 'with')) {

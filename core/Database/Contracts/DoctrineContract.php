@@ -2,6 +2,7 @@
 
 namespace Core\Database\Contracts;
 
+use Core\Support\Collection\Collection;
 use PDO;
 
 /**
@@ -11,10 +12,10 @@ interface DoctrineContract
 {
 
     public function select(...$fields): self;
-    public function first(array $timestamp = []): mixed;
+    public function first(array $timestamp = [], array $hidden = []): mixed;
     public function find($id, array $timestamp = []): mixed;
     public function findOrFail($id, array $timestamp = []): mixed;
-    public function get(array $timestamp = []): array|false;
+    public function get(array $timestamp = [], array $hidden = []): array|false;
     public function increment(string $column, int $value = 1): bool;
     public function decrement(string $column, int $value = 1): bool;
     public function sum(string $column): mixed;
@@ -51,7 +52,7 @@ interface DoctrineContract
     public function fullOuterJoin(string $table, string $column, string $equal, string $second_column): self;
     public function paginate(int $limit, array $timestamp = []): array;
     public function simplePaginate(int $limit, array $timestamp = []): array;
-    public function pluck(array|string $columns): array;
+    public function pluck(array|string $columns): Collection;
     public function exists(): bool;
     public function firstOrFail(array $timestamp = []): mixed;
     public function create(array $data): mixed;

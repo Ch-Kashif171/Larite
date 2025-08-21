@@ -2,19 +2,17 @@
 
 namespace Core\Database;
 
-
 use Core\Database\Contracts\QueryBuilderContract;
 use Core\Database\Traits\Builder\Aggregators;
 use Core\Database\Traits\Builder\EagerLoading;
 use Core\Database\Traits\Builder\Getters;
-use Core\Database\Traits\Builder\MakeResult;
 use Core\Exception\Handlers\DBException;
 use Core\Support\Constants;
 use Whoops\Exception\ErrorException;
 
 class QueryBuilder implements QueryBuilderContract
 {
-    use MakeResult, Getters, Aggregators, EagerLoading;
+    use Getters, Aggregators, EagerLoading;
 
     protected Doctrine $doctrine;
     protected $hidden = [];

@@ -22,6 +22,9 @@ class Database
     private array $options = [
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_PERSISTENT         => true, // Enable persistent connections
+        PDO::ATTR_EMULATE_PREPARES   => false, // Use native prepared statements
+        PDO::ATTR_STRINGIFY_FETCHES  => false, // Avoid string conversion of numeric data
     ];
 
     private function __construct()

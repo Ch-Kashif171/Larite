@@ -8,6 +8,7 @@ use Whoops\Exception\ErrorException;
 trait Relational
 {
     protected array $attributes = [];
+
     protected array $original = [];
 
     /**

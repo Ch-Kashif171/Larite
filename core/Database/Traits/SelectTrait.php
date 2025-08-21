@@ -36,19 +36,31 @@ trait SelectTrait
 
     /**
      * @param array $timestamp
-     * @return string
+     * @param array $hidden
+     * @return array
      */
-    protected function getSelectColumns(array $timestamp = []): string
+    protected function getSelectColumns(array $timestamp = [], array $hidden = []): array
     {
-        $columns = empty($this->fields) ? '*' : $this->fields;
+        $columns = empty($this->fields) ? ['*'] : (array) $this->fields;
 
-        // Handle timestamps (assuming Timestamp is a separate class)
-        return Timestamp::withoutTimestamps(
+        if (empty($timestamp) && empty($hidden)) {
+            return $columns;
+        }
+        // Handle timestamps
+        $columns = Timestamp::withoutTimestamps(
             $this->table,
             $this->con,
-            [$columns],
+            $columns,
             $timestamp
         );
+
+        // Remove hidden columns
+        if (!empty($hidden)) {
+            $columns = array_diff(explode(',', $columns), $hidden);
+        }
+
+        return $columns;
     }
+
 
 }

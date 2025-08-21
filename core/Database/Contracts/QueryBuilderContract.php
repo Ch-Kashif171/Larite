@@ -90,9 +90,9 @@ interface QueryBuilderContract
 
     /**
      * @param $columns
-     * @return array
+     * @return Collection
      */
-    public function pluck($columns): array;
+    public function pluck($columns): Collection;
 
     /**
      * @param $id

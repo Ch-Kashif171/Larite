@@ -2,6 +2,7 @@
 
 namespace Core\Database\Traits;
 
+use Core\Support\Collection\Collection;
 use Exception;
 use PDO;
 
@@ -12,11 +13,12 @@ trait RetrievalTrait
 {
     /**
      * @param array $timestamp
+     * @param array $hidden
      * @return mixed
      */
-    public function first(array $timestamp = []): mixed
+    public function first(array $timestamp = [], array $hidden = []): mixed
     {
-        $columns = $this->getSelectColumns($timestamp);
+        $columns = $this->getColumns($timestamp, $hidden);
 
         $sql = $this->buildSelectQuery($columns);
         $query = $this->con->query($sql);
@@ -26,11 +28,12 @@ trait RetrievalTrait
     /**
      * @param $id
      * @param array $timestamp
+     * @param array $hidden
      * @return mixed
      */
-    public function find($id, array $timestamp = []): mixed
+    public function find($id, array $timestamp = [], array $hidden = []): mixed
     {
-        $columns = $this->getSelectColumns($timestamp);
+        $columns = $this->getColumns($timestamp, $hidden);
 
         $sql = $this->buildSelectQuery($columns)
             . " WHERE {$this->table}.id = {$id}";
@@ -41,12 +44,13 @@ trait RetrievalTrait
     /**
      * @param $id
      * @param array $timestamp
+     * @param array $hidden
      * @return mixed
      * @throws Exception
      */
-    public function findOrFail($id, array $timestamp = []): mixed
+    public function findOrFail($id, array $timestamp = [], array $hidden = []): mixed
     {
-        $record = $this->find($id, $timestamp);
+        $record = $this->find($id, $timestamp, $hidden);
 
         if (!$record) {
             throw new Exception("Record not found with ID: $id", 404);
@@ -56,16 +60,17 @@ trait RetrievalTrait
     }
 
     /**
+     * @param array $hidden
      * @param array $timestamp
      * @return array|false
      */
-    public function get(array $timestamp = []): array|false
+    public function get(array $timestamp = [], array $hidden = []): array|false
     {
-        $columns = $this->getSelectColumns($timestamp);
+        $columns = $this->getColumns($timestamp, $hidden);
 
         $sql = $this->buildSelectQuery($columns);
         $query = $this->con->query($sql);
-        return $query->fetchAll(PDO::FETCH_OBJ);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -93,43 +98,68 @@ trait RetrievalTrait
 
     /**
      * @param array|string $columns
-     * @return array
+     * @return Collection
      */
-    public function pluck(array|string $columns): array
+    public function pluck(array|string $columns): Collection
     {
-        if (!is_array($columns)) {
-            $columns = [$columns];
+        $columns = $this->normalizePluckColumns(func_get_args());
+
+        $sql = $this->buildSelectQuery(implode(', ', $columns));
+        $stmt = $this->con->query($sql);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!$rows) return new Collection([]);
+
+        $count = count($columns);
+
+        if ($count === 1) {
+            $result = $this->pluckSingleColumn($rows, $columns[0]);
+        } elseif ($count === 2) {
+            $result = $this->pluckKeyValue($rows, $columns[0], $columns[1]);
+        } else {
+            $result = $rows; // multiple columns as associative arrays
         }
 
-        $results = $this->get();
+        // Wrap in Collection for Laravel-style chaining
+        return new Collection($result);
+    }
 
-        if (empty($results)) {
-            return [];
+    /* ---------------- Helper Methods ---------------- */
+
+    protected function normalizePluckColumns(array $args): array
+    {
+        if (count($args) === 1 && is_array($args[0])) {
+            return $args[0];
         }
+        return $args;
+    }
 
-        if (count($columns) === 1) {
-            $column = $columns[0];
-            return array_map(fn($item) => $item->$column ?? null, $results);
-        }
+    protected function pluckSingleColumn(array $rows, string $column): array
+    {
+        return array_column($rows, $column);
+    }
 
-        if (count($columns) === 2) {
-            [$keyColumn, $valueColumn] = $columns;
-            $assoc = [];
-            foreach ($results as $item) {
-                $key = $item->$keyColumn ?? null;
-                $value = $item->$valueColumn ?? null;
-                $assoc[$key] = $value;
+    protected function pluckKeyValue(array $rows, string $valueColumn, string $keyColumn): array
+    {
+        $assoc = [];
+        foreach ($rows as $row) {
+            if (array_key_exists($keyColumn, $row)) {
+                $assoc[(string)$row[$keyColumn]] = $row[$valueColumn] ?? null;
             }
-            return $assoc;
         }
+        return $assoc;
+    }
 
-        return array_map(function ($item) use ($columns) {
-            $row = [];
-            foreach ($columns as $col) {
-                $row[$col] = $item->$col ?? null;
-            }
-            return $row;
-        }, $results);
+    /**
+     * @param $timestamp
+     * @param $hidden
+     * @return string
+     */
+    private function getColumns($timestamp, $hidden): string
+    {
+        $columns = $this->getSelectColumns($timestamp, $hidden);
+        $columns = empty($columns) ? ['*'] : $columns;
+        return implode(',', $columns);
     }
 
 }

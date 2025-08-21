@@ -15,7 +15,8 @@ trait Getters
      */
     public function all(): array|Collection
     {
-        return $this->wrapMultiple(fn() => $this->doctrine->get());
+        $timestamp = Timestamp::timestamp($this->modelClass ?? null);
+        return $this->wrapMultiple(fn() => $this->doctrine->get($timestamp, $this->hidden));
     }
 
     /**
@@ -27,7 +28,7 @@ trait Getters
         // skip timestamp
         $timestamp = Timestamp::timestamp($this->modelClass ?? null);
 
-        return $this->wrapMultiple(fn() => $this->doctrine->get($timestamp));
+        return $this->wrapMultiple(fn() => $this->doctrine->get($timestamp, $this->hidden));
     }
 
     /**
@@ -39,16 +40,16 @@ trait Getters
         // skip timestamp
         $timestamp = Timestamp::timestamp($this->modelClass ?? null);
 
-        return $this->wrapSingle(fn() => $this->doctrine->first($timestamp));
+        return $this->wrapSingle(fn() => $this->doctrine->first($timestamp, $this->hidden));
     }
 
     /**
      * @param $columns
      * @return array
      */
-    public function pluck($columns): array
+    public function pluck($columns): Collection
     {
-        return $this->doctrine->pluck($columns);
+        return $this->doctrine->pluck(...func_get_args());
     }
 
     /**
@@ -61,7 +62,7 @@ trait Getters
         // skip timestamp
         $timestamp = Timestamp::timestamp($this->modelClass ?? null);
 
-        return $this->wrapSingle(fn() => $this->doctrine->find($id, $timestamp));
+        return $this->wrapSingle(fn() => $this->doctrine->find($id, $timestamp, $this->hidden));
     }
 
     public function findOrFail($id)
@@ -69,7 +70,7 @@ trait Getters
         // skip timestamp
         $timestamp = Timestamp::timestamp($this->modelClass ?? null);
 
-        return $this->wrapSingle(fn() => $this->doctrine->findOrFail($id, $timestamp));
+        return $this->wrapSingle(fn() => $this->doctrine->findOrFail($id, $timestamp, $this->hidden));
     }
 
     /**
