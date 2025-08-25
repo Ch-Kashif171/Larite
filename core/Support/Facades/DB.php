@@ -10,6 +10,7 @@ namespace Core\Support\Facades;
  * @method static \Core\Support\Facades\DB get()
  * @method static \Core\Support\Facades\DB all()
  * @method static \Core\Support\Facades\DB first()
+ * @method static \Core\Support\Facades\DB value(string $column)
  * @method static \Core\Support\Facades\DB firstOrFail()
  * @method static \Core\Support\Facades\DB find($id)
  * @method static \Core\Support\Facades\DB pluck($columns)

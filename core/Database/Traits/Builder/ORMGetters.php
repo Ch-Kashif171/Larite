@@ -44,6 +44,15 @@ trait ORMGetters
     }
 
     /**
+     * @param string $column
+     * @return mixed
+     */
+    public function value(string $column): mixed
+    {
+        return $this->doctrine->value($column);
+    }
+
+    /**
      * @param $columns
      * @return array
      */

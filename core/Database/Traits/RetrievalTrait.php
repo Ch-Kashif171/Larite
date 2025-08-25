@@ -88,6 +88,23 @@ trait RetrievalTrait
     }
 
     /**
+     * @param string $column
+     * @return mixed
+     */
+    public function value(string $column): mixed
+    {
+        // Build query only with the given column
+        $sql = $this->buildSelectQuery($column . ' AS value');
+
+        $query = $this->con->query($sql);
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $result['value'] ?? null;
+    }
+
+
+
+    /**
      * @return bool
      */
     public function exists(): bool

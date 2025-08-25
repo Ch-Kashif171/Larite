@@ -55,6 +55,7 @@ interface DoctrineContract
     public function pluck(array|string $columns): Collection;
     public function exists(): bool;
     public function firstOrFail(array $timestamp = []): mixed;
+    public function value(string $column): mixed;
     public function create(array $data): mixed;
     public function createMany(array $records): bool;
     public function updateOrCreate(array $attributes, array $values): mixed;
