@@ -482,15 +482,14 @@ class Collection implements \ArrayAccess, \IteratorAggregate, \Countable
 
     /**
      * @param $items
-     * @return array
+     * @return mixed
      */
-    private function getArrayableItems($items): array
+    private function getArrayableItems($items): mixed
     {
         return match (true) {
             is_null($items) => [],
-            is_array($items) => $items,
+            is_object($items), is_array($items) => $items,
             $items instanceof \Traversable => iterator_to_array($items),
-            is_object($items) => [$items], // Wrap single object/model
             default => throw new \InvalidArgumentException('Invalid items provided to Collection.'),
         };
     }

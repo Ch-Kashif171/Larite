@@ -75,12 +75,13 @@ trait RetrievalTrait
 
     /**
      * @param array $timestamp
+     * @param array $hidden
      * @return mixed
      * @throws Exception
      */
-    public function firstOrFail(array $timestamp = []): mixed
+    public function firstOrFail(array $timestamp = [], array $hidden = []): mixed
     {
-        $result = $this->first($timestamp);
+        $result = $this->first($timestamp, $hidden);
         if (!$result) {
             throw new Exception("No record found.");
         }
@@ -165,18 +166,6 @@ trait RetrievalTrait
             }
         }
         return $assoc;
-    }
-
-    /**
-     * @param $timestamp
-     * @param $hidden
-     * @return string
-     */
-    private function getColumns($timestamp, $hidden): string
-    {
-        $columns = $this->getSelectColumns($timestamp, $hidden);
-        $columns = empty($columns) ? ['*'] : $columns;
-        return implode(',', $columns);
     }
 
 }

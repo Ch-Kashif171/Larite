@@ -4,7 +4,6 @@ namespace Core\Database\Traits;
 
 use Core\Database\Doctrine;
 use Core\Database\Timestamp;
-use PDO;
 
 /**
  * Trait for handling SELECT clauses and field selections.
@@ -35,6 +34,18 @@ trait SelectTrait
     }
 
     /**
+     * @param $timestamp
+     * @param $hidden
+     * @return string
+     */
+    protected function getColumns($timestamp, $hidden): string
+    {
+        $columns = $this->getSelectColumns($timestamp, $hidden);
+        $columns = empty($columns) ? ['*'] : $columns;
+        return implode(',', $columns);
+    }
+
+    /**
      * @param array $timestamp
      * @param array $hidden
      * @return array
@@ -61,6 +72,5 @@ trait SelectTrait
 
         return $columns;
     }
-
 
 }

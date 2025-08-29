@@ -34,6 +34,9 @@ class Paginate implements \ArrayAccess, \IteratorAggregate, \Countable
         $this->data = new Collection($pagination['data'] ?? []);
     }
 
+    /**
+     * @return array
+     */
     public function toArray(): array
     {
         $array = [];

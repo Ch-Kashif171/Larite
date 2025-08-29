@@ -10,9 +10,10 @@ trait PaginationTrait
     /**
      * @param int $limit
      * @param array $timestamp
+     * @param array $hidden
      * @return array
      */
-    public function paginate(int $limit, array $timestamp = []): array
+    public function paginate(int $limit, array $timestamp = [], array $hidden = []): array
     {
         $pagination = [];
 
@@ -36,7 +37,7 @@ trait PaginationTrait
         $limitClause = $this->limit ?: " LIMIT {$limit}";
         $offsetClause = $this->offset ?: " OFFSET {$offset}";
 
-        $columns = $this->getSelectColumns($timestamp);
+        $columns = $this->getColumns($timestamp, $hidden);
 
         $sql = "SELECT {$columns} FROM {$this->table}"
             . $this->joins
@@ -72,10 +73,11 @@ trait PaginationTrait
     /**
      * @param int $limit
      * @param array $timestamp
+     * @param array $hidden
      * @return array
      */
-    public function simplePaginate(int $limit, array $timestamp = []): array
+    public function simplePaginate(int $limit, array $timestamp = [], array $hidden = []): array
     {
-        return ['simple' => $this->paginate($limit, $timestamp)];
+        return ['simple' => $this->paginate($limit, $timestamp, $hidden)];
     }
 }

@@ -49,7 +49,7 @@ trait Wrapper
             $result = $this->eagerLoadRelations($result, $this->with);
         }
 
-        return $result;
+        return new Collection($result);
     }
 
     /**
