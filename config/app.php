@@ -72,5 +72,5 @@ return [
     | e.g daily, single
     */
 
-    'log_channel' => env('LOG_CHANNEL') ?: 'single',
+    'log_channel' => env('LOG_CHANNEL', 'single'),
 ];

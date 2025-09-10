@@ -1,11 +1,12 @@
 <?php
+
+use Lumite\Foundation\Application;
+
 session_start();
 
 if (!defined('ROOT_PATH')) {
     define('ROOT_PATH', dirname(__DIR__));
 }
-
-use Core\Foundation\Application;
 
 /*
 |--------------------------------------------------------------------------

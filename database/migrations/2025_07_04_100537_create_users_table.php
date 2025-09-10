@@ -1,7 +1,7 @@
 <?php
 
-use Core\Migrations\Blueprint;
-use Core\Migrations\Migrate;
+use Lumite\Migrations\Blueprint;
+use Lumite\Migrations\Migrate;
 
 class CreateUsersTable extends Migrate
 {

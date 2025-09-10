@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use Core\Support\Auth;
+use Lumite\Support\Auth;
 use function redirect;
 
 class Guest

@@ -10,7 +10,7 @@
 | services to this array to grant expanded functionality to your app.
 |
 | Each provider should be a fully qualified class name (FQCN) that extends
-| Core\Foundation\ServiceProvider. The application will automatically:
+| Lumite\Foundation\ServiceProvider. The application will automatically:
 |   1. Instantiate each provider.
 |   2. Call the `register()` method to bind services into the container.
 |   3. Call the `boot()` method to initialize services if needed.

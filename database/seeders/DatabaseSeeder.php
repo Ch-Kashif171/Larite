@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Core\Database\Seeder;
+use Lumite\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {

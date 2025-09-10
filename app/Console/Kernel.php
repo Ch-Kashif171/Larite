@@ -2,8 +2,8 @@
 
 namespace App\Console;
 
-use Core\Console\BaseKernel;
-use Core\Scheduling\Schedule;
+use Lumite\Console\BaseKernel;
+use Lumite\Scheduling\Schedule;
 
 class Kernel extends BaseKernel
 {

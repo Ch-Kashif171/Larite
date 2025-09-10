@@ -13,18 +13,16 @@
 
     "autoload": {
         "psr-4": {
-            "Core\\": "core/",
             "App\\": "app/",
             "Database\\Migrations\\": "database/migrations/",
             "Database\\Seeders\\": "database/seeders/"
         }
     },
-
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "php": ">=8.3",
-        "symfony/console": "^7.2",
-        "composer/installers": "^2.3",
-        "filp/whoops": "^2.18"
+        "larite/framework": "^1.0"
 
     },
 

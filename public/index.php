@@ -49,7 +49,7 @@ $app = require_once ROOT_PATH . '/bootstrap/app.php';
 | the router to produce output.
 |
 */
-$kernel = new Core\Http\HttpKernel($app);
+$kernel = new Lumite\Http\HttpKernel($app);
 
 $kernel->handle();
 

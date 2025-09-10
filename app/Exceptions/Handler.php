@@ -3,11 +3,12 @@
 namespace App\Exceptions;
 
 use Closure;
-use Core\Exception\ExceptionDispatcher;
-use Core\Exception\Handlers\AuthException;
-use Core\Exception\Handlers\NotFoundException;
-use Core\Exception\Handlers\ValidationException;
+use Lumite\Exception\ExceptionDispatcher;
+use Lumite\Exception\Handlers\AuthException;
+use Lumite\Exception\Handlers\NotFoundException;
+use Lumite\Exception\Handlers\ValidationException;
 use Exception;
+
 use Throwable;
 
 class Handler
@@ -31,13 +32,13 @@ class Handler
         $this->render($e, function (Throwable $e) {
 
             if ($e instanceof NotFoundException) {
-                response()->json(['NotFoundException' => $e->getMessage()], 404);
+               return response()->json(['NotFoundException' => $e->getMessage()], 404);
             } elseif ($e instanceof ValidationException) {
-                response()->json(['ValidationException' => $e->getErrors()], 422);
+                return response()->json(['ValidationException' => $e->getErrors()], 422);
             } elseif ($e instanceof AuthException) {
-                response()->json('Unauthenticated.', 401);
+                return response()->json('Unauthenticated.', 401);
             } else {
-                response()->json(['Exception' => 'Something went wrong.'], 500);
+                return response()->json(['Exception' => 'Something went wrong.'], 500);
             }
         });
 

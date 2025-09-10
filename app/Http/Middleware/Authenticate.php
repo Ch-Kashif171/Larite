@@ -3,14 +3,14 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Core\Support\Auth;
+use Lumite\Support\Auth;
 
 class Authenticate
 {
     /**
      * @param $request
      * @param Closure $next
-     * @return \Core\Support\Redirect|mixed
+     * @return \Lumite\Support\Redirect|mixed
      */
     public function handle($request, Closure $next)
     {

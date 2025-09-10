@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Core\Controllers\BaseController;
+use Lumite\Controllers\BaseController;
 
 
 /**

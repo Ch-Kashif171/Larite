@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use Core\Foundation\ServiceProvider;
+use App\Service\CustomeService;
+use Lumite\Foundation\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {

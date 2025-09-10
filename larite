@@ -1,10 +1,10 @@
 #!/usr/bin/env php
 <?php
 
-use Core\Foundation\Application;
+use Lumite\Foundation\Application;
 use Symfony\Component\Console\Application  as App;
 
-const ROOT_PATH = __DIR__;
+define('ROOT_PATH', realpath(__DIR__));
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +17,7 @@ const ROOT_PATH = __DIR__;
 | loading of any of our classes manually. It's great to relax.
 |
 */
-require_once 'vendor/autoload.php';
+require_once ROOT_PATH . '/vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +59,6 @@ $application = new App("Welcome to ".Application::framework()." Developed By Kas
 | CLI process returns the correct status to the operating system.
 |
 */
-$kernel = new Core\Console\ConsoleKernel($app);
+$kernel = new Lumite\Console\ConsoleKernel($app);
 
 exit($kernel->handle());

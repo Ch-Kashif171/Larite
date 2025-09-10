@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use Core\Foundation\ServiceProvider;
+use Lumite\Foundation\ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {
