@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "05b70df13803ebb6d647575ac758f6e2",
+    "content-hash": "dbbd2db10bc682920c18780f47c4c7e1",
     "packages": [
         {
             "name": "composer/installers",
@@ -225,11 +225,17 @@
         },
         {
             "name": "larite/framework",
-            "version": "dev-main",
+            "version": "v5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/larite-mvc/framework.git",
+                "reference": "04c9a84ec65efed59395b874540688a51e8424d9"
+            },
             "dist": {
-                "type": "path",
-                "url": "../larite/framework",
-                "reference": "16d7f54262ee6c3ed3a25230caa562e1535f1c55"
+                "type": "zip",
+                "url": "https://api.github.com/repos/larite-mvc/framework/zipball/04c9a84ec65efed59395b874540688a51e8424d9",
+                "reference": "04c9a84ec65efed59395b874540688a51e8424d9",
+                "shasum": ""
             },
             "require": {
                 "composer/installers": "^2.3",
@@ -239,13 +245,14 @@
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "Lumite\\": "src/Lumite/"
-                },
                 "files": [
                     "src/Lumite/Utils/helpers.php"
-                ]
+                ],
+                "psr-4": {
+                    "Lumite\\": "src/Lumite/"
+                }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -256,10 +263,11 @@
                 }
             ],
             "description": "A lightweight PHP MVC framework",
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/larite-mvc/framework/issues",
+                "source": "https://github.com/larite-mvc/framework/tree/v5.0.0"
+            },
+            "time": "2025-09-10T08:40:27+00:00"
         },
         {
             "name": "psr/container",
@@ -1130,12 +1138,12 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": ">=8.3"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }
