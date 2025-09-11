@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Ch-Kashif171/Larite/4.x/public/images/logo/larite.jpg" width="200" alt="Larite Logo">
+  <img src="https://larite.dev/public/images/logo/larite.jpg" width="200" alt="Larite Logo">
 </p>
 
 > **Lightweight. Laravel-Inspired. 100% Custom.**
@@ -36,7 +36,7 @@ Please visit the docs for installation instructions, routing, middleware, CLI co
 
 Here is the Larite welcome page view.
 
-![Larite Logo](https://raw.githubusercontent.com/Ch-Kashif171/Larite/4.x/core/images/Larite.png)
+![Larite Logo](https://larite.dev/public/images/Larite-home.png)
 
 ---
 
@@ -44,7 +44,7 @@ Here is the Larite welcome page view.
 
 Here is the ChatGPT comparison after review the complete Larite's code review.
 
-![Larite Logo](https://raw.githubusercontent.com/Ch-Kashif171/Larite/4.x/core/images/Larite-Review-ChatGpt.png)
+![Larite Logo](https://larite.dev/public/images/Larite-Review-ChatGpt.png)
 
 ---
 
