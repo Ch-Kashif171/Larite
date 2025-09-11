@@ -1,6 +1,6 @@
 {
     "name": "larite/larite",
-    "description": "Larite framework",
+    "description": "The skeleton application for the Larite framework",
     "keywords": ["framework", "Larite"],
     "license" : "MIT",
     "type": "project",
