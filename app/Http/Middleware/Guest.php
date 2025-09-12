@@ -2,16 +2,22 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Lumite\Support\Auth;
-use function redirect;
 
 class Guest
 {
-    public function handle()
+    /**
+     * @param $request
+     * @param Closure $next
+     * @return \Lumite\Support\Redirect|mixed
+     */
+    public function handle($request, Closure $next)
     {
         if (Auth::check()) {
             return redirect('/');
         }
-        return true;
+
+        return $next($request);
     }
 }
