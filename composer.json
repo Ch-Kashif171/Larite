@@ -22,7 +22,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=8.3",
-        "larite/framework": "^6.0"
+        "larite/framework": "^6.1"
 
     },
 
